@@ -1,0 +1,35 @@
+body {
+    background-color: #ebebeb !important;
+}
+.guide line {
+	  fill: none;
+	  stroke: #000;
+	  shape-rendering: crispEdges;
+	  opacity: 0;
+	}
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.counties {
+  fill: none;
+}
+
+.states {
+  fill: none;
+  stroke: #fff;
+  stroke-linejoin: round;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+  position: absolute;
+}
