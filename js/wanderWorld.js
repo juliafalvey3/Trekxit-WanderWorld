@@ -2,18 +2,14 @@ function init(){
 
 
 	//Width and height
-	var width = 800;
-	var height = 600;
+	var div = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
 
-	var projection = d3.geo.satellite()
-		.translate([width/2,0])
-		.distance(1.1)
-		.scale(3250)
-		.center([30, 50])
-		.rotate([3, -51.3849401, -45])
-		.tilt(20)
-		.clipAngle(Math.acos(1 / 1.1) * 180 / Math.PI - 1e-6);
-		
+	var width = 600,
+    	height = 500;
+
+	var projection = d3.geo.conicConformalEurope();
 	var path = d3.geo.path()
 		.projection(projection);
 		
@@ -28,13 +24,15 @@ function init(){
 		.datum(graticule)
 		.attr("class", "graticule")
 		.attr("d", path);
-		
+	
 	var land = svg.append("g");
+
 	d3.json('europe.json', function(err, data) {
-		land.append("path")
-			.datum(topojson.object(data, data.objects.europe))
-			.attr("class", "land")
-			.attr("d", path);
+		console.log(data)
+		// land.append("path")
+		// 	.datum(topojson.object(data, data.objects.europe))
+		// 	.attr("class", "land")
+		// 	.attr("d", path);
 	});
 	
 }
