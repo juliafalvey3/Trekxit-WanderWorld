@@ -1,0 +1,20 @@
+cp ne_10m_admin_0_map_subunits.shx ../../../usr/local/bin
+cp ne_10m_admin_0_map_subunits.shp ../../../usr/local/bin
+cp ne_10m_admin_0_map_subunits.cpg ../../../usr/local/bin
+cp ne_10m_admin_0_map_subunits.prj ../../../usr/local/bin
+cp ne_10m_admin_0_map_subunits.dbf ../../../usr/local/bin
+ogr2ogr -f GeoJSON -where "adm0_a3 IN ('ALB', 'AND', 'ARM', 'AUT', 'AZE', 'BLR', 'BEL', 'BIH', 'BGR', 'CYP', 'HRV', 'CZE', 'DNK', 'EST', 'FIN', 'FRA', 'ESP', 'GEO', 'GBR', 'DEU', 'GRC', 'HUN', 'ISL', 'IRL', 'ITA', 'KAZ', 'LVA', 'LTU', 'LIE', 'LUX', 'MKD', 'MLT', 'MDA', 'MCO', 'MNE', 'NLD', 'NOR', 'POL', 'PRT', 'ROU', 'SMR', 'SRB', 'SVK', 'SVN', 'SWE', 'CHE', 'TUR', 'UKR', 'VAT')" subunits.json ne_10m_admin_0_map_subunits.shp
+
+ogr2ogr -f GeoJSON -where "ISO_A2 IN ('AL', 'AD', 'AM', 'AT', 'AZ', 'BY', 'BE', 'BA', 'BG', 'CY', 'HR', 'CZ', 'DK', 'EE', 'FI', 'FR', 'ES', 'GE', 'GB', 'DE', 'GR', 'HU', 'IS', 'IE', 'IT', 'KZ', 'LV', 'LT', 'LI', 'LU', 'MK', 'MT', 'MD', 'MC', 'ME', 'NL', 'NO', 'PL', 'PT', 'RO', 'SM', 'RS', 'SK', 'SI', 'SE', 'CH', 'TR', 'UA', 'VA') AND SCALERANK < 8 " places.json ne_10m_admin_0_map_subunits.shp
+
+touch eu.json
+
+topojson \
+  -o eu.json \
+  --id-property SU_A3 \
+  --properties name=NAME \
+  -- \
+  subunits.json \
+  places.json
+
+  cp eu.json ../../../Users/[NAME]/Desktop
