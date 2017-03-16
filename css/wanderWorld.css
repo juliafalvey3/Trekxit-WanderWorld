@@ -14,22 +14,9 @@ body {
   shape-rendering: crispEdges;
 }
 
-.counties {
+.subunit-boundary {
   fill: none;
-}
-
-.states {
-  fill: none;
-  stroke: #fff;
+  stroke: #777;
+  stroke-dasharray: 2,2;
   stroke-linejoin: round;
-}
-
-.d3-tip {
-  line-height: 1;
-  font-weight: bold;
-  padding: 12px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  border-radius: 2px;
-  position: absolute;
 }
