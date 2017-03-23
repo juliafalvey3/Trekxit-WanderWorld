@@ -1,13 +1,24 @@
 <!DOCTYPE html>
+<head>
 <meta charset="utf-8">
-<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script src="./lib/d3.v3.js"></script>
+<script src="./lib/topojson.v1.min.js"></script>
+<script src="./lib/d3.tip.v0.6.3.js"></script>
 <script src="wanderWorld.js"></script>
-<link href="../css/wanderWorld.css" rel="stylesheet">
-<body onload="init()"> 
-	<!-- <div id="container" style="position: relative; width: 1500px; height: 500px;"></div> -->
-	<!-- <script> -->
-   <!-- var map = new Datamap({element: document.getElementById('container')}); -->
-	<!-- </script> -->
+  <link href="wanderWorld.css" rel="stylesheet">
+</head>
+<body class="body">
+<div class=textBox> 
+	<h2> WanderWorld</h2>
+	<p> Explore Together</p>
+</div>
+<div>
+    <div id='sections'>
+      	<section class="step"></section>
+    </div>
+    <div id = "vis">
+    	<script> init() </script>
+    </div>
+</div>
 </body>
 </html>

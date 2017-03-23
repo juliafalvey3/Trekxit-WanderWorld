@@ -6,14 +6,16 @@ var mapW = 900,
 	mapX = 520,
 	mapY = 0;
 
-var projScale = 750,
+var projScale = 700,
 	projX = 300,
-	projY = 1300;
+	projY = 1250;
 
+var otherW = width-mapW
+	otherH = 1000;
 
 function init(){
-
-	var container = d3.select('body').append('svg')
+	d3.select('#vis').selectAll('*').remove();
+	var container = d3.select('#vis').append('svg')
 	    .attr('width', width)
 	    .attr('height', height);
 	makeOthers(container)
@@ -34,36 +36,82 @@ function makeMap(container){
 
 	var path = d3.geo.path().projection(projection);
 
+ 	var tip = d3.tip()
+			  .attr('class', 'd3-tip')
+			  .html(function(d){return d.properties.name})
+
+
 
 	d3.json("eu.json", function(error, eu) {
 	  if (error) return console.error(error);
 
-	  var subunits = topojson.feature(eu, eu.objects.subunits);
+  	var subunits = topojson.feature(eu, eu.objects.subunits).features;
+
+   	var tp = map.append("g")
+ 		.data(subunits);
+
+	tp.call(tip);
+
+
+	  map.append("g")
+	      .attr("class", "counties")
+	    .selectAll("path")
+	    .data(subunits)
+	    .enter().append("path")
+    		.attr('fill', "#3690c0")
+	     .attr("d", path)
+	     .attr('id', function(d){return d.id})
+      	.on("mouseover", tip.show)
+        .on("mouseout", tip.hide);
 
   	  map.append("path")
-	      .datum(subunits)
-      	  .attr("d", path)
-      	  .attr("fill", "#3690c0")
-      	  .attr("class", function(d) { return "subunit " + d.id; });
-      map.append("path")
 	    .datum(topojson.mesh(eu, eu.objects.subunits, function(a, b) {return a !== b; }))
 	    .attr("d", path)
 	    .attr("fill", "none")
-	    .attr("stroke", "#252525");
+	    .attr("stroke", "#252525")
 
+	  map.append("path")
+   		.datum(console.log(topojson.feature(eu, eu.objects.places)));
+    	// .attr("d", path)
+    	// .attr("fill", "none")
+    	// .attr("fill", "black")
+    	// .;
 	});
 }
 
 function makeOthers(container){
 
 	var others = container.append('svg')
-		.attr('width', (width-projX))
-	    .attr('height', (height - projY));
+		.attr('width', otherW)
+	    .attr('height', otherH);
 
-	others.append("text")
-		.text("Test")
-		.attr("fill", "black")
-		.attr("x", 100)
-		.attr("y", 100)
+	startText = others.append("text")
+
+	startText.text("Where are you coming from?")
+		.attr("class", "text")
+		.attr("x", 0)
+		.attr("y", 20)
+
+	destinationText = others.append("text");
+
+	destinationText.text("Where do you want to go?")
+		.attr("class", "text")
+		.attr("x", 0)
+		.attr("y", 120)
+
+	budgetText = others.append("text");
+
+	budgetText.text("What is your budget range?")
+		.attr("class", "text")
+		.attr("x", 0)
+		.attr("y", 220)
+
+
+	dateText = others.append("text");
+
+	dateText.text("What dates do you want to travel?")
+		.attr("class", "text")
+		.attr("x", 0)
+		.attr("y", 320)
 
 }

@@ -1,0 +1,107 @@
+body {
+   background: transparent url(./background.jpg) left top no-repeat;
+   background-color: #ebebeb;
+}
+
+.guide line {
+	  fill: none;
+	  stroke: #000;
+	  shape-rendering: crispEdges;
+	  opacity: 0;
+	}
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+div.textBox{
+  margin: 30px;
+  background-color: #ffffff;
+  border: 1px solid black;
+  opacity: 0.8;
+  margin-left: 450px;
+  background-color: lightgrey;
+  background-repeat: no-repeat;
+  width: 400px;
+  height: 100px;
+}
+
+div.textBox h2 {
+    margin-top: 5%;
+    font-weight: bold;
+    color: #000000;
+    font-size: 50px;
+    text-align: center;
+    vertical-align: middle;
+   text-anchor: middle;
+}
+
+div.textBox p {
+    margin-top: -10%;
+    font-weight: bold;
+    color: #000000;
+    font-size: 20px;
+    text-align: center;
+    vertical-align: top;
+}
+
+.header
+{
+  width:1600px;
+  height:400px;
+  border: 1px solid black;
+  height: 200px; 
+  width: 400px;
+}
+
+.subunit-boundary {
+  fill: none;
+  stroke: #777;
+  stroke-dasharray: 2,2;
+  stroke-linejoin: round;
+}
+
+#sections {
+  position: relative;
+  display: inline-block;
+  width: 250px;
+  top: 0px;
+}
+
+.step {
+  margin-bottom: 300px;
+}
+
+#chart {
+  display: inline-block;
+  position: fixed;
+  top: 60px;
+  margin-left: 0;
+
+  height: 600px;
+  width: 600px;
+  background-color: #ddd;
+}
+
+text {
+  font-family: Palatino Linotype;
+  font-size: 20px;
+}
+
+.counties {
+  fill: none;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+  position: absolute;
+}
+
+
