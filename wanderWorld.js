@@ -13,6 +13,8 @@ var projScale = 700,
 var otherW = width-mapW
 	otherH = 1000;
 
+var half = width/2;
+
 function init(){
 	d3.select('#vis').selectAll('*').remove();
 	var container = d3.select('#vis').append('svg')
@@ -20,6 +22,7 @@ function init(){
 	    .attr('height', height);
 	makeOthers(container)
 	makeMap(container)
+
 }
 
 function makeMap(container){
@@ -47,6 +50,9 @@ function makeMap(container){
 
   	var subunits = topojson.feature(eu, eu.objects.subunits).features;
 
+  	var places = topojson.feature(eu, eu.objects.places);
+  	console.log(places)
+
    	var tp = map.append("g")
  		.data(subunits);
 
@@ -70,27 +76,40 @@ function makeMap(container){
 	    .attr("fill", "none")
 	    .attr("stroke", "#252525")
 
-	  map.append("path")
-   		.datum(console.log(topojson.feature(eu, eu.objects.places)));
-    	// .attr("d", path)
-    	// .attr("fill", "none")
-    	// .attr("fill", "black")
-    	// .;
 	});
 }
 
 function makeOthers(container){
 
+// #dropdowns  https://bl.ocks.org/mbostock/5872848
+
+
 	var others = container.append('svg')
 		.attr('width', otherW)
-	    .attr('height', otherH);
+	    .attr('height', otherH)
+	    .attr("id", "others");
 
 	startText = others.append("text")
+				.attr('id', "start")
 
 	startText.text("Where are you coming from?")
 		.attr("class", "text")
 		.attr("x", 0)
 		.attr("y", 20)
+
+	sampleStart = [1,2,3,4]
+
+	var select = d3.select('#others')
+	  .append('select')
+	  	.attr("x", "100")
+	  	.attr("y", "100")
+	    .on('change',console.log("change"))
+
+	var options = select
+	  .selectAll('option')
+		.data(sampleStart).enter()
+		.append('option')
+			.text(function (d) { return d; });
 
 	destinationText = others.append("text");
 
@@ -112,6 +131,5 @@ function makeOthers(container){
 	dateText.text("What dates do you want to travel?")
 		.attr("class", "text")
 		.attr("x", 0)
-		.attr("y", 320)
-
+		.attr("y", 320);
 }

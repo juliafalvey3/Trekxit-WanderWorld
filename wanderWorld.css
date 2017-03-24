@@ -21,11 +21,12 @@ div.textBox{
   background-color: #ffffff;
   border: 1px solid black;
   opacity: 0.8;
-  margin-left: 450px;
+  margin-left: 525px;
   background-color: lightgrey;
   background-repeat: no-repeat;
   width: 400px;
   height: 100px;
+  margin-bottom: 300px;
 }
 
 div.textBox h2 {
@@ -47,6 +48,17 @@ div.textBox p {
     vertical-align: top;
 }
 
+div.otherText p {
+    font-weight: bold;
+    color: #000000;
+    font-size: 20px;
+    text-align: center;
+    vertical-align: top;
+    margin-left: 525px;
+    width: 400px;
+    height: 50px;
+}
+
 .header
 {
   width:1600px;
@@ -65,21 +77,16 @@ div.textBox p {
 
 #sections {
   position: relative;
-  display: inline-block;
   width: 250px;
   top: 0px;
 }
 
 .step {
-  margin-bottom: 300px;
+  margin-bottom: 100px;
 }
 
 #chart {
-  display: inline-block;
   position: fixed;
-  top: 60px;
-  margin-left: 0;
-
   height: 600px;
   width: 600px;
   background-color: #ddd;
@@ -104,4 +111,45 @@ text {
   position: absolute;
 }
 
+
+.arrow {
+  position: relative;
+  bottom: 0;
+  margin-left:700px;
+  margin-top: 70px;
+  width: 40px;
+  height: 40px;
+  background-image: url(./images/arrow.png);
+  background-size: contain;
+  display: block;
+  width: 50px;
+  height: 50px;
+  text-decoration: none;
+  cursor: pointer;
+  overflow: hidden;
+  text-indent: 100%;
+  white-space:nowrap;
+}
+.up-arrow {
+  position: relative;
+  margin-left:700px;
+  margin-top: -25px;
+  width: 40px;
+  height: 40px;
+  background-image: url(./images/up-arrow.png);
+  background-size: contain;
+  display: block;
+  width: 50px;
+  height: 50px;
+  text-decoration: none;
+  cursor: pointer;
+  overflow: hidden;
+  text-indent: 100%;
+  white-space:nowrap;
+}
+
+.place,
+.place-label {
+  fill: #444;
+}
 
