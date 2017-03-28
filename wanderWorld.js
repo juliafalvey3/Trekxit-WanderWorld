@@ -82,12 +82,17 @@ function makeMap(container){
 function makeOthers(container){
 
 // #dropdowns  https://bl.ocks.org/mbostock/5872848
-
-
 	var others = container.append('svg')
 		.attr('width', otherW)
 	    .attr('height', otherH)
 	    .attr("id", "others");
+
+	claraWork(others)
+	juliaWork(others)
+
+}
+
+function claraWork(others){
 
 	startText = others.append("text")
 				.attr('id', "start")
@@ -111,6 +116,10 @@ function makeOthers(container){
 		.append('option')
 			.text(function (d) { return d; });
 
+}
+
+function juliaWork(others){
+	
 	destinationText = others.append("text");
 
 	destinationText.text("Where do you want to go?")
