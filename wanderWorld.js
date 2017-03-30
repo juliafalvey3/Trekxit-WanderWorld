@@ -92,7 +92,7 @@ function makeOthers(container){
 
 }
 
-function claraWork(others){
+function juliaWork(others){
 
 	startText = others.append("text")
 				.attr('id', "start")
@@ -118,7 +118,7 @@ function claraWork(others){
 
 }
 
-function juliaWork(others){
+function claraWork(others){
 	
 	destinationText = others.append("text");
 
