@@ -17,6 +17,7 @@ body {
 }
 
 div.textBox{
+  font-family: Palatino;
   margin: 30px;
   background-color: #ffffff;
   border: 1px solid black;
@@ -30,16 +31,18 @@ div.textBox{
 }
 
 div.textBox h2 {
+  font-family: Palatino;
     margin-top: 5%;
     font-weight: bold;
     color: #000000;
     font-size: 50px;
     text-align: center;
     vertical-align: middle;
-   text-anchor: middle;
+    text-anchor: middle;
 }
 
 div.textBox p {
+  font-family: Palatino;
     margin-top: -12%;
     font-weight: bold;
     color: #000000;
@@ -50,6 +53,7 @@ div.textBox p {
 
 
 div.otherText {
+  font-family: Palatino;
   border: 1px solid black;
   margin-left: 600px;
   width: 1000px;
@@ -57,6 +61,7 @@ div.otherText {
 }
 
 div.otherText p {
+    font-family: Palatino;
     font-weight: bold;
     color: #000000;
     font-size: 20px;
@@ -98,8 +103,14 @@ div.otherText p {
 }
 
 text {
-  font-family: Palatino Linotype;
+  font-family: Palatino;
+  font-size: 17px;
+}
+
+text.question {
+  font-family: Palatino;
   font-size: 20px;
+  font-weight:bold;
 }
 
 .counties {
@@ -158,4 +169,32 @@ text {
   fill: #444;
 }
 
-/*plus*/
+.select{
+  position: absolute;
+  margin-top: -760px;
+  margin-left: 20px;
+  font-family: Palatino;
+  font-size: 17px;
+}
+
+#direct-controls {
+  position: absolute;
+  margin-top: -200px;
+  margin-left: 20px;
+  font-family: Palatino;
+  font-size: 17px;
+  width: 940px;
+  padding: 10px;
+  z-index: 1;
+}
+
+#minDays {
+  position: absolute;
+  margin-top: -420px;
+  margin-left: 20px;
+  font-family: Palatino;
+  font-size: 17px;
+  width: 940px;
+  padding: 10px;
+  z-index: 1;
+}

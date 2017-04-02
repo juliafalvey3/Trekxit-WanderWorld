@@ -5,6 +5,7 @@
 <script src="./lib/topojson.v1.min.js"></script>
 <script src="./lib/d3.tip.v0.6.3.js"></script>
 <script src="./lib/d3CheckBox.js"></script>
+<link rel="stylesheet" href="./lib/font-awesome.css">
 <script src="wanderWorld.js"></script>
   <link href="wanderWorld.css" rel="stylesheet">
 </head>
@@ -21,11 +22,18 @@
 </div>
 <a class="arrow" href="#vis" title="arrow" id="arrow"></a>
 <div>
-    <div id='sections'>
-      	<section class="step"></section>
-    </div>
     <div id = "vis">
     	<script> init() </script>
+      <div id="direct-controls">
+        <input name="mode" type="radio" value="Any" class= "text" id="indirect-any-stop" checked><label for="indirect-any"> Any Number of Stops</label>
+        <br>
+        <input name="mode" type="radio" value="One" class= "text" id="indirect-one-stop"><label for="indirect-one"> At Most 1 Stop</label>
+        <br>
+        <input name="mode" type="radio" value="No" class="text" id="direct-flight"><label for="direct"> No Stops</label>
+      </div>
+      <form name="myform" id="minDays" onSubmit="return handleClick()">
+            <input type="text" placeholder="e.g. 3">
+        </form>
     </div>
 </div>
 <a class="up-arrow" href="" title="up-arrow" id="up-arrow"></a>
