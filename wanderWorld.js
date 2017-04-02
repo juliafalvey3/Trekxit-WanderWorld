@@ -223,7 +223,6 @@ function juliaWork(others){
 		.attr('x', 170)
 		.text(function(d){return d});
 
-
 	destinationText = others.append("text");
 
 	destinationText.text("Where do you want to go?")
