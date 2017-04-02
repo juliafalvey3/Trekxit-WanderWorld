@@ -170,14 +170,13 @@ function juliaWork(others){
         .attr("ry", 3)
         .attr("fill",defaultColor)
 
-
 	cityButtons.append('text')
 		.attr("class", "text")
 		.attr('stroke', 'none')
 		.attr('y', function(d,i){return (i*30 + 151)})
 		.attr('x', 50)
 		.text(function(d){return d});
-
+  
 	destinationText = others.append("text");
 
 	destinationText.text("Where do you want to go?")
