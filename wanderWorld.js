@@ -339,32 +339,80 @@ function juliaWork(others){
 }
 
 
-var resultsData = [{'Trip1': '$800'}]
+var resultsData = [{name: 'Trip1', value: 800}, {name: 'Trip2', value: 1000}];
 
 function showboxes(others){
 	
-	others.append('rect')
+
+	// load the data
+	d3.csv("final_result_Sample.csv", function(data) {
+    console.log(data[0]);
+
+    
+    var flights = null;
+    
+        flights = d3.nest()
+       .key(function(d) { return d['TripID']})
+       .key(function(d) { return d['Seq']})
+       .entries(data);
+       console.log(flights[0]);
+
+       others.append('rect')
 		.attr('id', 'resultsBox')
 		.attr('fill', 'white')
 		.attr('stroke', 'grey')
-		.attr('x', 370)
+		.attr('x', 390)
 		.attr('y', 0)
 		.attr("rx", 15) //rx and ry give the buttons rounded corners
         .attr("ry", 15)
 		.attr('width', 230)
 		.attr('height', 400)
 
+	others.append('rect')
+		.attr('id', 'resultsBox2')
+		.attr('fill', 'white')
+		.attr('stroke', 'grey')
+		.attr('x', 390)
+		.attr('y', 400)
+		.attr("rx", 15) //rx and ry give the buttons rounded corners
+        .attr("ry", 15)
+		.attr('width', 230)
+		.attr('height', 400)
+
+		console.log(typeof(resultsData[0]));
+		console.log(resultsData[0].value);
+
 	var results = others.append('g')
 		.attr('id', 'resultsBox').selectAll("g")
-		.data(resultsData)
+		.data(flights)
 		.enter().append('g')
 		.attr("stroke", '#252525')
 
 	results.append('text')
 		.attr("class", "text")
-		.attr('x', 380)
-		.attr('y', function(d,i){return i*20 + 30})
+		.attr('x', 530)
+		.attr('y', function(d,i){return i*20 + 61})
 		.attr('stroke', 'none')
-		.text(function(d){return d.value})
+		.text(function(d){return d.values[0].values[0]['Price']});
+
+	flightText = results.append('text');
+	flightText.text("Best Trip Options!")
+		.attr("class", "resultHeader")
+		.attr("x", 400)
+		.attr("y", 40)
+	option1Text = results.append('text');
+	option1Text.text("Option 1 : Price")
+		.attr("class", "resulttext")
+		.attr("x", 400)
+		.attr("y", 60)
+	option2Text = results.append('text');
+	option2Text.text("Option 2 : Price")
+		.attr("class", "resulttext")
+		.attr("x", 400)
+		.attr("y", 80)
+
+
+      });
 
 }
+

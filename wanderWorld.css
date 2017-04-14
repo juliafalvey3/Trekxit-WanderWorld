@@ -116,7 +116,11 @@ text.helper {
   font-family:Palatino;
   font-size:12px;
 }
-
+text.resultHeader {
+  font-family:Palatino;
+  font-size:25px;
+  font-weight:bold;
+}
 .counties {
   fill: none;
 }
