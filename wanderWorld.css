@@ -74,7 +74,7 @@ div.otherText p {
   width:1600px;
   height:400px;
   border: 1px solid black;
-  height: 200px; 
+  height: 200px;
   width: 400px;
 }
 
@@ -263,6 +263,18 @@ text.helper {
   font-family: Palatino;
   font-size: 17px;
   width: 940px;
+  padding: 10px;
+  z-index: 1;
+}
+
+#multDropDown {
+  position: absolute;
+  margin-top: -690px;
+  margin-left: 20px;
+  font-family: Palatino;
+  font-size: 17px;
+  width: 200px;
+  height: 100px;
   padding: 10px;
   z-index: 1;
 }

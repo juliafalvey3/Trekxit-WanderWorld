@@ -29,7 +29,7 @@ en: {
   <link href="wanderWorld.css" rel="stylesheet">
 </head>
 <body class="body">
-<div class="textBox"> 
+<div class="textBox">
 	<h2> WanderWorld</h2>
 	<p class="text"> Explore Together</p>
 </div>
@@ -43,6 +43,20 @@ en: {
 <div>
     <div id = "vis">
     	<script> init() </script>
+
+      <form>
+        <select id="multDropDown" multiple>
+          <option value="Barcelona">Barcelona</option>
+          <option value="Madrid">Madrid</option>
+          <option value="Dublin">Dublin</option>
+          <option value="London">London</option>
+          <option value="Edinburgh">Edinburgh</option>
+          <option value="Berlin">Berlin</option>
+          <option value="Paris">Paris</option>
+          <option value="Marseilles">Marseilles</option>
+        </select>
+      </form>
+
       <div id="direct-controls">
         <input name="mode" type="radio" value="Any" class= "text" id="indirect-any-stop" checked><label for="indirect-any"> Any Number of Stops</label>
         <br>
