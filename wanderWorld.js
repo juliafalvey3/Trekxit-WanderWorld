@@ -88,8 +88,8 @@ function makeMap(container){
 	 cities = map.selectAll(".place-label")
 	    .data(topojson.feature(eu, eu.objects.places).features)
 	  .enter().append("g")
-	  .on("mouseover", function(d){d3.select(this).selectAll("*").style("opacity", 0.8); })
-	  .on("mouseout", function(d){d3.select(this).selectAll("*").style("opacity", 0); });
+	  .on("mouseover", function(d){d3.select(this).selectAll("*").style("opacity", 0.9); })
+	  .on("mouseout", function(d){d3.select(this).selectAll("rect").style("opacity", 0); d3.select(this).selectAll("text").style("opacity", 0); });
 
 	cities.append("rect")
 	 	.attr("width", function(d){len = d.properties.name.length; return (6*len+(len/2)*5+15)})//; return text.length*5})
@@ -107,10 +107,8 @@ function makeMap(container){
 	    .attr('x', 5)
 	    .text(function(d) { return d.properties.name; })
 
-	cityDots = map.selectAll("circle")
-	    .data(topojson.feature(eu, eu.objects.places).features)
-	  	.enter().append("g").append("circle")
-		.attr("cx", function(d) { return (projection(d.geometry.coordinates)[0]) })
+	cities.append("circle")
+		.attr("cx", function(d) { return (projection(d.geometry.coordinates)[0]) }) 
 	 	.attr("cy", function(d) { return (projection(d.geometry.coordinates)[1]) })
 	 	.style("fill", "grey")
 	 	.style("stroke", "#444")
