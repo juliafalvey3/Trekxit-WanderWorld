@@ -6,9 +6,9 @@ var mapW = 800,
 	mapX = 660,
 	mapY = 0;
 
-var projScale = 800,
-	projX = 300,
-	projY = 1250;
+var projScale = 900,
+	projX = 230,
+	projY = 1350;
 
 var otherW = width-mapW
 	otherH = 1000;
@@ -33,6 +33,11 @@ function makeMap(container){
 	    .attr('transform', 'translate('+mapX+','+mapY+')')
 	    .attr('fill', 'none');
 
+	var rect = container.append('circle')
+		.attr("r", 16)
+		.attr('cx', 1217)
+		.attr('cy', 610)
+		.attr('fill', '#3690c0')
 
 	var projection = d3.geo.mercator()
 		.scale(projScale)
@@ -40,9 +45,9 @@ function makeMap(container){
 
 	var path = d3.geo.path().projection(projection);
 
- 	var tip = d3.tip()
-			  .attr('class', 'd3-tip')
-			  .html(function(d){return d.properties.name})
+ 	// var tip = d3.tip()
+		// 	  .attr('class', 'd3-tip')
+		// 	  .html(function(d){return d.properties.name})
 
 	d3.json("eu.json", function(error, eu) {
 	  if (error) return console.error(error);
@@ -51,10 +56,10 @@ function makeMap(container){
 
   	var places = topojson.feature(eu, eu.objects.places);
 
-   	var tp = map.append("g")
- 		.data(subunits);
+ //   	var tp = map.append("g")
+ // 		.data(subunits);
 
-	tp.call(tip);
+	// tp.call(tip);
 
 	  map.append("g")
 	      .attr("class", "counties")
@@ -63,16 +68,53 @@ function makeMap(container){
 	    .enter().append("path")
 			.attr('fill', "#3690c0")
 	     .attr("d", path)
-	     .attr('id', function(d){return d.id})
-	  	.on("mouseover", tip.show)
-	    .on("mouseout", tip.hide);
+	     .attr('id', function(d){return d.id});
 
-		  map.append("path")
+
+	   map.append("path")
 	    .datum(topojson.mesh(eu, eu.objects.subunits, function(a, b) {return a !== b; }))
 	    .attr("d", path)
 	    .attr("fill", "none")
 	    .attr("stroke", "#252525")
 
+	   map.selectAll(".subunit-label")
+	       .data(topojson.feature(eu, eu.objects.subunits).features)
+	     .enter().append("text")
+	       .attr("class", function(d) { return "subunit-label " + d.id; })
+	       .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
+	       .attr("dy", ".35em")
+	       .text(function(d) { if(d.properties.name == 'Spain' || d.properties.name=='France' || d.properties.name=='Germany' || d.properties.name=='Poland'|| d.properties.name=='Italy') {return d.properties.name}; });
+
+	 cities = map.selectAll(".place-label")
+	    .data(topojson.feature(eu, eu.objects.places).features)
+	  .enter().append("g")
+	  .on("mouseover", function(d){d3.select(this).selectAll("*").style("opacity", 0.8); })
+	  .on("mouseout", function(d){d3.select(this).selectAll("*").style("opacity", 0); });
+
+	cities.append("rect")
+	 	.attr("width", function(d){len = d.properties.name.length; return (6*len+(len/2)*5+15)})//; return text.length*5})
+	 	.attr("height", 20)
+	 	.attr("fill", "white")
+	 	.style("opacity", 0)
+	 	.attr("x", function(d) { return (projection(d.geometry.coordinates)[0]) })
+	 	.attr("y", function(d) { return (projection(d.geometry.coordinates)[1] - 10) })
+
+	cities.append("text")
+	    .attr("class", "place-label")
+	    .attr("opacity", 0)
+	    .attr("transform", function(d) { return "translate(" + projection(d.geometry.coordinates) + ")"; })
+	    .attr("dy", ".35em")
+	    .attr('x', 5)
+	    .text(function(d) { return d.properties.name; })
+
+	cityDots = map.selectAll("circle")
+	    .data(topojson.feature(eu, eu.objects.places).features)
+	  	.enter().append("g").append("circle")
+		.attr("cx", function(d) { return (projection(d.geometry.coordinates)[0]) })
+	 	.attr("cy", function(d) { return (projection(d.geometry.coordinates)[1]) })
+	 	.style("fill", "grey")
+	 	.style("stroke", "#444")
+	 	.attr("r", 4)
 	});
 }
 

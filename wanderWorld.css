@@ -107,6 +107,11 @@ text {
   font-size: 17px;
 }
 
+text.small {
+  font-family: Palatino;
+  font-size: 10px;
+}
+
 text.question {
   font-family: Palatino;
   font-size: 20px;
@@ -128,7 +133,7 @@ text.helper {
   background: rgba(0, 0, 0, 0.8);
   color: #fff;
   border-radius: 2px;
-  position: absolute;
+  position: relative;
 }
 
 
@@ -205,6 +210,12 @@ text.helper {
 .place,
 .place-label {
   fill: #444;
+  font-family: Palatino;
+  font-size: 15px;
+  font-weight: bold;
+  margin-left: 25px;
+  background-color: white;
+  background-size: 100px;
 }
 
 .select{
@@ -265,6 +276,15 @@ text.helper {
   width: 940px;
   padding: 10px;
   z-index: 1;
+}
+
+
+.subunit-label {
+  fill: #444;
+  fill-opacity: .5;
+  font-size: 10px;
+  text-anchor: middle;
+  alignment-baseline: central;
 }
 
 #multDropDown {
