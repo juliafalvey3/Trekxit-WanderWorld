@@ -6,9 +6,9 @@ var mapW = 800,
 	mapX = 660,
 	mapY = 0;
 
-var projScale = 800,
-	projX = 300,
-	projY = 1250;
+var projScale = 900,
+	projX = 230,
+	projY = 1350;
 
 var otherW = width-mapW
 	otherH = 1000;
@@ -33,6 +33,11 @@ function makeMap(container){
 	    .attr('transform', 'translate('+mapX+','+mapY+')')
 	    .attr('fill', 'none');
 
+	var rect = container.append('circle')
+		.attr("r", 16)
+		.attr('cx', 1217)
+		.attr('cy', 610)
+		.attr('fill', '#3690c0')
 
 	var projection = d3.geo.mercator()
 		.scale(projScale)
@@ -40,9 +45,9 @@ function makeMap(container){
 
 	var path = d3.geo.path().projection(projection);
 
- 	var tip = d3.tip()
-			  .attr('class', 'd3-tip')
-			  .html(function(d){return d.properties.name})
+ 	// var tip = d3.tip()
+		// 	  .attr('class', 'd3-tip')
+		// 	  .html(function(d){return d.properties.name})
 
 	d3.json("eu.json", function(error, eu) {
 	  if (error) return console.error(error);
@@ -51,10 +56,10 @@ function makeMap(container){
 
   	var places = topojson.feature(eu, eu.objects.places);
 
-   	var tp = map.append("g")
- 		.data(subunits);
+ //   	var tp = map.append("g")
+ // 		.data(subunits);
 
-	tp.call(tip);
+	// tp.call(tip);
 
 	  map.append("g")
 	      .attr("class", "counties")
@@ -63,16 +68,51 @@ function makeMap(container){
 	    .enter().append("path")
 			.attr('fill', "#3690c0")
 	     .attr("d", path)
-	     .attr('id', function(d){return d.id})
-	  	.on("mouseover", tip.show)
-	    .on("mouseout", tip.hide);
+	     .attr('id', function(d){return d.id});
 
-		  map.append("path")
+
+	   map.append("path")
 	    .datum(topojson.mesh(eu, eu.objects.subunits, function(a, b) {return a !== b; }))
 	    .attr("d", path)
 	    .attr("fill", "none")
 	    .attr("stroke", "#252525")
 
+	   map.selectAll(".subunit-label")
+	       .data(topojson.feature(eu, eu.objects.subunits).features)
+	     .enter().append("text")
+	       .attr("class", function(d) { return "subunit-label " + d.id; })
+	       .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
+	       .attr("dy", ".35em")
+	       .text(function(d) { if(d.properties.name == 'Spain' || d.properties.name=='France' || d.properties.name=='Germany' || d.properties.name=='Poland'|| d.properties.name=='Italy') {return d.properties.name}; });
+
+	 cities = map.selectAll(".place-label")
+	    .data(topojson.feature(eu, eu.objects.places).features)
+	  .enter().append("g")
+	  .on("mouseover", function(d){d3.select(this).selectAll("*").style("opacity", 0.9); })
+	  .on("mouseout", function(d){d3.select(this).selectAll("rect").style("opacity", 0); d3.select(this).selectAll("text").style("opacity", 0); });
+
+	cities.append("rect")
+	 	.attr("width", function(d){len = d.properties.name.length; return (6*len+(len/2)*5+15)})//; return text.length*5})
+	 	.attr("height", 20)
+	 	.attr("fill", "white")
+	 	.style("opacity", 0)
+	 	.attr("x", function(d) { return (projection(d.geometry.coordinates)[0]) })
+	 	.attr("y", function(d) { return (projection(d.geometry.coordinates)[1] - 10) })
+
+	cities.append("text")
+	    .attr("class", "place-label")
+	    .attr("opacity", 0)
+	    .attr("transform", function(d) { return "translate(" + projection(d.geometry.coordinates) + ")"; })
+	    .attr("dy", ".35em")
+	    .attr('x', 5)
+	    .text(function(d) { return d.properties.name; })
+
+	cities.append("circle")
+		.attr("cx", function(d) { return (projection(d.geometry.coordinates)[0]) }) 
+	 	.attr("cy", function(d) { return (projection(d.geometry.coordinates)[1]) })
+	 	.style("fill", "grey")
+	 	.style("stroke", "#444")
+	 	.attr("r", 4)
 	});
 }
 
@@ -90,10 +130,9 @@ function makeOthers(container){
 		.attr('y', 0)
 		.attr("rx", 15) //rx and ry give the buttons rounded corners
         .attr("ry", 15)
-		.attr('width', 350)
+		.attr('width', 390)
 		.attr('height', 800)
 
-	claraWork(others)
 	juliaWork(others)
 
 }
@@ -108,7 +147,9 @@ function juliaWork(others){
 		.attr("x", 20)
 		.attr("y", 30)
 
-	var startCities = ["Select a Starting City", "Atlanta", "Boston", "New York", "Orlando"];
+    var startCities = ["Atlanta", "Boston", "New York", "Orlando"];
+    startCities.sort(function(x, y){ return d3.ascending(x, y);})
+    startCities.unshift("Select a Starting City")
 
 	var select = d3.select('body')
   		.append('select')
@@ -125,103 +166,9 @@ function juliaWork(others){
 		console.log(selectValue)
 	}
 
-	var destCities = ['Barcelona', 'Madrid', 'Dublin', 'London', 'Edinburgh', 'Berlin', 'Paris', 'Marseilles'];
-	//Sort List
-	destCities.sort(function(x, y){ return d3.ascending(x, y);})
-	//Get Length of List
-	var destLen = destCities.length;
-	//Subset half of list
-	var dest1 = destCities.slice(0,Math.ceil(destLen/2))
-	//Get other half
-	var dest2 = destCities.slice(Math.ceil(destLen/2), destLen)
-
-	var buttons = others.append('g')
-		.attr('id', 'checkboxes');
-
 	var defaultColor= "#ebebeb";
     var hoverColor= "darkgrey";
     var pressedColor= "grey";
-
-	var cityButtons = buttons.selectAll("g")
-		.data(dest1)
-		.enter().append('g')
-		.attr('id', function(d){return d})
-		.attr("stroke", '#252525')
-		.on("click",function(d,i) {
-				if (d3.select(this).select("rect").attr("fill") != pressedColor) {
-                    d3.select(this).select("rect").attr("fill", pressedColor);
-                    console.log(d)
-             	}
-				else {
-					d3.select(this).select("rect").attr("fill", defaultColor)
-					console.log("removing "+d)
-			}})
-        .on("mouseover", function() {
-                if (d3.select(this).select("rect").attr("fill") != pressedColor) {
-                    d3.select(this).select("rect").attr("fill", hoverColor);
-             	}})
-        .on("mouseout", function() {
-                if (d3.select(this).select("rect").attr("fill") != pressedColor) {
-                    d3.select(this).select("rect").attr("fill",defaultColor);
-                }})
-	
-	 cityButtons.append("rect")
-        .attr("width", 12)
-        .attr("height", 12)
-        .attr("x", 30)
-        .attr("y", function(d,i){return (i*30 + 120)})
-        .attr("rx", 3) //rx and ry give the buttons rounded corners
-        .attr("ry", 3)
-        .attr("fill",defaultColor)
-
-	cityButtons.append('text')
-		.attr("class", "text")
-		.attr('stroke', 'none')
-		.attr('y', function(d,i){return (i*30 + 131)})
-		.attr('x', 50)
-		.text(function(d){return d});
-
-	var buttons2 = others.append('g')
-		.attr('id', 'checkboxes');
-
-	var cityButtons2 = buttons2.selectAll("g")
-		.data(dest2)
-		.enter().append('g')
-		.attr('id', function(d){return d})
-		.attr("stroke", '#252525')
-		.on("click",function(d,i) {
-				if (d3.select(this).select("rect").attr("fill") != pressedColor) {
-                    d3.select(this).select("rect").attr("fill", pressedColor);
-                    console.log(d)
-             	}
-				else {
-					d3.select(this).select("rect").attr("fill", defaultColor)
-					console.log("removing "+d)
-			}})
-        .on("mouseover", function() {
-                if (d3.select(this).select("rect").attr("fill") != pressedColor) {
-                    d3.select(this).select("rect").attr("fill", hoverColor);
-             	}})
-        .on("mouseout", function() {
-                if (d3.select(this).select("rect").attr("fill") != pressedColor) {
-                    d3.select(this).select("rect").attr("fill",defaultColor);
-                }})
-
-    cityButtons2.append("rect")
-        .attr("width", 12)
-        .attr("height", 12)
-        .attr("x", 150)
-        .attr("y", function(d,i){return (i*30 + 120)})
-        .attr("rx", 3) //rx and ry give the buttons rounded corners
-        .attr("ry", 3)
-        .attr("fill",defaultColor)
-
-	cityButtons2.append('text')
-		.attr("class", "text")
-		.attr('stroke', 'none')
-		.attr('y', function(d,i){return (i*30 + 131)})
-		.attr('x', 170)
-		.text(function(d){return d});
 
 	destinationText = others.append("text");
 
@@ -230,19 +177,64 @@ function juliaWork(others){
 		.attr("x", 20)
 		.attr("y", 100)
 
-	connectionText = others.append("text");
+	helpDestinationText = others.append("text");
 
+    helpDestinationText.text("Select up to 5 cities.")
+		.attr("class", "helper")
+		.attr("x", 20)
+		.attr("y", 115)
+
+	dateText = others.append("text");
+	dateText.text("What range of dates could you travel?")
+		.attr("class", "question")
+		.attr("x", 20)
+		.attr("y", 260);
+
+	helpdateText = others.append("text");
+	helpdateText.text("Not the spefic days you want to travel but a flexible time frame!")
+		.attr("class", "helper")
+		.attr("x",20)
+		.attr("y", 275);
+
+	minDayText = others.append("text");
+	minDayText.html("Min days in each location?")
+		.attr("class", "question")
+		.attr("x", 20)
+		.attr("y", 375)
+	// list = 10000
+
+	helpMinDayText = others.append("text");
+	helpMinDayText.text("What is the minimum number of days you want to stay in each city?")
+		.attr("class", "helper")
+		.attr("x", 20)
+		.attr("y", 390);
+
+	numDaysText = others.append("text");
+	numDaysText.html("Total days you want to travel?")
+       .attr("class", "question")
+       .attr("x", 20)
+       .attr("y", 450);
+
+    helpnumDaysText = others.append("text");
+    helpnumDaysText.text("Number of days to spend traveling")
+    	.attr("class", "helper")
+    	.attr("x", 20)
+    	.attr("y", 465);
+
+
+	connectionText = others.append("text");
 	connectionText.text("How many connections?")
 		.attr("class", "question")
 		.attr("x", 20)
-		.attr("y", 500)
+		.attr("y", 525)
 
-	minDayText = others.append("text");
 
-	minDayText.html("Days in each location?")
+	budgetText = others.append("text");
+	budgetText.text("What is your max budget? (USD)")
 		.attr("class", "question")
 		.attr("x", 20)
-		.attr("y", 260)
+		.attr("y", 640);
+
 
 	buttonText = ["Find My Optimal Trips!"]
 	var optimize = others.append('g')
@@ -272,7 +264,7 @@ function juliaWork(others){
         .on("mouseout", function() {
                 if (d3.select(this).select("rect").attr("fill") != pressedColor) {
                     d3.select(this).select("rect").attr("fill",defaultColor)}});
-	
+
 	optimize.append("rect")
 			.attr("width", 275)
 			.attr("height", 30)
@@ -281,7 +273,7 @@ function juliaWork(others){
 			.attr("rx", 3) //rx and ry give the buttons rounded corners
 			.attr("ry", 3)
 			.attr("fill", defaultColor);
-		
+
 	optimize.append('text')
 			.attr('class', 'text')
 			.attr("stroke", "none")
@@ -291,87 +283,82 @@ function juliaWork(others){
 
 }
 
-function claraWork(others){
-	
-	list = 10000
-	dateText = others.append("text");
 
-	dateText.text("What dates do you want to travel?")
-		.attr("class", "question")
-		.attr("x", 20)
-		.attr("y", 330);
-
-	budgetText = others.append("text");
-
-	budgetText.text("What is your budget range?")
-		.attr("class", "question")
-		.attr("x", 20)
-		.attr("y", 600)
-
-	var drag = d3.behavior.drag()
-	    .origin(function() { var t = d3.select(this); return {x: t.attr("x"), y: t.attr("y")};})
-	    .on("drag", dragmove);
-
-	function dragmove(d) {
-	  var x = d3.event.x;
-	  var x1 = function(d){if(d >=300){return 300} else {return d}};
-	  d3.select("#handle").attr("transform", "translate(" + x + "," + 0 + ")");
-	}
-
-	var slider = others.append("g")
-    	.attr("class", "slider")
-    	.attr("transform", "translate(" + 15 + "," + 625 + ")");
-   	slider.append("line")
-   	    .attr("class", "track")
-   	    .attr("x1", 0)
-   	    .attr("x2", 300)
-   	  .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
-   	    .attr("class", "track-inset")
-   	  .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
-   	    .attr("class", "track-overlay")
-   	    .call(drag);
-   	slider.insert("g", ".track-overlay")
-   	    .attr("class", "ticks")
-   	    .attr("transform", "translate(0," + 18 + ")")
-   	  .selectAll("text")
-   	  .data(list)
-   	  .enter().append("text")
-   	    .attr("x", function(d,i){return 20*i})
-   	    .attr("text-anchor", "middle")
-   	    .text(function(d) { return d; });
-   	var handle = slider.insert("circle", ".track-overlay")
-   	    .attr("class", "handle")
-   	    .attr("id", "handle")
-   	    .attr("r", 6)
-   	    .call(drag);
-}
-
-var resultsData = [{'Trip1': '$800'}]
+var resultsData = [{name: 'Trip1', value: 800}, {name: 'Trip2', value: 1000}];
 
 function showboxes(others){
 	
-	others.append('rect')
+
+	// load the data
+	d3.csv("final_result_Sample.csv", function(data) {
+    console.log(data[0]);
+
+    
+    var flights = null;
+    
+        flights = d3.nest()
+       .key(function(d) { return d['TripID']})
+       .key(function(d) { return d['Seq']})
+       .entries(data);
+       console.log(flights[0]);
+
+       others.append('rect')
+
 		.attr('id', 'resultsBox')
 		.attr('fill', 'white')
 		.attr('stroke', 'grey')
-		.attr('x', 370)
+		.attr('x', 390)
 		.attr('y', 0)
 		.attr("rx", 15) //rx and ry give the buttons rounded corners
         .attr("ry", 15)
 		.attr('width', 238)
 		.attr('height', 400)
 
+	others.append('rect')
+		.attr('id', 'resultsBox2')
+		.attr('fill', 'white')
+		.attr('stroke', 'grey')
+		.attr('x', 390)
+		.attr('y', 400)
+		.attr("rx", 15) //rx and ry give the buttons rounded corners
+        .attr("ry", 15)
+		.attr('width', 230)
+		.attr('height', 400)
+
+		console.log(typeof(resultsData[0]));
+		console.log(resultsData[0].value);
+
 	var results = others.append('g')
 		.attr('id', 'resultsBox').selectAll("g")
-		.data(resultsData)
+		.data(flights)
 		.enter().append('g')
 		.attr("stroke", '#252525')
 
 	results.append('text')
 		.attr("class", "text")
-		.attr('x', 380)
-		.attr('y', function(d,i){return i*20 + 30})
+		.attr('x', 530)
+		.attr('y', function(d,i){return i*20 + 61})
 		.attr('stroke', 'none')
-		.text(function(d){return d.value})
+		.text(function(d){return d.values[0].values[0]['Price']});
+
+	flightText = results.append('text');
+	flightText.text("Best Trip Options!")
+		.attr("class", "resultHeader")
+		.attr("x", 400)
+		.attr("y", 40)
+	option1Text = results.append('text');
+	option1Text.text("Option 1 : Price")
+		.attr("class", "resulttext")
+		.attr("x", 400)
+		.attr("y", 60)
+	option2Text = results.append('text');
+	option2Text.text("Option 2 : Price")
+		.attr("class", "resulttext")
+		.attr("x", 400)
+		.attr("y", 80)
+
+
+      });
 
 }
+
