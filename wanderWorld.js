@@ -6,7 +6,7 @@ var mapW = 800,
 	mapX = 660,
 	mapY = 0;
 
-var projScale = 700,
+var projScale = 800,
 	projX = 300,
 	projY = 1250;
 
@@ -293,7 +293,7 @@ function juliaWork(others){
 
 function claraWork(others){
 	
-
+	list = 10000
 	dateText = others.append("text");
 
 	dateText.text("What dates do you want to travel?")
@@ -308,11 +308,48 @@ function claraWork(others){
 		.attr("x", 20)
 		.attr("y", 600)
 
+	var drag = d3.behavior.drag()
+	    .origin(function() { var t = d3.select(this); return {x: t.attr("x"), y: t.attr("y")};})
+	    .on("drag", dragmove);
+
+	function dragmove(d) {
+	  var x = d3.event.x;
+	  var x1 = function(d){if(d >=300){return 300} else {return d}};
+	  d3.select("#handle").attr("transform", "translate(" + x + "," + 0 + ")");
+	}
+
+	var slider = others.append("g")
+    	.attr("class", "slider")
+    	.attr("transform", "translate(" + 15 + "," + 625 + ")");
+   	slider.append("line")
+   	    .attr("class", "track")
+   	    .attr("x1", 0)
+   	    .attr("x2", 300)
+   	  .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
+   	    .attr("class", "track-inset")
+   	  .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
+   	    .attr("class", "track-overlay")
+   	    .call(drag);
+   	slider.insert("g", ".track-overlay")
+   	    .attr("class", "ticks")
+   	    .attr("transform", "translate(0," + 18 + ")")
+   	  .selectAll("text")
+   	  .data(list)
+   	  .enter().append("text")
+   	    .attr("x", function(d,i){return 20*i})
+   	    .attr("text-anchor", "middle")
+   	    .text(function(d) { return d; });
+   	var handle = slider.insert("circle", ".track-overlay")
+   	    .attr("class", "handle")
+   	    .attr("id", "handle")
+   	    .attr("r", 6)
+   	    .call(drag);
 }
 
 var resultsData = [{'Trip1': '$800'}]
 
 function showboxes(others){
+	
 	others.append('rect')
 		.attr('id', 'resultsBox')
 		.attr('fill', 'white')
@@ -335,6 +372,6 @@ function showboxes(others){
 		.attr('x', 380)
 		.attr('y', function(d,i){return i*20 + 30})
 		.attr('stroke', 'none')
-		.text(function(d){return d})
+		.text(function(d){return d.value})
 
 }
