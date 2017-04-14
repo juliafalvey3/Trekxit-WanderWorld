@@ -358,7 +358,7 @@ function showboxes(others){
 		.attr('y', 0)
 		.attr("rx", 15) //rx and ry give the buttons rounded corners
         .attr("ry", 15)
-		.attr('width', 230)
+		.attr('width', 238)
 		.attr('height', 400)
 
 	var results = others.append('g')
