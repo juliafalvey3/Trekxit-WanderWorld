@@ -1,0 +1,163 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta content="utf-8" http-equiv="encoding">
+
+        <title>D3</title>
+        <!-- <link rel="stylesheet" type="text/css" href="mystyle1.css" /> -->
+
+        <style>
+
+        	body {
+        		color: #000;
+        	}
+
+			.axis {
+			  font: 10px sans-serif;
+			}
+
+			.axis path,
+			.axis line {
+			  fill: none;
+			  stroke: #000;
+			  shape-rendering: crispEdges;
+			}
+
+			.bar {
+				fill: steelblue;
+			}
+
+			.bar:hover {
+				fill: brown;
+			}
+
+		</style>
+
+        <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
+     </head>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <body>
+        <div id="chart"></div>
+        <div align ="center">
+			From : <input type="date" name="field1" id="field1" />
+			To :   <input type="date" name="field2" id="field2" /><br /><br />
+			<input type="button" onclick="render(true)" value="Submit" />
+		</div>
+
+        <script>
+
+        	var myData = [
+        		{ value: 100, date: '2016-01-01'},
+				{ value: 125, date: '2016-02-02'},
+				{ value: 320, date: '2016-03-03'},
+  				{ value: 440, date: '2016-04-04'}
+  			];
+
+  			var	parseDate = d3.time.format("%Y-%m-%d").parse;
+
+  			var margin  = { top: 20, right: 0, bottom: 80, left: 40 };
+  			var width 	= 500 - margin.left - margin.right;
+    		var height 	= 300 - margin.top - margin.bottom;
+
+            var xScale 	= d3.scale.ordinal().rangeRoundBands([0, width], .1);
+            var yScale 	= d3.scale.linear().range([height, 0]);
+            var hAxis 	= d3.svg.axis().scale(xScale).orient('bottom').tickFormat(d3.time.format("%Y-%m-%d"));
+            var vAxis 	= d3.svg.axis().scale(yScale).orient('left');
+            var tooltip = d3.select('body').append('div')
+			                .style('position', 'absolute')
+			                .style('background', '#f4f4f4')
+			                .style('padding', '5 15px')
+			                .style('border', '1px #333 solid')
+			                .style('border-radius', '5px')
+			                .style('opacity', 'o');
+
+			myData.forEach(function(d) {
+				d.date 	= parseDate(d.date);
+				d.value = +d.value;
+			});
+
+	        function getDates() {
+	        	return [document.getElementById('field1').value, document.getElementById('field2').value];
+	        }
+
+			function render(filterByDates) {
+
+				d3.select('svg').remove();
+
+				if(filterByDates) {
+					var date1 = parseDate(document.getElementById('field1').value);
+					var date2 = parseDate(document.getElementById('field2').value);
+
+					myData = myData.filter(function(d) {
+						return d.date >= date1 && d.date <= date2;
+					});
+				}
+
+				xScale.domain(myData.map(function(d) { 
+					return d.date; 
+				}));
+				
+				yScale.domain([0, d3.max(myData, function (d) { return d.value; })]);
+
+				var svg = d3.select('#chart').append('svg')
+            				.attr("width", width + margin.left + margin.right)
+    						.attr("height", height + margin.top + margin.bottom)
+            				.append("g")
+    						.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	            
+	            svg
+	                .append('g')
+				    .attr("class", "x axis")
+	            	.attr("transform", "translate(0," + height + ")")
+	                .call(hAxis)
+	                .selectAll("text")
+					.style("text-anchor", "end")
+					.attr("dx", "-.8em")
+					.attr("dy", "-.55em")
+					.attr("transform", "rotate(-90)" );
+
+	            svg
+	            	.append('g')
+	                .attr("class", "y axis")
+	                // .attr('transform', 'translate(35,' + (height - 25) + ')')
+	                .call(vAxis)
+
+				svg
+					.selectAll(".bar")
+					.data(myData)
+					.enter().append("rect")
+					.attr("class", "bar")
+					.style("fill", "steelblue")
+					.attr("x", function(d) { 
+						return xScale(d.date); 
+					})
+					.attr("width", xScale.rangeBand())
+					.attr("y", function(d) { 
+						return yScale(d.value); 
+					})
+					.attr("height", function(d) { 
+						return height - yScale(d.value); 
+					})
+					.on('mouseover', function (d) {
+	                    tooltip.transition()
+	                        .style('opacity', 1)
+
+	                    tooltip.html(d.value)
+	                        .style('left', (d3.event.pageX) + 'px')
+	                        .style('top', (d3.event.pagey) + 'px')
+	                    d3.select(this).style('opacity', 0.5)
+	                })
+	                .on('mouseout', function (d) {
+	                    tooltip.transition()
+	                        .style('opacity', 0)
+	                    d3.select(this).style('opacity', 1)
+	                });
+			}
+
+            render(false);
+
+        </script>
+		
+	</body>
+<html>

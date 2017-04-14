@@ -90,10 +90,10 @@ function makeOthers(container){
 		.attr('y', 0)
 		.attr("rx", 15) //rx and ry give the buttons rounded corners
         .attr("ry", 15)
-		.attr('width', 350)
+		.attr('width', 390)
 		.attr('height', 800)
 
-	claraWork(others)
+	// claraWork(others)
 	juliaWork(others)
 
 }
@@ -109,6 +109,9 @@ function juliaWork(others){
 		.attr("y", 30)
 
 	var startCities = ["Select a Starting City", "Atlanta", "Boston", "New York", "Orlando"];
+	// var startCities = ["Atlanta", "Boston", "New York", "Orlando"];
+	// 	startCities.sort(function(x, y){ return d3.ascending(x, y);})
+	// 	startCities.unshift(“Select a Starting City”)
 
 	var select = d3.select('body')
   		.append('select')
@@ -169,7 +172,7 @@ function juliaWork(others){
         .attr("width", 12)
         .attr("height", 12)
         .attr("x", 30)
-        .attr("y", function(d,i){return (i*30 + 120)})
+        .attr("y", function(d,i){return (i*30 + 125)})
         .attr("rx", 3) //rx and ry give the buttons rounded corners
         .attr("ry", 3)
         .attr("fill",defaultColor)
@@ -177,7 +180,7 @@ function juliaWork(others){
 	cityButtons.append('text')
 		.attr("class", "text")
 		.attr('stroke', 'none')
-		.attr('y', function(d,i){return (i*30 + 131)})
+		.attr('y', function(d,i){return (i*30 + 136)})
 		.attr('x', 50)
 		.text(function(d){return d});
 
@@ -211,7 +214,7 @@ function juliaWork(others){
         .attr("width", 12)
         .attr("height", 12)
         .attr("x", 150)
-        .attr("y", function(d,i){return (i*30 + 120)})
+        .attr("y", function(d,i){return (i*30 + 125)})
         .attr("rx", 3) //rx and ry give the buttons rounded corners
         .attr("ry", 3)
         .attr("fill",defaultColor)
@@ -219,7 +222,7 @@ function juliaWork(others){
 	cityButtons2.append('text')
 		.attr("class", "text")
 		.attr('stroke', 'none')
-		.attr('y', function(d,i){return (i*30 + 131)})
+		.attr('y', function(d,i){return (i*30 + 136)})
 		.attr('x', 170)
 		.text(function(d){return d});
 
@@ -230,19 +233,63 @@ function juliaWork(others){
 		.attr("x", 20)
 		.attr("y", 100)
 
-	connectionText = others.append("text");
+	helpDestinationText = others.append("text");
+	helpDestinationText.text("Select up to 5 cities.")
+		.attr("class", "helper")
+		.attr("x", 20)
+		.attr("y", 115)
 
+	dateText = others.append("text");
+	dateText.text("What range of dates could you travel?")
+		.attr("class", "question")
+		.attr("x", 20)
+		.attr("y", 260);
+	
+	helpdateText = others.append("text");
+	helpdateText.text("Not the spefic days you want to travel but a flexible time frame!")
+		.attr("class", "helper")
+		.attr("x",20)
+		.attr("y", 275);
+
+	minDayText = others.append("text");
+	minDayText.html("Min days in each location?")
+		.attr("class", "question")
+		.attr("x", 20)
+		.attr("y", 375)
+	// list = 10000
+
+	helpMinDayText = others.append("text");
+	helpMinDayText.text("What is the minimum number of days you want to stay in each city?")
+		.attr("class", "helper")
+		.attr("x", 20)
+		.attr("y", 390);
+
+	numDaysText = others.append("text");
+	numDaysText.html("Total days you want to travel?")
+       .attr("class", "question")
+       .attr("x", 20)
+       .attr("y", 450);
+
+    helpnumDaysText = others.append("text");
+    helpnumDaysText.text("Number of days to spend traveling")
+    	.attr("class", "helper")
+    	.attr("x", 20)
+    	.attr("y", 465);
+
+
+	connectionText = others.append("text");
 	connectionText.text("How many connections?")
 		.attr("class", "question")
 		.attr("x", 20)
-		.attr("y", 500)
+		.attr("y", 525)
 
-	minDayText = others.append("text");
 
-	minDayText.html("Days in each location?")
+	budgetText = others.append("text");
+	budgetText.text("What is your max budget? (USD)")
 		.attr("class", "question")
 		.attr("x", 20)
-		.attr("y", 260)
+		.attr("y", 640);
+	
 
 	buttonText = ["Find My Optimal Trips!"]
 	var optimize = others.append('g')
@@ -291,60 +338,6 @@ function juliaWork(others){
 
 }
 
-function claraWork(others){
-	
-	list = 10000
-	dateText = others.append("text");
-
-	dateText.text("What dates do you want to travel?")
-		.attr("class", "question")
-		.attr("x", 20)
-		.attr("y", 330);
-
-	budgetText = others.append("text");
-
-	budgetText.text("What is your budget range?")
-		.attr("class", "question")
-		.attr("x", 20)
-		.attr("y", 600)
-
-	var drag = d3.behavior.drag()
-	    .origin(function() { var t = d3.select(this); return {x: t.attr("x"), y: t.attr("y")};})
-	    .on("drag", dragmove);
-
-	function dragmove(d) {
-	  var x = d3.event.x;
-	  var x1 = function(d){if(d >=300){return 300} else {return d}};
-	  d3.select("#handle").attr("transform", "translate(" + x + "," + 0 + ")");
-	}
-
-	var slider = others.append("g")
-    	.attr("class", "slider")
-    	.attr("transform", "translate(" + 15 + "," + 625 + ")");
-   	slider.append("line")
-   	    .attr("class", "track")
-   	    .attr("x1", 0)
-   	    .attr("x2", 300)
-   	  .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
-   	    .attr("class", "track-inset")
-   	  .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
-   	    .attr("class", "track-overlay")
-   	    .call(drag);
-   	slider.insert("g", ".track-overlay")
-   	    .attr("class", "ticks")
-   	    .attr("transform", "translate(0," + 18 + ")")
-   	  .selectAll("text")
-   	  .data(list)
-   	  .enter().append("text")
-   	    .attr("x", function(d,i){return 20*i})
-   	    .attr("text-anchor", "middle")
-   	    .text(function(d) { return d; });
-   	var handle = slider.insert("circle", ".track-overlay")
-   	    .attr("class", "handle")
-   	    .attr("id", "handle")
-   	    .attr("r", 6)
-   	    .call(drag);
-}
 
 var resultsData = [{'Trip1': '$800'}]
 
