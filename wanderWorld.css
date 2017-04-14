@@ -74,7 +74,7 @@ div.otherText p {
   width:1600px;
   height:400px;
   border: 1px solid black;
-  height: 200px; 
+  height: 200px;
   width: 400px;
 }
 
@@ -116,6 +116,10 @@ text.question {
   font-family: Palatino;
   font-size: 20px;
   font-weight:bold;
+}
+text.helper {
+  font-family:Palatino;
+  font-size:12px;
 }
 
 .counties {
@@ -222,9 +226,9 @@ text.question {
   font-size: 17px;
 }
 
-#direct-controls {
+.datePick {
   position: absolute;
-  margin-top: -305px;
+  margin-top: -550px;
   margin-left: 20px;
   font-family: Palatino;
   font-size: 17px;
@@ -232,10 +236,29 @@ text.question {
   padding: 10px;
   z-index: 1;
 }
-
 #minDays {
   position: absolute;
-  margin-top: -540px;
+  margin-top: -420px;
+  margin-left: 20px;
+  font-family: Palatino;
+  font-size: 17px;
+  width: 940px;
+  padding: 10px;
+  z-index: 1;
+}
+#numDays {
+ position: absolute;
+ margin-top: -345px;
+ margin-left: 20px;
+ font-family: Palatino;
+ font-size: 17px;
+ width: 940px;
+ padding: 10px;
+ z-index: 1;
+}
+#direct-controls {
+  position: absolute;
+  margin-top: -265px;
   margin-left: 20px;
   font-family: Palatino;
   font-size: 17px;
@@ -244,9 +267,9 @@ text.question {
   z-index: 1;
 }
 
-#datePick {
+#budget {
   position: absolute;
-  margin-top: -470px;
+  margin-top: -150px;
   margin-left: 20px;
   font-family: Palatino;
   font-size: 17px;
@@ -254,6 +277,7 @@ text.question {
   padding: 10px;
   z-index: 1;
 }
+
 
 .subunit-label {
   fill: #444;
@@ -262,3 +286,16 @@ text.question {
   text-anchor: middle;
   alignment-baseline: central;
 }
+
+#multDropDown {
+  position: absolute;
+  margin-top: -690px;
+  margin-left: 20px;
+  font-family: Palatino;
+  font-size: 17px;
+  width: 200px;
+  height: 100px;
+  padding: 10px;
+  z-index: 1;
+}
+
