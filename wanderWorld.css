@@ -164,6 +164,40 @@ text.question {
   white-space:nowrap;
 }
 
+.ticks {
+  font: 10px sans-serif;
+}
+
+.track,
+.track-inset,
+.track-overlay {
+  stroke-linecap: round;
+}
+
+.track {
+  stroke: #000;
+  stroke-opacity: 0.3;
+  stroke-width: 10px;
+}
+
+.track-inset {
+  stroke: #ddd;
+  stroke-width: 8px;
+}
+
+.track-overlay {
+  pointer-events: stroke;
+  stroke-width: 50px;
+  stroke: transparent;
+  cursor: crosshair;
+}
+
+.handle {
+  fill: #fff;
+  stroke: #000;
+  stroke-opacity: 0.5;
+  stroke-width: 1.25px;
+}
 .place,
 .place-label {
   fill: #444;
@@ -191,6 +225,17 @@ text.question {
 #minDays {
   position: absolute;
   margin-top: -540px;
+  margin-left: 20px;
+  font-family: Palatino;
+  font-size: 17px;
+  width: 940px;
+  padding: 10px;
+  z-index: 1;
+}
+
+#datePick {
+  position: absolute;
+  margin-top: -470px;
   margin-left: 20px;
   font-family: Palatino;
   font-size: 17px;
