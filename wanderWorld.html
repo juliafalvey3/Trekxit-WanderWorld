@@ -4,7 +4,9 @@
 <script src="./lib/d3.v3.js"></script>
 <script src="./lib/topojson.v1.min.js"></script>
 <script src="./lib/d3.tip.v0.6.3.js"></script>
+<script src="./lib/scroller.js"></script>
 <script src="./lib/d3CheckBox.js"></script>
+<script src="https://d3js.org/d3-drag.v1.min.js"></script>
 <link rel="stylesheet" href="./lib/font-awesome.css">
 <script src="wanderWorld.js"></script>
   <link href="wanderWorld.css" rel="stylesheet">
@@ -33,7 +35,10 @@
       </div>
       <form name="myform" id="minDays" required> <!-- onSubmit="return handleClick()"  -->
             <input type="text" placeholder="e.g. 3">
-        </form>
+      </form>
+      <form id = "datePick">
+        <p> From: <input type="date">  </br> </br>     To:  <input type="date"> </p>
+      </form>
     </div>
 </div>
 <a class="up-arrow" href="" title="up-arrow" id="up-arrow"></a>
