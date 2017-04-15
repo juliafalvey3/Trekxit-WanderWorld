@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 TripID,Seq,Origin_ID,Dest_ID,Price,Date1,Date2,Total_Price,Origin_Name,Dest_Name
 0,0,ATL,PMI,563.0,2017-05-02,2017-05-03,1255.0,Atlanta,Palma
 0,1,PMI,CDG,63.0,2017-05-10,2017-05-11,1255.0,Palma,Paris
@@ -15,3 +16,22 @@ TripID,Seq,Origin_ID,Dest_ID,Price,Date1,Date2,Total_Price,Origin_Name,Dest_Name
 3,1,CDG,PMI,87.0,2017-05-22,2017-05-23,3660.0,Paris,Palma
 3,2,PMI,LON,27.0,2017-05-25,2017-05-26,3660.0,Palma,London
 3,3,LON,ATL,569.0,2017-05-30,2017-05-31,3660.0,London,Atlanta
+=======
+TripID,Seq,Origin_ID,Dest_ID,Date1,Date2,Price,Total_Price,Origin_Name,Dest_Name
+0,0,ATL,PMI,5/2/17,5/3/17,563,1255,Atlanta,Palma
+0,1,PMI,CDG,5/10/17,5/11/17,63,1255,Palma,Paris
+0,2,CDG,LON,5/13/17,5/14/17,53,1255,Paris,London
+0,3,LON,ATL,5/16/17,5/17/17,576,1255,London,Atlanta
+1,0,ATL,PMI,5/1/17,5/2/17,582,2106,Atlanta,Palma
+1,1,PMI,CDG,5/4/17,5/5/17,55,2106,Palma,Paris
+1,2,CDG,LON,5/12/17,5/13/17,49,2106,Paris,London
+1,3,LON,ATL,5/15/17,5/16/17,1420,2106,London,Atlanta
+2,0,ATL,LON,5/8/17,5/9/17,445,2758,Atlanta,London
+2,1,LON,CDG,5/13/17,5/14/17,32,2758,London,Paris
+2,2,CDG,PMI,5/16/17,5/17/17,81,2758,Paris,Palma
+2,3,PMI,ATL,5/22/17,5/23/17,2200,2758,Palma,Atlanta
+3,0,ATL,CDG,5/16/17,5/17/17,2977,3660,Atlanta,Paris
+3,1,CDG,PMI,5/22/17,5/23/17,87,3660,Paris,Palma
+3,2,PMI,LON,5/25/17,5/26/17,27,3660,Palma,London
+3,3,LON,ATL,5/30/17,5/31/17,569,3660,London,Atlanta
+>>>>>>> refs/remotes/origin/master
