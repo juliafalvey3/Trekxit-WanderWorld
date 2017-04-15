@@ -118,9 +118,8 @@ if __name__ == "__main__":
             
 	#print outputDict
 	outputDF = pd.DataFrame.from_dict(outputDict)
-	outputDF = outputDF[['TripID','Seq','Origin_ID','Dest_ID','Price','Date1','Date2','Total_Price','Origin_Name','Dest_Name']]
 	#print outputDF
     
-	outputDF.to_csv('niceOutput.csv',index=False) 
+	outputDF.to_csv('niceOutput.csv') 
 
 
