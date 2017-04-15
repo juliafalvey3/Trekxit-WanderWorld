@@ -304,19 +304,36 @@ text.resultHeader {
 }
 
 .selected{
-  .fill("grey")
+  fill("grey")
 }
 
-.book{
-  position: absolute;
-  margin-left:400px;
-  margin-top: -390px;
-  width: 100px;
-  height: 40px;
-  opacity: 0;
-  text-decoration: none;
-  cursor: pointer;
-  overflow: hidden;
-  white-space:nowrap;
-  font: 12px;
+table.GeneratedTable {
+width:100%;
+background-color:#FFFFFF;
+border-collapse:collapse;border-width:1px;
+border-color:#336600;
+border-style:groove;
+color:#330000;
+}
+
+table.GeneratedTable td, table.GeneratedTable th {
+border-width:1px;
+border-color:#336600;
+border-style:groove;
+padding:3px;
+}
+
+table.GeneratedTable thead {
+background-color:#0066FF;
+}
+
+.node {
+    fill: #ccc;
+    stroke: #fff;
+    stroke-width: 2px;
+}
+
+.link {
+    stroke: #777;
+    stroke-width: 2px;
 }
