@@ -289,7 +289,9 @@ function juliaWork(others){
 					console.log("removing "+d)
 					d3.select(this).select("text").text(buttonText)
 					d3.select(this).select("text").attr("x", 80)
+					d3.select("#book").style("opacity",0)
 					d3.selectAll("#resultsBox").remove()
+					d3.selectAll("#resultsBox2").remove()
 
 			}})
         .on("mouseover", function() {
@@ -319,20 +321,17 @@ function juliaWork(others){
 }
 
 
-var resultsData = [{name: 'Trip1', value: 800}, {name: 'Trip2', value: 1000}];
-
 function showboxes(others){
-
 
 	// load the data
 	d3.csv("./optimization/niceOutput.csv", function(data) {
     console.log(data[0]);    
     var flights = null;
         flights = d3.nest()
-       .key(function(d) { return d['TripID']})
-       .key(function(d) { return d['Seq']})
+       .key(function(d) {return d['TripID']})
+       .key(function(d) {return d['Seq']})
        .entries(data);
-       console.log(flights[1]);
+
 
     others.append('rect')
 		.attr('id', 'resultsBox')
@@ -356,9 +355,6 @@ function showboxes(others){
 		.attr('width', 329)
 		.attr('height', 400)
 
-		console.log(typeof(resultsData[0]));
-		console.log(resultsData[1].value);
-
 	var results = others.append('g')
 		.attr('id', 'resultsBox').selectAll("g")
 		.data(flights)
@@ -367,15 +363,43 @@ function showboxes(others){
 	results.append('text')
 		.attr("class", "text")
 		.attr('x', 530)
-		.attr('y', function(d,i){return i*20 + 72})
+		.attr('y', function(d,i){return i*130 + 70})
 		.attr('stroke', 'none')
 		.text(function(d){
 
-			return d.values[0].values[0]['Total Price']
+			
+				d.Price = []
+				d.Origin = []
+				for( i = 0; i < d.values.length; i+= 1){
+					d.Price.push(d.values[i].values[0].Price)
+					d.Origin.push(d.values[i].values[0].Origin)
+				}
+
+		return d.values[0].values[0]['Total Price']
+	});
+	
+	var options1Cities = others.append('g')
+		.attr('id', resultsBox).selectAll('g')
+		.data(flights[0].Origin)
+		.enter().append('g')
+	cities = ""
+	options1Cities.append("text")
+		.attr("class", "text")
+		.attr("x", 400)
+		.attr("y", 100)
+		.attr("stroke", "none")
+		.text(function (d,i){
+				if (i > 0){
+					cities += " -> " + d
+				}
+				else {
+					cities += d
+				}
+				return cities
 		});
 
 	flightText = results.append('text');
-	flightText.text("Best Trip Options!")
+	flightText.text("Wander to...")
 		.attr("class", "resultHeader")
 		.attr("x", 400)
 		.attr("y", 40)
@@ -400,7 +424,7 @@ function showboxes(others){
 	option2Text = results.append('text');
 	option2Text.text("Option 2 : Price")
 		.attr("x", 400)
-		.attr("y", 90)
+		.attr("y", 200)
 		.on("mouseover", function() {
             if (d3.select(this).attr("fill") != "grey") {
                 d3.select(this).attr("fill", "blue"); }})
@@ -409,7 +433,13 @@ function showboxes(others){
                 d3.select(this).attr("fill","black")}})
 		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d, others)}
                 else {d3.select(this).attr("fill", "black"), console.log("remove")}});
-})}
+
+
+	});
+}
+
+
+
 
 function clickResult(d, others){
 	node_link(d, others)
