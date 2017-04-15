@@ -375,6 +375,9 @@ function showboxes(others){
 }
 
 function clickResult(d){
-	console.log(d)
+	node_link(d)
 }
 
+function node_link(d){
+	
+}
