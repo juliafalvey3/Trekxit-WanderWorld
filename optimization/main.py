@@ -116,9 +116,9 @@ if __name__ == "__main__":
 			outputDict['Date2'].append(arriDate_String)
 			outputDict['Total_Price'].append(totalPrice) 
             
-	print outputDict
+	#print outputDict
 	outputDF = pd.DataFrame.from_dict(outputDict)
-	print outputDF
+	#print outputDF
     
 	outputDF.to_csv('niceOutput.csv') 
 
