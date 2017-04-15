@@ -35,7 +35,7 @@ function makeMap(container){
 
 	var rect = container.append('circle')
 		.attr("r", 16)
-		.attr('cx', 1217)
+		.attr('cx', 1260)
 		.attr('cy', 610)
 		.attr('fill', '#3690c0')
 
