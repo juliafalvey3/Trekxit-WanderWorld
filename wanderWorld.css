@@ -306,3 +306,17 @@ text.resultHeader {
 .selected{
   .fill("grey")
 }
+
+.book{
+  position: absolute;
+  margin-left:400px;
+  margin-top: -390px;
+  width: 100px;
+  height: 40px;
+  opacity: 0;
+  text-decoration: none;
+  cursor: pointer;
+  overflow: hidden;
+  white-space:nowrap;
+  font: 12px;
+}
