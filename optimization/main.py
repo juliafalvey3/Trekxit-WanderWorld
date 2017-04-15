@@ -66,6 +66,7 @@ if __name__ == "__main__":
 	Example.inputTimeFrame(user_start, user_end, city_list, num_days, min_days, origin)
 	Example.createInputDicts()
 	Example.buildAndSolveModel()
+	codeMap = Example.cityCodeMap
 
 	routes = []
 
@@ -88,8 +89,10 @@ if __name__ == "__main__":
 	outputDict = {}
 	outputDict['TripID'] = []
 	outputDict['Seq'] = []
-	outputDict['Origin'] = []
-	outputDict['Dest'] = []
+	outputDict['Origin_ID'] = []
+	outputDict['Origin_Name'] = []
+	outputDict['Dest_ID'] = []
+	outputDict['Dest_Name'] = []
 	outputDict['Price'] = []
 	outputDict['Date1'] = []
 	outputDict['Date2'] = []
@@ -103,8 +106,10 @@ if __name__ == "__main__":
 				break
 			outputDict['TripID'].append(tripID)
 			outputDict['Seq'].append(seq)
-			outputDict['Origin'].append(flight[0])
-			outputDict['Dest'].append(flight[1])
+			outputDict['Origin_ID'].append(flight[0])
+			outputDict['Origin_Name'].append(codeMap[flight[0]])
+			outputDict['Dest_ID'].append(flight[1])
+			outputDict['Dest_Name'].append(codeMap[flight[1]])
 			outputDict['Price'].append(flight[4])
 			departDate_String, arriDate_String = extractRealDate(flight)
 			outputDict['Date1'].append(departDate_String)
