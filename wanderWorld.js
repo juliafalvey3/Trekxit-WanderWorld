@@ -1,9 +1,9 @@
 var width = 1400,
 	height = 800;
 
-var mapW = 800,
+var mapW = 680,
 	mapH = 1000,
-	mapX = 660,
+	mapX = 700,
 	mapY = 0;
 
 var projScale = 900,
@@ -300,10 +300,9 @@ function showboxes(others){
        .key(function(d) { return d['TripID']})
        .key(function(d) { return d['Seq']})
        .entries(data);
-       console.log(flights[0]);
+       console.log(flights[1]);
 
-       others.append('rect')
-
+    others.append('rect')
 		.attr('id', 'resultsBox')
 		.attr('fill', 'white')
 		.attr('stroke', 'grey')
@@ -311,7 +310,7 @@ function showboxes(others){
 		.attr('y', 0)
 		.attr("rx", 15) //rx and ry give the buttons rounded corners
         .attr("ry", 15)
-		.attr('width', 238)
+		.attr('width', 329)
 		.attr('height', 400)
 
 	others.append('rect')
@@ -322,11 +321,11 @@ function showboxes(others){
 		.attr('y', 400)
 		.attr("rx", 15) //rx and ry give the buttons rounded corners
         .attr("ry", 15)
-		.attr('width', 230)
+		.attr('width', 329)
 		.attr('height', 400)
 
 		console.log(typeof(resultsData[0]));
-		console.log(resultsData[0].value);
+		console.log(resultsData[1].value);
 
 	var results = others.append('g')
 		.attr('id', 'resultsBox').selectAll("g")
@@ -337,25 +336,36 @@ function showboxes(others){
 	results.append('text')
 		.attr("class", "text")
 		.attr('x', 530)
-		.attr('y', function(d,i){return i*20 + 61})
+		.attr('y', function(d,i){return i*20 + 72})
 		.attr('stroke', 'none')
-		.text(function(d){return d.values[0].values[0]['Price']});
+		.text(function(d){
+
+			return d.values[0].values[0]['Total Price']
+		});
 
 	flightText = results.append('text');
 	flightText.text("Best Trip Options!")
 		.attr("class", "resultHeader")
 		.attr("x", 400)
 		.attr("y", 40)
+	detailsText = results.append('text');
+	detailsText.text("Click on an option for details.")
+		.attr("class", "helper")
+		.attr("x", 400)
+		.attr("y", 55)
+	for (i = 0, i < 5)
 	option1Text = results.append('text');
 	option1Text.text("Option 1 : Price")
 		.attr("class", "resulttext")
 		.attr("x", 400)
-		.attr("y", 60)
+		.attr("y", 70)
 	option2Text = results.append('text');
 	option2Text.text("Option 2 : Price")
 		.attr("class", "resulttext")
 		.attr("x", 400)
-		.attr("y", 80)
+		.attr("y", 90)
+
+
 
 
       });
