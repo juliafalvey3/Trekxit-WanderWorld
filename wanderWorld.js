@@ -35,7 +35,7 @@ function makeMap(container){
 
 	var rect = container.append('circle')
 		.attr("r", 16)
-		.attr('cx', 1217)
+		.attr('cx', 1260)
 		.attr('cy', 610)
 		.attr('fill', '#3690c0')
 
@@ -331,7 +331,6 @@ function showboxes(others){
 		.attr('id', 'resultsBox').selectAll("g")
 		.data(flights)
 		.enter().append('g')
-		.attr("stroke", '#252525')
 
 	results.append('text')
 		.attr("class", "text")
@@ -353,22 +352,39 @@ function showboxes(others){
 		.attr("class", "helper")
 		.attr("x", 400)
 		.attr("y", 55)
-	for (i = 0, i < 5)
 	option1Text = results.append('text');
 	option1Text.text("Option 1 : Price")
 		.attr("class", "resulttext")
 		.attr("x", 400)
 		.attr("y", 70)
+		.on("mouseover", function() {
+            if (d3.select(this).attr("fill") != "grey") {
+                d3.select(this).attr("fill", "blue"); }})
+        .on("mouseout", function() {
+            if (d3.select(this).attr("fill") != "grey") {
+                d3.select(this).attr("fill","black")}})
+		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d)} 
+                else {d3.select(this).attr("fill", "black"), console.log("remove")}});
 	option2Text = results.append('text');
 	option2Text.text("Option 2 : Price")
-		.attr("class", "resulttext")
 		.attr("x", 400)
 		.attr("y", 90)
+		.on("mouseover", function() {
+            if (d3.select(this).attr("fill") != "grey") {
+                d3.select(this).attr("fill", "blue"); }})
+        .on("mouseout", function() {
+            if (d3.select(this).attr("fill") != "grey") {
+                d3.select(this).attr("fill","black")}})
+		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d)} 
+                else {d3.select(this).attr("fill", "black"), console.log("remove")}});
+})}
 
-
-
-
-      });
-
+function clickResult(d){
+	node_link(d)
 }
 
+function node_link(d){
+	color_scale = d3.scale.category10()
+	//d.forEach(function(d,i){console.log(color_scale[i])})
+	console.log(d)
+}

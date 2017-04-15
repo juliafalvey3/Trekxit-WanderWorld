@@ -303,3 +303,6 @@ text.resultHeader {
   z-index: 1;
 }
 
+.selected{
+  .fill("grey")
+}
