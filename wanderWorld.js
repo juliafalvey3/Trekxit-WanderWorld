@@ -116,6 +116,7 @@ function makeMap(container){
 	});
 }
 
+
 function makeOthers(container){
 
 // #dropdowns  https://bl.ocks.org/mbostock/5872848
@@ -153,6 +154,7 @@ function juliaWork(others){
 
 	var select = d3.select('body')
   		.append('select')
+  		.attr("id", "startSelect")
   		.attr("class", "select")
   		.on('change', onChange);
 
@@ -162,8 +164,8 @@ function juliaWork(others){
 		.text(function (d) {return d; });
 
 	function onChange (){
-		selectValue = d3.select('select').property('value')
-		console.log(selectValue)
+		selectValue = d3.select('#startSelect').property('value')
+		return selectValue;
 	}
 
 	var defaultColor= "#ebebeb";
@@ -243,11 +245,19 @@ function juliaWork(others){
 		.enter().append('g')
 		.attr("stroke", '#252525')
 		.on("click",function(d,i) {
+				var outputList = [];
 				if (d3.select(this).select("rect").attr("fill") != pressedColor) {
                     d3.select(this).select("rect").attr("fill", pressedColor);
-                    d3.select(this).select("text").text("Trips Incoming!")
-                    d3.select(this).select("text").attr("x", 110)
-                    showboxes(others)
+                    d3.select(this).select("text").text("Trips Incoming!");
+                    d3.select(this).select("text").attr("x", 110);
+                    showboxes(others);
+                    outputList.push({key: "Origin", value: onChange ()});
+                    outputList.push({key: "Dests", value: d3.select("#multDropDown")
+                        .selectAll("option")
+                        .filter(function (d, i) { 
+                            if (this.selected) {return this.label}; 
+                        })});
+                    console.log(outputList);
              	}
 				else {
 					d3.select(this).select("rect").attr("fill", defaultColor)
@@ -363,7 +373,7 @@ function showboxes(others){
         .on("mouseout", function() {
             if (d3.select(this).attr("fill") != "grey") {
                 d3.select(this).attr("fill","black")}})
-		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d)} 
+		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d, others)} 
                 else {d3.select(this).attr("fill", "black"), console.log("remove")}});
 	option2Text = results.append('text');
 	option2Text.text("Option 2 : Price")
@@ -375,16 +385,47 @@ function showboxes(others){
         .on("mouseout", function() {
             if (d3.select(this).attr("fill") != "grey") {
                 d3.select(this).attr("fill","black")}})
-		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d)} 
+		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d, others)} 
                 else {d3.select(this).attr("fill", "black"), console.log("remove")}});
 })}
 
-function clickResult(d){
-	node_link(d)
+function clickResult(d, others){
+	node_link(d, others)
 }
 
-function node_link(d){
+function node_link(d, others){
 	color_scale = d3.scale.category10()
 	//d.forEach(function(d,i){console.log(color_scale[i])})
-	console.log(d)
+	sourceList = []
+	targetList = []
+	for (i=0; i<5; i+=1){
+		sourceList.push(d.values[i].values[0].Origin)
+		targetList.push(d.values[i].values[0].Dest)
+	}
+	linkList = []
+	for(i=0; i<5; i+=1){
+		linkList.push({source:sourceList[i],target:targetList[i]})
+	}
+
+	var path = others.append("g").selectAll("path")
+    .data(linkList)
+  		.enter().append("path")
+    .style("stroke", function(d,i){color_scale[i]});
+
+	//var link = ;
+	// var svg = d3.select("body").append("svg")
+	//     .attr("width", 900)
+	//     .attr("height", 800)
+	//   .append("g");
+
+	// var raceData = null;
+	// var teamData = null;
+
+	// teamData = d3.nest()
+	//     .key(function(d) { return d['driver'];})
+	//     .key(function(d){return d['team']})
+	//     .entries(dataset);
+
+	// teamData = teamData.sort(function (a,b) {return d3.ascending(a.key, b.key)})
+	// teamData = teamData.sort(function (a,b) {return d3.descending(a.values[0],b.values[0]); });
 }
