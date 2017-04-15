@@ -1,9 +1,9 @@
 var width = 1400,
 	height = 800;
 
-var mapW = 800,
+var mapW = 680,
 	mapH = 1000,
-	mapX = 660,
+	mapX = 700,
 	mapY = 0;
 
 var projScale = 900,
@@ -35,7 +35,7 @@ function makeMap(container){
 
 	var rect = container.append('circle')
 		.attr("r", 16)
-		.attr('cx', 1217)
+		.attr('cx', 1260)
 		.attr('cy', 610)
 		.attr('fill', '#3690c0')
 
@@ -116,6 +116,7 @@ function makeMap(container){
 	});
 }
 
+
 function makeOthers(container){
 
 // #dropdowns  https://bl.ocks.org/mbostock/5872848
@@ -153,6 +154,7 @@ function juliaWork(others){
 
 	var select = d3.select('body')
   		.append('select')
+  		.attr("id", "startSelect")
   		.attr("class", "select")
   		.on('change', onChange);
 
@@ -162,8 +164,8 @@ function juliaWork(others){
 		.text(function (d) {return d; });
 
 	function onChange (){
-		selectValue = d3.select('select').property('value')
-		console.log(selectValue)
+		selectValue = d3.select('#startSelect').property('value')
+		return selectValue;
 	}
 
 	var defaultColor= "#ebebeb";
@@ -243,11 +245,19 @@ function juliaWork(others){
 		.enter().append('g')
 		.attr("stroke", '#252525')
 		.on("click",function(d,i) {
+				var outputList = [];
 				if (d3.select(this).select("rect").attr("fill") != pressedColor) {
                     d3.select(this).select("rect").attr("fill", pressedColor);
-                    d3.select(this).select("text").text("Trips Incoming!")
-                    d3.select(this).select("text").attr("x", 110)
-                    showboxes(others)
+                    d3.select(this).select("text").text("Trips Incoming!");
+                    d3.select(this).select("text").attr("x", 110);
+                    showboxes(others);
+                    outputList.push({key: "Origin", value: onChange ()});
+                    outputList.push({key: "Dests", value: d3.select("#multDropDown")
+                        .selectAll("option")
+                        .filter(function (d, i) { 
+                            if (this.selected) {return this.label}; 
+                        })});
+                    console.log(outputList);
              	}
 				else {
 					d3.select(this).select("rect").attr("fill", defaultColor)
@@ -300,10 +310,9 @@ function showboxes(others){
        .key(function(d) { return d['TripID']})
        .key(function(d) { return d['Seq']})
        .entries(data);
-       console.log(flights[0]);
+       console.log(flights[1]);
 
-       others.append('rect')
-
+    others.append('rect')
 		.attr('id', 'resultsBox')
 		.attr('fill', 'white')
 		.attr('stroke', 'grey')
@@ -311,7 +320,7 @@ function showboxes(others){
 		.attr('y', 0)
 		.attr("rx", 15) //rx and ry give the buttons rounded corners
         .attr("ry", 15)
-		.attr('width', 238)
+		.attr('width', 329)
 		.attr('height', 400)
 
 	others.append('rect')
@@ -322,43 +331,101 @@ function showboxes(others){
 		.attr('y', 400)
 		.attr("rx", 15) //rx and ry give the buttons rounded corners
         .attr("ry", 15)
-		.attr('width', 230)
+		.attr('width', 329)
 		.attr('height', 400)
 
 		console.log(typeof(resultsData[0]));
-		console.log(resultsData[0].value);
+		console.log(resultsData[1].value);
 
 	var results = others.append('g')
 		.attr('id', 'resultsBox').selectAll("g")
 		.data(flights)
 		.enter().append('g')
-		.attr("stroke", '#252525')
 
 	results.append('text')
 		.attr("class", "text")
 		.attr('x', 530)
-		.attr('y', function(d,i){return i*20 + 61})
+		.attr('y', function(d,i){return i*20 + 72})
 		.attr('stroke', 'none')
-		.text(function(d){return d.values[0].values[0]['Price']});
+		.text(function(d){
+
+			return d.values[0].values[0]['Total Price']
+		});
 
 	flightText = results.append('text');
 	flightText.text("Best Trip Options!")
 		.attr("class", "resultHeader")
 		.attr("x", 400)
 		.attr("y", 40)
+	detailsText = results.append('text');
+	detailsText.text("Click on an option for details.")
+		.attr("class", "helper")
+		.attr("x", 400)
+		.attr("y", 55)
 	option1Text = results.append('text');
 	option1Text.text("Option 1 : Price")
 		.attr("class", "resulttext")
 		.attr("x", 400)
-		.attr("y", 60)
+		.attr("y", 70)
+		.on("mouseover", function() {
+            if (d3.select(this).attr("fill") != "grey") {
+                d3.select(this).attr("fill", "blue"); }})
+        .on("mouseout", function() {
+            if (d3.select(this).attr("fill") != "grey") {
+                d3.select(this).attr("fill","black")}})
+		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d, others)} 
+                else {d3.select(this).attr("fill", "black"), console.log("remove")}});
 	option2Text = results.append('text');
 	option2Text.text("Option 2 : Price")
-		.attr("class", "resulttext")
 		.attr("x", 400)
-		.attr("y", 80)
+		.attr("y", 90)
+		.on("mouseover", function() {
+            if (d3.select(this).attr("fill") != "grey") {
+                d3.select(this).attr("fill", "blue"); }})
+        .on("mouseout", function() {
+            if (d3.select(this).attr("fill") != "grey") {
+                d3.select(this).attr("fill","black")}})
+		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d, others)} 
+                else {d3.select(this).attr("fill", "black"), console.log("remove")}});
+})}
 
-
-      });
-
+function clickResult(d, others){
+	node_link(d, others)
 }
 
+function node_link(d, others){
+	color_scale = d3.scale.category10()
+	//d.forEach(function(d,i){console.log(color_scale[i])})
+	sourceList = []
+	targetList = []
+	for (i=0; i<5; i+=1){
+		sourceList.push(d.values[i].values[0].Origin)
+		targetList.push(d.values[i].values[0].Dest)
+	}
+	linkList = []
+	for(i=0; i<5; i+=1){
+		linkList.push({source:sourceList[i],target:targetList[i]})
+	}
+
+	var path = others.append("g").selectAll("path")
+    .data(linkList)
+  		.enter().append("path")
+    .style("stroke", function(d,i){color_scale[i]});
+
+	//var link = ;
+	// var svg = d3.select("body").append("svg")
+	//     .attr("width", 900)
+	//     .attr("height", 800)
+	//   .append("g");
+
+	// var raceData = null;
+	// var teamData = null;
+
+	// teamData = d3.nest()
+	//     .key(function(d) { return d['driver'];})
+	//     .key(function(d){return d['team']})
+	//     .entries(dataset);
+
+	// teamData = teamData.sort(function (a,b) {return d3.ascending(a.key, b.key)})
+	// teamData = teamData.sort(function (a,b) {return d3.descending(a.values[0],b.values[0]); });
+}
