@@ -379,5 +379,7 @@ function clickResult(d){
 }
 
 function node_link(d){
-	
+
+	console.log(d)
+
 }
