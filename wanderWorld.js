@@ -105,12 +105,14 @@ function makeMap(container){
 	    .attr("transform", function(d) { return "translate(" + projection(d.geometry.coordinates) + ")"; })
 	    .attr("dy", ".35em")
 	    .attr('x', 5)
+	    .attr("id", function(d){return d.properties.name})
 	    .text(function(d) { return d.properties.name; })
 
 	cities.append("circle")
 		.attr("cx", function(d) { return (projection(d.geometry.coordinates)[0]) })
 	 	.attr("cy", function(d) { return (projection(d.geometry.coordinates)[1]) })
 	 	.style("fill", "grey")
+	 	.attr("id", function(d){return d.properties.name})
 	 	.style("stroke", "#444")
 	 	.attr("r", 4)
 	});
@@ -346,12 +348,9 @@ function showboxes(others){
 
 
 	// load the data
-	d3.csv("final_result_Sample.csv", function(data) {
-    console.log(data[0]);
-
-
+	d3.csv("./optimization/niceOutput.csv", function(data) {
+    console.log(data[0]);    
     var flights = null;
-
         flights = d3.nest()
        .key(function(d) { return d['TripID']})
        .key(function(d) { return d['Seq']})
@@ -441,23 +440,36 @@ function clickResult(d, others){
 
 function node_link(d, others){
 	color_scale = d3.scale.category10()
-	//d.forEach(function(d,i){console.log(color_scale[i])})
+
+	console.log(d)
 	sourceList = []
 	targetList = []
-	for (i=0; i<5; i+=1){
-		sourceList.push(d.values[i].values[0].Origin)
-		targetList.push(d.values[i].values[0].Dest)
+
+// 	var force = d3.layout.force()
+//     	.size([width, height])
+//    		.nodes(nodes)
+//     	.links(linkList);
+
+	// var path = others.append("g").selectAll("path")
+ //    .data(linkList)
+ //  		.enter().append("path")
+ //    .style("stroke", function(d,i){color_scale[i]})
+ //    .attr();
+  
+	for (i=0; i<d.values.length; i+=1){
+		sourceList.push(d.values[i].values[0].Origin_Name)
+		targetList.push(d.values[i].values[0].Dest_Name)
 	}
 	linkList = []
-	for(i=0; i<5; i+=1){
+	for(i=0; i<d.values.length; i+=1){
 		linkList.push({source:sourceList[i],target:targetList[i]})
 	}
 
-	var path = others.append("g").selectAll("path")
-    .data(linkList)
-  		.enter().append("path")
-    .style("stroke", function(d,i){color_scale[i]});
-
+	console.log(linkList)
+	// var path = others.append("g").selectAll("path")
+ //    .data(linkList)
+ //  		.enter().append("path")
+ //    .style("stroke", function(d,i){color_scale[i]});
 	//var link = ;
 	// var svg = d3.select("body").append("svg")
 	//     .attr("width", 900)
