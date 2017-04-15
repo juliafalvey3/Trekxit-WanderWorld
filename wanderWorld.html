@@ -11,8 +11,8 @@
 <link rel="stylesheet" href="./lib/font-awesome.css">
 <script src="Boxesboxes.js"></script>
 <script src="wanderWorld.js"></script>
-<script src="https://unpkg.com/js-datepicker"></script>   
-<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script> 
+<script src="https://unpkg.com/js-datepicker"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="./lib/webshim-1.16.0/js-webshim/dev/polyfiller.js"></script>
 <script>
 webshims.setOptions('forms-ext', {types: 'date'});
@@ -57,24 +57,16 @@ en: {
           <option value="Marseilles">Marseilles</option>
         </select>
       </form>
-      <div id="direct-controls">
-        <input name="mode" type="radio" value="Any" class= "text" id="indirect-any-stop" checked><label for="indirect-any"> Any Number of Stops</label>
-        <br>
-        <input name="mode" type="radio" value="One" class= "text" id="indirect-one-stop"><label for="indirect-one"> At Most 1 Stop</label>
-        <br>
-        <input name="mode" type="radio" value="No" class="text" id="direct-flight"><label for="direct"> No Stops</label>
-      </div>
       <form name="myform" id="minDays" required> <!-- onSubmit="return handleClick()"  -->
-            <input type="text" placeholder="e.g. 3">
+            <input id = "minDaysInput" type="text" placeholder="e.g. 3">
       </form>
       <form name="numform" id="numDays" required>
-           <input type="text" placeholder="e.g. 10">
+           <input id = "numDaysInput" type="text" placeholder="e.g. 10">
       </form>
       <form class = "datePick">
         <p> From: <input type="date" name="field1" id = "field1">  </br> </br>     To:  <input type="date" name ="field2" id ="field2"> </p>
-      </form>
      <form name="budgetform" id="budget"> <!-- onSubmit="return handleClick()"  -->
-            <input type="text" placeholder="e.g. $1000 ">
+            <input id = "budgetInput" type="text" placeholder="e.g. $1000 ">
       </form>
     </div>
 </div>
