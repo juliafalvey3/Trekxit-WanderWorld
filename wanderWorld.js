@@ -379,7 +379,7 @@ function clickResult(d){
 }
 
 function node_link(d){
-
+	color_scale = d3.scale.category10()
+	//d.forEach(function(d,i){console.log(color_scale[i])})
 	console.log(d)
-
 }
