@@ -120,6 +120,6 @@ if __name__ == "__main__":
 	outputDF = pd.DataFrame.from_dict(outputDict)
 	#print outputDF
     
-	outputDF.to_csv('niceOutput.csv') 
+	outputDF.to_csv('niceOutput.csv',index=False) 
 
 
