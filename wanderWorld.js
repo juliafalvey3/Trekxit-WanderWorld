@@ -338,7 +338,7 @@ function showboxes(others){
 
 
 	// load the data
-	d3.csv("final_result_Sample.csv", function(data) {
+	d3.csv("./optimization/niceOutput.csv", function(data) {
     console.log(data[0]);
 
 
@@ -433,22 +433,25 @@ function clickResult(d, others){
 
 function node_link(d, others){
 	color_scale = d3.scale.category10()
-	//d.forEach(function(d,i){console.log(color_scale[i])})
+
+	console.log(d)
 	sourceList = []
 	targetList = []
-	for (i=0; i<5; i+=1){
-		sourceList.push(d.values[i].values[0].Origin)
-		targetList.push(d.values[i].values[0].Dest)
+
+	for (i=0; i<d.values.length; i+=1){
+		sourceList.push(d.values[i].values[0].Origin_Name)
+		targetList.push(d.values[i].values[0].Dest_Name)
 	}
 	linkList = []
-	for(i=0; i<5; i+=1){
+	for(i=0; i<d.values.length; i+=1){
 		linkList.push({source:sourceList[i],target:targetList[i]})
 	}
 
-	var path = others.append("g").selectAll("path")
-    .data(linkList)
-  		.enter().append("path")
-    .style("stroke", function(d,i){color_scale[i]});
+	console.log(linkList)
+	// var path = others.append("g").selectAll("path")
+ //    .data(linkList)
+ //  		.enter().append("path")
+ //    .style("stroke", function(d,i){color_scale[i]});
 
 	//var link = ;
 	// var svg = d3.select("body").append("svg")
