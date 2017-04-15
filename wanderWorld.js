@@ -115,6 +115,7 @@ function makeMap(container){
 	 	.attr("id", function(d){return d.properties.name})
 	 	.style("stroke", "#444")
 	 	.attr("r", 4)
+
 	});
 }
 
@@ -205,7 +206,6 @@ function juliaWork(others){
 		.attr("class", "question")
 		.attr("x", 20)
 		.attr("y", 375)
-	// list = 10000
 
 	helpMinDayText = others.append("text");
 	helpMinDayText.text("What is the minimum number of days you want to stay in each city?")
@@ -224,14 +224,6 @@ function juliaWork(others){
     	.attr("class", "helper")
     	.attr("x", 20)
     	.attr("y", 470);
-
-
-	// connectionText = others.append("text");
-	// connectionText.text("How many connections?")
-	// 	.attr("class", "question")
-	// 	.attr("x", 20)
-	// 	.attr("y", 525)
-
 
 	budgetText = others.append("text");
 	budgetText.text("What is your budget? (USD)")
@@ -291,13 +283,6 @@ function juliaWork(others){
     						return v.value;})[0]});
                     console.log(outputList);
              	}
-
-             		// d3.select("#multDropDown")
-                     //    .selectAll("option")
-                     //    .filter(function (d, i) {
-                     //        if (this.selected) {return this.label};
-                     //    })
-
 
 				else {
 					d3.select(this).select("rect").attr("fill", defaultColor)

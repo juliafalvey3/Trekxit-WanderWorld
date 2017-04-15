@@ -44,7 +44,6 @@ en: {
 <div>
     <div id = "vis">
     	<script> init() </script>
-
       <form>
         <select id="multDropDown" multiple>
           <option value="Barcelona">Barcelona</option>
@@ -57,7 +56,7 @@ en: {
           <option value="Marseilles">Marseilles</option>
         </select>
       </form>
-      <form name="myform" id="minDays" required> <!-- onSubmit="return handleClick()"  -->
+      <form name="myform" id="minDays" required>
             <input id = "minDaysInput" type="text" placeholder="e.g. 3">
       </form>
       <form name="numform" id="numDays" required>
@@ -65,12 +64,13 @@ en: {
       </form>
       <form class = "datePick">
         <p> From: <input type="date" name="field1" id = "field1">  </br> </br>     To:  <input type="date" name ="field2" id ="field2"> </p>
-     <form name="budgetform" id="budget"> <!-- onSubmit="return handleClick()"  -->
+      </form>
+      <form name="budgetform" id="budget"> <!-- onSubmit="return handleClick()"  -->
             <input id = "budgetInput" type="text" placeholder="e.g. $1000 ">
       </form>
     </div>
 </div>
-<a class="up-arrow" href="" title="up-arrow" id="up-arrow"></a>
 
+<a class="up-arrow" href="" title="up-arrow" id="up-arrow"></a>
 </body>
 </html>
