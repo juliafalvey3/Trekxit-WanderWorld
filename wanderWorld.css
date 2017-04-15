@@ -304,8 +304,9 @@ text.resultHeader {
 }
 
 .selected{
-  .fill("grey")
+  fill("grey")
 }
+
 table.GeneratedTable {
 width:100%;
 background-color:#FFFFFF;
@@ -324,20 +325,6 @@ padding:3px;
 
 table.GeneratedTable thead {
 background-color:#0066FF;
-}
-
-.book{
-  margin-left:700px;
-  width: 40px;
-  height: 40px;
-  display: block;
-  width: 50px;
-  height: 50px;
-  text-decoration: none;
-  cursor: pointer;
-  overflow: hidden;
-  white-space:nowrap;
-  font: 12px;
 }
 
 .node {
