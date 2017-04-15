@@ -352,10 +352,11 @@ function showboxes(others){
 		.attr("class", "helper")
 		.attr("x", 400)
 		.attr("y", 55)
-	for (i = 0, i < 5)
 	option1Text = results.append('text');
 	option1Text.text("Option 1 : Price")
-		//.attr("class", "resulttext")
+		.attr("class", "resulttext")
+		.attr("x", 400)
+		.attr("y", 70)
 		.on("mouseover", function() {
             if (d3.select(this).attr("fill") != "grey") {
                 d3.select(this).attr("fill", "blue"); }})
@@ -363,13 +364,20 @@ function showboxes(others){
             if (d3.select(this).attr("fill") != "grey") {
                 d3.select(this).attr("fill","black")}})
 		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d)} 
-                else {d3.select(this).attr("fill", "black"), console.log("remove")}})
+                else {d3.select(this).attr("fill", "black"), console.log("remove")}});
 	option2Text = results.append('text');
 	option2Text.text("Option 2 : Price")
-		//.attr("class", "resulttext")
 		.attr("x", 400)
 		.attr("y", 90)
-}
+		.on("mouseover", function() {
+            if (d3.select(this).attr("fill") != "grey") {
+                d3.select(this).attr("fill", "blue"); }})
+        .on("mouseout", function() {
+            if (d3.select(this).attr("fill") != "grey") {
+                d3.select(this).attr("fill","black")}})
+		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d)} 
+                else {d3.select(this).attr("fill", "black"), console.log("remove")}});
+})}
 
 function clickResult(d){
 	node_link(d)
