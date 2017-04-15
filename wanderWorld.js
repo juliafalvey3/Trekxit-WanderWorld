@@ -108,7 +108,7 @@ function makeMap(container){
 	    .text(function(d) { return d.properties.name; })
 
 	cities.append("circle")
-		.attr("cx", function(d) { return (projection(d.geometry.coordinates)[0]) }) 
+		.attr("cx", function(d) { return (projection(d.geometry.coordinates)[0]) })
 	 	.attr("cy", function(d) { return (projection(d.geometry.coordinates)[1]) })
 	 	.style("fill", "grey")
 	 	.style("stroke", "#444")
@@ -181,10 +181,10 @@ function juliaWork(others){
 
 	helpDestinationText = others.append("text");
 
-    helpDestinationText.text("Select up to 5 cities.")
+    helpDestinationText.text("Hold down the Cmd or Ctrl key to select up to 5 cities.")
 		.attr("class", "helper")
 		.attr("x", 20)
-		.attr("y", 115)
+		.attr("y", 120)
 
 	dateText = others.append("text");
 	dateText.text("What range of dates could you travel?")
@@ -193,10 +193,10 @@ function juliaWork(others){
 		.attr("y", 260);
 
 	helpdateText = others.append("text");
-	helpdateText.text("Not the spefic days you want to travel but a flexible time frame!")
+	helpdateText.text("Choose a flexible time frame in which you want to travel.")
 		.attr("class", "helper")
 		.attr("x",20)
-		.attr("y", 275);
+		.attr("y", 280);
 
 	minDayText = others.append("text");
 	minDayText.html("Min days in each location?")
@@ -209,7 +209,7 @@ function juliaWork(others){
 	helpMinDayText.text("What is the minimum number of days you want to stay in each city?")
 		.attr("class", "helper")
 		.attr("x", 20)
-		.attr("y", 390);
+		.attr("y", 395);
 
 	numDaysText = others.append("text");
 	numDaysText.html("Total days you want to travel?")
@@ -218,25 +218,30 @@ function juliaWork(others){
        .attr("y", 450);
 
     helpnumDaysText = others.append("text");
-    helpnumDaysText.text("Number of days to spend traveling")
+    helpnumDaysText.text("What is the total number of days you want to spend traveling?")
     	.attr("class", "helper")
     	.attr("x", 20)
-    	.attr("y", 465);
+    	.attr("y", 470);
 
 
-	connectionText = others.append("text");
-	connectionText.text("How many connections?")
-		.attr("class", "question")
-		.attr("x", 20)
-		.attr("y", 525)
+	// connectionText = others.append("text");
+	// connectionText.text("How many connections?")
+	// 	.attr("class", "question")
+	// 	.attr("x", 20)
+	// 	.attr("y", 525)
 
 
 	budgetText = others.append("text");
-	budgetText.text("What is your max budget? (USD)")
+	budgetText.text("What is your budget? (USD)")
 		.attr("class", "question")
 		.attr("x", 20)
 		.attr("y", 640);
 
+	helpbudgetText = others.append("text");
+    helpbudgetText.text("We'll show you several travel options within your budget!")
+    	.attr("class", "helper")
+    	.attr("x", 20)
+    	.attr("y", 660);
 
 	buttonText = ["Find My Optimal Trips!"]
 	var optimize = others.append('g')
@@ -252,13 +257,46 @@ function juliaWork(others){
                     d3.select(this).select("text").attr("x", 110);
                     showboxes(others);
                     outputList.push({key: "Origin", value: onChange ()});
-                    outputList.push({key: "Dests", value: d3.select("#multDropDown")
-                        .selectAll("option")
-                        .filter(function (d, i) { 
-                            if (this.selected) {return this.label}; 
-                        })});
+                    outputList.push({key: "Dests",
+                    	value: Array.prototype.slice
+             				.call(document.querySelectorAll('#multDropDown option:checked'),0)
+             				.map(function(v,i,a) {
+    						return v.value;})});
+                    outputList.push({key: "Start Date",
+                    	value: Array.prototype.slice
+             				.call(document.querySelectorAll('#field1'),0)
+             				.map(function(v,i,a) {
+    						return v.value;})[0]});
+                    outputList.push({key: "End Date",
+                    	value: Array.prototype.slice
+             				.call(document.querySelectorAll('#field2'),0)
+             				.map(function(v,i,a) {
+    						return v.value;})[0]});
+                    outputList.push({key: "Min Days",
+                    	value: Array.prototype.slice
+             				.call(document.querySelectorAll('#minDaysInput'),0)
+             				.map(function(v,i,a) {
+    						return v.value;})[0]});
+                    outputList.push({key: "Num Days",
+                    	value: Array.prototype.slice
+             				.call(document.querySelectorAll('#numDaysInput'),0)
+             				.map(function(v,i,a) {
+    						return v.value;})[0]});
+                    outputList.push({key: "Budget",
+                    	value: Array.prototype.slice
+             				.call(document.querySelectorAll('#budgetInput'),0)
+             				.map(function(v,i,a) {
+    						return v.value;})[0]});
                     console.log(outputList);
              	}
+
+             		// d3.select("#multDropDown")
+                     //    .selectAll("option")
+                     //    .filter(function (d, i) {
+                     //        if (this.selected) {return this.label};
+                     //    })
+
+
 				else {
 					d3.select(this).select("rect").attr("fill", defaultColor)
 					console.log("removing "+d)
@@ -297,15 +335,15 @@ function juliaWork(others){
 var resultsData = [{name: 'Trip1', value: 800}, {name: 'Trip2', value: 1000}];
 
 function showboxes(others){
-	
+
 
 	// load the data
 	d3.csv("final_result_Sample.csv", function(data) {
     console.log(data[0]);
 
-    
+
     var flights = null;
-    
+
         flights = d3.nest()
        .key(function(d) { return d['TripID']})
        .key(function(d) { return d['Seq']})
@@ -373,7 +411,7 @@ function showboxes(others){
         .on("mouseout", function() {
             if (d3.select(this).attr("fill") != "grey") {
                 d3.select(this).attr("fill","black")}})
-		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d, others)} 
+		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d, others)}
                 else {d3.select(this).attr("fill", "black"), console.log("remove")}});
 	option2Text = results.append('text');
 	option2Text.text("Option 2 : Price")
@@ -385,7 +423,7 @@ function showboxes(others){
         .on("mouseout", function() {
             if (d3.select(this).attr("fill") != "grey") {
                 d3.select(this).attr("fill","black")}})
-		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d, others)} 
+		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d, others)}
                 else {d3.select(this).attr("fill", "black"), console.log("remove")}});
 })}
 
