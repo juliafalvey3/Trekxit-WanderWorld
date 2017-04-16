@@ -6,9 +6,9 @@ var mapW = 680,
 	mapX = 700,
 	mapY = 0;
 
-var projScale = 900,
+var projScale = 1000,
 	projX = 230,
-	projY = 1350;
+	projY = 1400;
 
 var otherW = width-mapW
 	otherH = 1000;
@@ -35,9 +35,9 @@ function init(){
 function makeMap(container, map){
 
 	var circ = map.append('circle')
-		.attr("r", 16)
-		.attr('cx', 560)
-		.attr('cy', 610)
+		.attr("r", 17)
+		.attr('cx', 594)
+		.attr('cy', 578)
 		.attr("opacity", 1)
 		.attr('fill', '#5BA7CF');
 
@@ -47,21 +47,12 @@ function makeMap(container, map){
 
 	var path = d3.geo.path().projection(projection);
 
- 	// var tip = d3.tip()
-		// 	  .attr('class', 'd3-tip')
-		// 	  .html(function(d){return d.properties.name})
-
 	d3.json("eu.json", function(error, eu) {
 	  if (error) return console.error(error);
 
   	var subunits = topojson.feature(eu, eu.objects.subunits).features;
 
   	var places = topojson.feature(eu, eu.objects.places);
-
- //   	var tp = map.append("g")
- // 		.data(subunits);
-
-	// tp.call(tip);
 
 	  map.append("g")
 	      .attr("class", "counties")
@@ -119,36 +110,34 @@ function makeMap(container, map){
 	 	.style("stroke", "#444")
 	 	.attr("r", 4)
 
-	 Palma = map.append(".place-label")
-	 	.data("Palma")
-	 	.enter().append(g)
-	 	.on("mouseover", function(d){d3.select(this).selectAll("*").style("opacity", 0.9); })
-		.on("mouseout", function(d){d3.select(this).selectAll("*").style("opacity", 0)});
+	// var Palma = map.select(".place-label")
+	//  	.data("Palma")
+	//  	.enter().append('g')
+	//  	.on("mouseover", function(d){d3.select(this).selectAll("*").style("opacity", 0.9); })
+	// 	.on("mouseout", function(d){d3.select(this).selectAll("text").style("opacity", 0), d3.select(this).selectAll("rect").style("opacity", 0)});
 	 
-	 Palma.append("rect")
-		 	.attr("width", function(d){len = "Palma".length; return (6*len+(len/2)*5+15)})//; return text.length*5})
-		 	.attr("height", 20)
-		 	.attr("fill", "white")
-		 	.style("opacity", 0)
-		 	.attr("x", 975)
-		 	.attr("y", 663)
-		 	.on("mouseover", function(d){d3.select(this).selectAll("*").style("opacity", 0.9); })
-			.on("mouseout", function(d){d3.select(this).selectAll("*").style("opacity", 0)});
+ // 	Palma.append("rect")
+	// 	 	.attr("width", function(d){len = "Palma".length; return (6*len+(len/2)*5+15)})//; return text.length*5})
+	// 	 	.attr("height", 20)
+	// 	 	.attr("fill", "white")
+	// 	 	.style("opacity", 0)
+	// 	 	.attr("x", 290)
+	// 	 	.attr("y", 650);
 
-	 Palma.append("text")
-		    .attr("class", "place-label")
-		    .attr("opacity", 0)
-		    .attr("transform", "translate(975, 672)")
-		    .attr("dy", ".35em")
-		    .attr('x', 5)
-		    .text("Palma")
+	//  Palma.append("text")
+	// 	    .attr("class", "place-label")
+	// 	    .attr("opacity", 0)
+	// 	    .attr("transform", "translate(304, 640)")
+	// 	    .attr("dy", ".35em")
+	// 	    .attr('x', 5)
+	// 	    .text("Palma");
 
-	  Palma.append("circle")
-	  	.attr("cx", 270)
-	   	.attr("cy", 672)
-	   	.attr("id", "Palma")
-	   	.style("stroke", "#444")
-	   	.attr("r", 4);
+	//   Palma.append("circle")
+	//   	.attr("cx", 304)
+	//    	.attr("cy", 640)
+	//    	.attr("id", "Palma")
+	//    	.style("stroke", "#444")
+	//    	.attr("r", 4);
 	});
 }
 
@@ -318,7 +307,7 @@ function makeOthers(container, map){
 					d3.select(this).select("text").attr("x", 80)
 					d3.select("#book").style("opacity",0)
 					d3.selectAll("#resultsBox").remove()
-					d3.selectAll("#resultsBox2").remove()
+					//d3.selectAll("#resultsBox2").remove()
 
 			}})
         .on("mouseover", function() {
@@ -370,16 +359,16 @@ function showboxes(others, map){
 		.attr('width', 329)
 		.attr('height', 400)
 
-	others.append('rect')
-		.attr('id', 'resultsBox2')
-		.attr('fill', 'white')
-		.attr('stroke', 'grey')
-		.attr('x', 390)
-		.attr('y', 400)
-		.attr("rx", 15) //rx and ry give the buttons rounded corners
-        .attr("ry", 15)
-		.attr('width', 329)
-		.attr('height', 400)
+	// others.append('rect')
+	// 	.attr('id', 'resultsBox2')
+	// 	.attr('fill', 'white')
+	// 	.attr('stroke', 'grey')
+	// 	.attr('x', 390)
+	// 	.attr('y', 400)
+	// 	.attr("rx", 15) //rx and ry give the buttons rounded corners
+ //        .attr("ry", 15)
+	// 	.attr('width', 329)
+	// 	.attr('height', 400)
 
 	var results = others.append('g')
 		.attr('id', 'resultsBox').selectAll("g")
@@ -401,6 +390,9 @@ function showboxes(others, map){
 
 		return d.values[0].values[0]['Total Price']
 	});
+
+
+	console.log(flights[0])
 	
 	var options1Cities = others.append('g')
 		.attr('id', resultsBox).selectAll('g')
@@ -414,7 +406,7 @@ function showboxes(others, map){
 		.attr("stroke", "none")
 		.text(function (d,i){
 				if (i > 0){
-					cities += " -> " + d
+					cities += (" -> " + d)
 				}
 				else {
 					cities += d
@@ -509,16 +501,16 @@ function node_link(d, map){
    	    .attr('class', 'link')
    	    .attr("stroke", function(d) {return(color_scale[+d.seq])})
    	    .attr("x1", function(d) {if (!(d.source == 'Atlanta' || d.source == 'Orlando' || d.source == 'Palma')) {var t = d3.transform(d3.select("#"+d.source).attr("transform")); return (t.translate[0]);}
-       							  else if (d.source == 'Palma'){return 270}
+       							  else if (d.source == 'Palma'){return 280}
        							  else {return 0}})
 		.attr("y1", function(d) {if (!(d.source == 'Atlanta' || d.source == 'Orlando' || d.source == 'Palma')) {var t = d3.transform(d3.select("#"+d.source).attr("transform")); return (t.translate[1]);}
-       							  else if (d.source == 'Palma'){return 672}
+       							  else if (d.source == 'Palma'){return 648}
    							      else {return 400}})
   		.attr("x2", function(d) { if (!(d.target == 'Atlanta' || d.target == 'Orlando' || d.target == 'Palma')) {var t = d3.transform(d3.select("#"+d.target).attr("transform")); return (t.translate[0]);}
-       							  else if (d.target == 'Palma'){return 270}
+       							  else if (d.target == 'Palma'){return 280}
        							  else {return 20}})
   		.attr("y2", function(d) {if (!(d.target == 'Atlanta' || d.target == 'Orlando' || d.target == 'Palma')) {var t = d3.transform(d3.select("#"+d.target).attr("transform")); return (t.translate[1]);}
-       							  else if (d.target == 'Palma'){return 672}
+       							  else if (d.target == 'Palma'){return 648}
        							  else {return 300}})
   		.on("mouseover", linkTip.show)
   		.on("mouseout", linkTip.hide);
@@ -531,9 +523,9 @@ function node_link(d, map){
     node.append("circle")
           .attr("r", 5)
        	  .attr("cx", function(d){ if (!(d.source == 'Atlanta' || d.source == 'Orlando' || d.source == 'Palma')) {var t = d3.transform(d3.select("#"+d.source).attr("transform")); return (t.translate[0]);}
-       							  else if (d.source == 'Palma'){return 270}})
+       							  else if (d.source == 'Palma'){return 280}})
        	  .attr("cy", function(d){ if (!(d.source == 'Atlanta' || d.source == 'Orlando' || d.source == 'Palma')) {var t = d3.transform(d3.select("#"+d.source).attr("transform")); return (t.translate[1]);}
-    							  else if (d.source == 'Palma'){return 672}})
+    							  else if (d.source == 'Palma'){return 648}})
        	  .on("mouseover", nodeTip.show)
        	  .on("mouseout", nodeTip.hide);
 }
