@@ -132,12 +132,12 @@ text.resultHeader {
 
 .d3-tip {
   line-height: 1;
-  font-weight: bold;
-  padding: 12px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  border-radius: 2px;
-  position: relative;
+  padding: 6px;
+  background: #ebebeb;
+  color: black;
+  border-color: #444;
+  border-radius: 8px;
+  border-style: solid;
 }
 
 
@@ -256,7 +256,7 @@ text.resultHeader {
  margin-left: 20px;
  font-family: Palatino;
  font-size: 17px;
- width: 940px;
+ width: 200px;
  padding: 10px;
  z-index: 1;
 }
@@ -266,7 +266,7 @@ text.resultHeader {
   margin-left: 20px;
   font-family: Palatino;
   font-size: 17px;
-  width: 940px;
+  width: 200px;
   padding: 10px;
   z-index: 1;
 }
@@ -277,7 +277,7 @@ text.resultHeader {
   margin-left: 20px;
   font-family: Palatino;
   font-size: 17px;
-  width: 940px;
+  width: 200px;
   padding: 10px;
   z-index: 1;
 }
@@ -328,12 +328,17 @@ background-color:#0066FF;
 }
 
 .node {
-    fill: #ccc;
-    stroke: #fff;
-    stroke-width: 2px;
+    fill: lightgrey;
+    stroke: black;
+    stroke-width: 1px;
 }
 
 .link {
-    stroke: #777;
-    stroke-width: 2px;
+    stroke-width: 2.6px;
+}
+
+.palma {
+  z-index: -1;
+  opacity: 1;
+  fill: black;
 }

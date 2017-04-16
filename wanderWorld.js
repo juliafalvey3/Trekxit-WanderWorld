@@ -20,12 +20,6 @@ function init(){
 	var container = d3.select('#vis').append('svg')
 	    .attr('width', width)
 	    .attr('height', height);
-	makeOthers(container)
-	makeMap(container)
-
-}
-
-function makeMap(container){
 
 	var map = container.append('svg')
 	    .attr('width', mapW)
@@ -33,11 +27,19 @@ function makeMap(container){
 	    .attr('transform', 'translate('+mapX+','+mapY+')')
 	    .attr('fill', 'none');
 
-	var rect = container.append('circle')
+	makeOthers(container, map)
+	makeMap(container, map)
+
+}
+
+function makeMap(container, map){
+
+	var circ = map.append('circle')
 		.attr("r", 16)
-		.attr('cx', 1260)
+		.attr('cx', 560)
 		.attr('cy', 610)
-		.attr('fill', '#3690c0')
+		.attr("opacity", 1)
+		.attr('fill', '#5BA7CF');
 
 	var projection = d3.geo.mercator()
 		.scale(projScale)
@@ -66,7 +68,8 @@ function makeMap(container){
 	    .selectAll("path")
 	    .data(subunits)
 	    .enter().append("path")
-			.attr('fill', "#3690c0")
+			.attr('fill', "#5BA7CF")
+			.style("opacity", 1)
 	     .attr("d", path)
 	     .attr('id', function(d){return d.id});
 
@@ -116,11 +119,41 @@ function makeMap(container){
 	 	.style("stroke", "#444")
 	 	.attr("r", 4)
 
+	 Palma = map.append(".place-label")
+	 	.data("Palma")
+	 	.enter().append(g)
+	 	.on("mouseover", function(d){d3.select(this).selectAll("*").style("opacity", 0.9); })
+		.on("mouseout", function(d){d3.select(this).selectAll("*").style("opacity", 0)});
+	 
+	 Palma.append("rect")
+		 	.attr("width", function(d){len = "Palma".length; return (6*len+(len/2)*5+15)})//; return text.length*5})
+		 	.attr("height", 20)
+		 	.attr("fill", "white")
+		 	.style("opacity", 0)
+		 	.attr("x", 975)
+		 	.attr("y", 663)
+		 	.on("mouseover", function(d){d3.select(this).selectAll("*").style("opacity", 0.9); })
+			.on("mouseout", function(d){d3.select(this).selectAll("*").style("opacity", 0)});
+
+	 Palma.append("text")
+		    .attr("class", "place-label")
+		    .attr("opacity", 0)
+		    .attr("transform", "translate(975, 672)")
+		    .attr("dy", ".35em")
+		    .attr('x', 5)
+		    .text("Palma")
+
+	  Palma.append("circle")
+	  	.attr("cx", 270)
+	   	.attr("cy", 672)
+	   	.attr("id", "Palma")
+	   	.style("stroke", "#444")
+	   	.attr("r", 4);
 	});
 }
 
 
-function makeOthers(container){
+function makeOthers(container, map){
 
 // #dropdowns  https://bl.ocks.org/mbostock/5872848
 	var others = container.append('svg')
@@ -136,12 +169,6 @@ function makeOthers(container){
         .attr("ry", 15)
 		.attr('width', 390)
 		.attr('height', 800)
-
-	juliaWork(others)
-
-}
-
-function juliaWork(others){
 
 	startText = others.append("text")
 				.attr('id', "start")
@@ -249,7 +276,7 @@ function juliaWork(others){
                     d3.select(this).select("rect").attr("fill", pressedColor);
                     d3.select(this).select("text").text("Trips Incoming!");
                     d3.select(this).select("text").attr("x", 110);
-                    showboxes(others);
+                    showboxes(others, map);
                     outputList.push({key: "Origin", value: onChange ()});
                     outputList.push({key: "Dests",
                     	value: Array.prototype.slice
@@ -321,17 +348,17 @@ function juliaWork(others){
 }
 
 
-function showboxes(others){
+function showboxes(others, map){
 
 	// load the data
 	d3.csv("./optimization/niceOutput.csv", function(data) {
-    console.log(data[0]);    
+
+
     var flights = null;
         flights = d3.nest()
        .key(function(d) {return d['TripID']})
        .key(function(d) {return d['Seq']})
        .entries(data);
-
 
     others.append('rect')
 		.attr('id', 'resultsBox')
@@ -366,13 +393,11 @@ function showboxes(others){
 		.attr('y', function(d,i){return i*130 + 70})
 		.attr('stroke', 'none')
 		.text(function(d){
-
-			
-				d.Price = []
+	d.Price = []
 				d.Origin = []
 				for( i = 0; i < d.values.length; i+= 1){
 					d.Price.push(d.values[i].values[0].Price)
-					d.Origin.push(d.values[i].values[0].Origin)
+					d.Origin.push(d.values[i].values[0].Origin_ID)
 				}
 
 		return d.values[0].values[0]['Total Price']
@@ -419,8 +444,8 @@ function showboxes(others){
         .on("mouseout", function() {
             if (d3.select(this).attr("fill") != "grey") {
                 d3.select(this).attr("fill","black")}})
-		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d, others)}
-                else {d3.select(this).attr("fill", "black"), console.log("remove")}});
+		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), node_link(d, map)}
+                else {d3.select(this).attr("fill", "black"), d3.selectAll(".link").remove(), d3.selectAll(".node").remove()}});
 	option2Text = results.append('text');
 	option2Text.text("Option 2 : Price")
 		.attr("x", 400)
@@ -431,66 +456,85 @@ function showboxes(others){
         .on("mouseout", function() {
             if (d3.select(this).attr("fill") != "grey") {
                 d3.select(this).attr("fill","black")}})
-		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d, others)}
-                else {d3.select(this).attr("fill", "black"), console.log("remove")}});
+		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), node_link(d, map)}
+                else {d3.select(this).attr("fill", "black"),  d3.selectAll(".link").remove(), d3.selectAll(".node").remove()}});
 
 
 	});
 }
 
+function node_link(d, map){
 
+	color_scale = ["#04476B", "MidnightBlue", "#133AAC", "#972808", "#112CD6", "#6c6960"] //BE3F3F
 
+	var sourceList = [],
+		targetList = [],
+		orderList = [],
+		linkList = [],
+		landDateList = [],
+		departDateList = [],
+		priceList = [];
 
-function clickResult(d, others){
-	node_link(d, others)
-}
-
-function node_link(d, others){
-	color_scale = d3.scale.category10()
-
-	console.log(d)
-	sourceList = []
-	targetList = []
-
-// 	var force = d3.layout.force()
-//     	.size([width, height])
-//    		.nodes(nodes)
-//     	.links(linkList);
-
-	// var path = others.append("g").selectAll("path")
- //    .data(linkList)
- //  		.enter().append("path")
- //    .style("stroke", function(d,i){color_scale[i]})
- //    .attr();
-  
 	for (i=0; i<d.values.length; i+=1){
-		sourceList.push(d.values[i].values[0].Origin_Name)
+		sourceList.push({source: d.values[i].values[0].Origin_Name})
 		targetList.push(d.values[i].values[0].Dest_Name)
+		orderList.push(d.values[i].values[0].Seq)
+		landDateList.push(d.values[i].values[0].Date1)
+		departDateList.push(d.values[i].values[0].Date2)
+		priceList.push(d.values[i].values[0].Price)
 	}
-	linkList = []
+
 	for(i=0; i<d.values.length; i+=1){
-		linkList.push({source:sourceList[i],target:targetList[i]})
+		linkList.push({source:sourceList[i].source, target:targetList[i], seq:orderList[i], land: landDateList[i], depart: departDateList[i], price: priceList[i]})
 	}
 
-	console.log(linkList)
-	// var path = others.append("g").selectAll("path")
- //    .data(linkList)
- //  		.enter().append("path")
- //    .style("stroke", function(d,i){color_scale[i]});
-	//var link = ;
-	// var svg = d3.select("body").append("svg")
-	//     .attr("width", 900)
-	//     .attr("height", 800)
-	//   .append("g");
+	console.log(sourceList)
 
-	// var raceData = null;
-	// var teamData = null;
+ 	var linkTip = d3.tip()
+			  .attr('class', 'd3-tip')
+			  .html(function(d){return ("<i> Destination: </i> "  + d.target + " </br> <i> Flight Price: </i> $" + d.price + "</br> <i>Land Date: </i>" + d.land + " </br> <i>Depart Date:</i> " + d.depart)})
 
-	// teamData = d3.nest()
-	//     .key(function(d) { return d['driver'];})
-	//     .key(function(d){return d['team']})
-	//     .entries(dataset);
+ 	var nodeTip = d3.tip()
+			  .attr('class', 'd3-tip')
+			  .html(function(d){return ("<i> City: </i> "  + d.source + " </br> <i> Flight Price: </i> $" + d.price + "</br> <i>Land Date: </i>" + d.land + " </br> <i>Depart Date:</i> " + d.depart)})
 
-	// teamData = teamData.sort(function (a,b) {return d3.ascending(a.key, b.key)})
-	// teamData = teamData.sort(function (a,b) {return d3.descending(a.values[0],b.values[0]); });
+	var linkTP = map.append('g')
+		.data(linkList);
+
+	linkTP.call(linkTip)
+	linkTP.call(nodeTip)
+
+   	var link = map.selectAll('.link')
+   	    .data(linkList)
+   	    .enter().append('line')
+   	    .attr('class', 'link')
+   	    .attr("stroke", function(d) {return(color_scale[+d.seq])})
+   	    .attr("x1", function(d) {if (!(d.source == 'Atlanta' || d.source == 'Orlando' || d.source == 'Palma')) {var t = d3.transform(d3.select("#"+d.source).attr("transform")); return (t.translate[0]);}
+       							  else if (d.source == 'Palma'){return 270}
+       							  else {return 0}})
+		.attr("y1", function(d) {if (!(d.source == 'Atlanta' || d.source == 'Orlando' || d.source == 'Palma')) {var t = d3.transform(d3.select("#"+d.source).attr("transform")); return (t.translate[1]);}
+       							  else if (d.source == 'Palma'){return 672}
+   							      else {return 400}})
+  		.attr("x2", function(d) { if (!(d.target == 'Atlanta' || d.target == 'Orlando' || d.target == 'Palma')) {var t = d3.transform(d3.select("#"+d.target).attr("transform")); return (t.translate[0]);}
+       							  else if (d.target == 'Palma'){return 270}
+       							  else {return 20}})
+  		.attr("y2", function(d) {if (!(d.target == 'Atlanta' || d.target == 'Orlando' || d.target == 'Palma')) {var t = d3.transform(d3.select("#"+d.target).attr("transform")); return (t.translate[1]);}
+       							  else if (d.target == 'Palma'){return 672}
+       							  else {return 300}})
+  		.on("mouseover", linkTip.show)
+  		.on("mouseout", linkTip.hide);
+
+    var node = map.selectAll(".node")
+    	.data(linkList)
+      .enter().append("g")
+        .attr("class", "node");
+
+    node.append("circle")
+          .attr("r", 5)
+       	  .attr("cx", function(d){ if (!(d.source == 'Atlanta' || d.source == 'Orlando' || d.source == 'Palma')) {var t = d3.transform(d3.select("#"+d.source).attr("transform")); return (t.translate[0]);}
+       							  else if (d.source == 'Palma'){return 270}})
+       	  .attr("cy", function(d){ if (!(d.source == 'Atlanta' || d.source == 'Orlando' || d.source == 'Palma')) {var t = d3.transform(d3.select("#"+d.source).attr("transform")); return (t.translate[1]);}
+    							  else if (d.source == 'Palma'){return 672}})
+       	  .on("mouseover", nodeTip.show)
+       	  .on("mouseout", nodeTip.hide);
 }
