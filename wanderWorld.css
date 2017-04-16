@@ -88,6 +88,9 @@ div.otherText p {
 #sections {
   position: relative;
   width: 250px;
+/*  position: absolute ;
+
+  width: 650px;*/
   top: 0px;
 }
 
@@ -123,8 +126,16 @@ text.helper {
 }
 text.resultHeader {
   font-family:Palatino;
-  font-size:25px;
+  font-size:44px;
   font-weight:bold;
+  fill:#3690c0;
+  stroke: grey;
+  stroke-opacity: 0.5;
+}
+text.pricetext {
+  font-family:Palatino;
+  font-size:18px;
+  fill:#000;
 }
 .counties {
   fill: none;

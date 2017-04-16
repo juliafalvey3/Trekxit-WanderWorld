@@ -257,7 +257,6 @@ function juliaWork(others){
 					d3.select(this).select("text").attr("x", 80)
 					d3.select("#book").style("opacity",0)
 					d3.selectAll("#resultsBox").remove()
-					d3.selectAll("#resultsBox2").remove()
 
 			}})
         .on("mouseover", function() {
@@ -304,6 +303,9 @@ function showboxes(others){
        .key(function(d) {return d['Seq']})
        .entries(data);
 
+    numberofTrips = flights.length;
+    console.log(numberofTrips)
+
 
     others.append('rect')
 		.attr('id', 'resultsBox')
@@ -314,89 +316,57 @@ function showboxes(others){
 		.attr("rx", 15) //rx and ry give the buttons rounded corners
         .attr("ry", 15)
 		.attr('width', 329)
-		.attr('height', 400)
+		.attr('height', 320)
 
-	others.append('rect')
-		.attr('id', 'resultsBox2')
-		.attr('fill', 'white')
-		.attr('stroke', 'grey')
-		.attr('x', 390)
-		.attr('y', 400)
-		.attr("rx", 15) //rx and ry give the buttons rounded corners
-        .attr("ry", 15)
-		.attr('width', 329)
-		.attr('height', 400)
 
 	var results = others.append('g')
 		.attr('id', 'resultsBox').selectAll("g")
 		.data(flights)
 		.enter().append('g')
-
-	results.append('text')
-		.attr("class", "text")
-		.attr('x', 530)
-		.attr('y', function(d,i){return i*130 + 70})
-		.attr('stroke', 'none')
-		.text(function(d){
-
-			
-				d.Price = []
-				d.Origin = []
-				for( i = 0; i < d.values.length; i+= 1){
-					d.Price.push(d.values[i].values[0].Price)
-					d.Origin.push(d.values[i].values[0].Origin)
-				}
-
-		return d.values[0].values[0]['Total Price']
-	});
 	
-	var options1Cities = others.append('g')
-		.attr('id', resultsBox).selectAll('g')
-		.data(flights[0].Origin)
-		.enter().append('g')
-	cities = ""
-	options1Cities.append("text")
-		.attr("class", "text")
-		.attr("x", 400)
-		.attr("y", 100)
-		.attr("stroke", "none")
-		.text(function (d,i){
-				if (i > 0){
-					cities += " -> " + d
-				}
-				else {
-					cities += d
-				}
-				return cities
-		});
-
-	flightText = results.append('text');
+	flightText = results.append('text')
 	flightText.text("Wander to...")
 		.attr("class", "resultHeader")
 		.attr("x", 400)
 		.attr("y", 40)
-	detailsText = results.append('text');
-	detailsText.text("Click on an option for details.")
-		.attr("class", "helper")
-		.attr("x", 400)
-		.attr("y", 55)
+
+	if (numberofTrips < 1) {
+		errorText = results.append('text')
+		errorText.text("Sorry, no options for those choices!")
+			.attr("class", "text")
+			.attr("x", 402)
+			.attr("y", 80)
+	}	
+
+	if (numberofTrips > 0 ){ 
+		detailsText = results.append('text');
+		detailsText.text("Click on an option for details.")
+			.attr("class", "helper")
+			.attr("x", 402)
+			.attr("y", 60)
+
+		results.append('text')
+			.attr("class", "pricetext")
+			.attr('x', 478)
+			.attr('y', function(d,i){return i*50 + 80})
+			.text(function(d, i ){
+					d.Price = []
+					d.Origin = []
+					for( j = 0; j < d.values.length; j+= 1){
+						d.Price.push(d.values[j].values[0].Price)
+						d.Origin.push(d.values[j].values[0].Origin)
+					}
+			
+			return "Price $" + d.values[0].values[0]['Total_Price']
+		
+		});
+
+
 	option1Text = results.append('text');
-	option1Text.text("Option 1 : Price")
-		.attr("class", "resulttext")
-		.attr("x", 400)
-		.attr("y", 70)
-		.on("mouseover", function() {
-            if (d3.select(this).attr("fill") != "grey") {
-                d3.select(this).attr("fill", "blue"); }})
-        .on("mouseout", function() {
-            if (d3.select(this).attr("fill") != "grey") {
-                d3.select(this).attr("fill","black")}})
-		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d)} 
-                else {d3.select(this).attr("fill", "black"), console.log("remove")}});
-	option2Text = results.append('text');
-	option2Text.text("Option 2 : Price")
-		.attr("x", 400)
-		.attr("y", 200)
+	option1Text.text("Option 1 : ")
+		.attr("class", "text")
+		.attr("x", 402)
+		.attr("y", 80)
 		.on("mouseover", function() {
             if (d3.select(this).attr("fill") != "grey") {
                 d3.select(this).attr("fill", "blue"); }})
@@ -406,6 +376,162 @@ function showboxes(others){
 		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d)} 
                 else {d3.select(this).attr("fill", "black"), console.log("remove")}});
 
+	var options1Cities = others.append('g')
+		.attr('id', resultsBox).selectAll('g')
+		.data(flights[0].Origin)
+		.enter().append('g')
+	cities1 = ""
+	options1Cities.append("text")
+		.attr("class", "text")
+		.attr("x", 405)
+		.attr("y", 100)
+		.attr("stroke", "none")
+		.text(function (d,i){
+				if (i > 0){
+					cities1 += " -> " + d
+				}
+				else {
+					cities1 += d
+				}
+				return cities1
+		});
+	}
+	if (numberofTrips > 1) {
+		option2Text = results.append('text');
+		option2Text.text("Option 2 : ")
+			.attr("class", "text")
+			.attr("x", 402)
+			.attr("y", 130)
+			.on("mouseover", function() {
+	            if (d3.select(this).attr("fill") != "grey") {
+	                d3.select(this).attr("fill", "blue"); }})
+	        .on("mouseout", function() {
+	            if (d3.select(this).attr("fill") != "grey") {
+	                d3.select(this).attr("fill","black")}})
+			.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d)} 
+	                else {d3.select(this).attr("fill", "black"), console.log("remove")}});
+		var options2Cities = others.append('g')
+			.attr('id', resultsBox).selectAll('g')
+			.data(flights[1].Origin)
+			.enter().append('g')
+		cities2 = ""
+		options2Cities.append("text")
+			.attr("class", "text")
+			.attr("x", 405)
+			.attr("y", 150)
+			.attr("stroke", "none")
+			.text(function (d,i){
+					if (i > 0){
+						cities2 += " -> " + d
+					}
+					else {
+						cities2 += d
+					}
+					return cities2
+			});
+	}
+	if (numberofTrips > 2) {
+		option3Text = results.append('text');
+		option3Text.text("Option 3 : ")
+			.attr("class", "text")
+			.attr("x", 402)
+			.attr("y", 180)
+			.on("mouseover", function() {
+	            if (d3.select(this).attr("fill") != "grey") {
+	                d3.select(this).attr("fill", "blue"); }})
+	        .on("mouseout", function() {
+	            if (d3.select(this).attr("fill") != "grey") {
+	                d3.select(this).attr("fill","black")}})
+			.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d)} 
+	                else {d3.select(this).attr("fill", "black"), console.log("remove")}});
+		var options3Cities = others.append('g')
+			.attr('id', resultsBox).selectAll('g')
+			.data(flights[2].Origin)
+			.enter().append('g')
+		cities3 = ""
+		options3Cities.append("text")
+			.attr("class", "text")
+			.attr("x", 405)
+			.attr("y", 200)
+			.attr("stroke", "none")
+			.text(function (d,i){
+					if (i > 0){
+						cities3 += " -> " + d
+					}
+					else {
+						cities3 += d
+					}
+					return cities3
+			});
+	}
+	if (numberofTrips > 3) {
+		option4Text = results.append('text');
+		option4Text.text("Option 4 : ")
+			.attr("class", "text")
+			.attr("x", 402)
+			.attr("y", 230)
+			.on("mouseover", function() {
+	            if (d3.select(this).attr("fill") != "grey") {
+	                d3.select(this).attr("fill", "blue"); }})
+	        .on("mouseout", function() {
+	            if (d3.select(this).attr("fill") != "grey") {
+	                d3.select(this).attr("fill","black")}})
+			.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d)} 
+	                else {d3.select(this).attr("fill", "black"), console.log("remove")}});
+		var options4cities = others.append('g')
+			.attr('id', resultsBox).selectAll('g')
+			.data(flights[3].Origin)
+			.enter().append('g')
+		cities4 = ""
+		options4cities.append("text")
+			.attr("class", "text")
+			.attr("x", 405)
+			.attr("y", 250)
+			.attr("stroke", "none")
+			.text(function (d,i){
+					if (i > 0){
+						cities4 += " -> " + d
+					}
+					else {
+						cities4 += d
+					}
+					return cities4
+			});
+	}
+	if (numberofTrips > 4) {
+		option5Text = results.append('text');
+		option5Text.text("Option 5 : ")
+			.attr("class", "text")
+			.attr("x", 402)
+			.attr("y", 280)
+			.on("mouseover", function() {
+	            if (d3.select(this).attr("fill") != "grey") {
+	                d3.select(this).attr("fill", "blue"); }})
+	        .on("mouseout", function() {
+	            if (d3.select(this).attr("fill") != "grey") {
+	                d3.select(this).attr("fill","black")}})
+			.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d)} 
+	                else {d3.select(this).attr("fill", "black"), console.log("remove")}});
+		var options5cities = others.append('g')
+			.attr('id', resultsBox).selectAll('g')
+			.data(flights[4].Origin)
+			.enter().append('g')
+		cities5 = ""
+		options5cities.append("text")
+			.attr("class", "text")
+			.attr("x", 405)
+			.attr("y", 300)
+			.attr("stroke", "none")
+			.text(function (d,i){
+					if (i > 0){
+						cities5 += " -> " + d
+					}
+					else {
+						cities5 += d
+					}
+					return cities5
+			});
+		}
 
 	});
 }
