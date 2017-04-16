@@ -13,6 +13,7 @@ class WanderWorld:
         self.fulldf = fulldf
         self.rawDictionary = createRawDictionary(self.fulldf)
         self.version = 'V1'
+        self.cityCodeMap = createCityCodeMap(self.fulldf)
         
     
     def inputTimeFrame(self,user_start, user_end, city_list, num_days, min_days, origin):

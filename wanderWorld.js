@@ -1,14 +1,14 @@
 var width = 1400,
 	height = 800;
 
-var mapW = 800,
+var mapW = 680,
 	mapH = 1000,
-	mapX = 660,
+	mapX = 700,
 	mapY = 0;
 
-var projScale = 700,
-	projX = 300,
-	projY = 1250;
+var projScale = 900,
+	projX = 230,
+	projY = 1350;
 
 var otherW = width-mapW
 	otherH = 1000;
@@ -33,6 +33,11 @@ function makeMap(container){
 	    .attr('transform', 'translate('+mapX+','+mapY+')')
 	    .attr('fill', 'none');
 
+	var rect = container.append('circle')
+		.attr("r", 16)
+		.attr('cx', 1260)
+		.attr('cy', 610)
+		.attr('fill', '#3690c0')
 
 	var projection = d3.geo.mercator()
 		.scale(projScale)
@@ -40,9 +45,9 @@ function makeMap(container){
 
 	var path = d3.geo.path().projection(projection);
 
- 	var tip = d3.tip()
-			  .attr('class', 'd3-tip')
-			  .html(function(d){return d.properties.name})
+ 	// var tip = d3.tip()
+		// 	  .attr('class', 'd3-tip')
+		// 	  .html(function(d){return d.properties.name})
 
 	d3.json("eu.json", function(error, eu) {
 	  if (error) return console.error(error);
@@ -51,10 +56,10 @@ function makeMap(container){
 
   	var places = topojson.feature(eu, eu.objects.places);
 
-   	var tp = map.append("g")
- 		.data(subunits);
+ //   	var tp = map.append("g")
+ // 		.data(subunits);
 
-	tp.call(tip);
+	// tp.call(tip);
 
 	  map.append("g")
 	      .attr("class", "counties")
@@ -63,18 +68,57 @@ function makeMap(container){
 	    .enter().append("path")
 			.attr('fill', "#3690c0")
 	     .attr("d", path)
-	     .attr('id', function(d){return d.id})
-	  	.on("mouseover", tip.show)
-	    .on("mouseout", tip.hide);
+	     .attr('id', function(d){return d.id});
 
-		  map.append("path")
+
+	   map.append("path")
 	    .datum(topojson.mesh(eu, eu.objects.subunits, function(a, b) {return a !== b; }))
 	    .attr("d", path)
 	    .attr("fill", "none")
 	    .attr("stroke", "#252525")
 
+	   map.selectAll(".subunit-label")
+	       .data(topojson.feature(eu, eu.objects.subunits).features)
+	     .enter().append("text")
+	       .attr("class", function(d) { return "subunit-label " + d.id; })
+	       .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
+	       .attr("dy", ".35em")
+	       .text(function(d) { if(d.properties.name == 'Spain' || d.properties.name=='France' || d.properties.name=='Germany' || d.properties.name=='Poland'|| d.properties.name=='Italy') {return d.properties.name}; });
+
+	 cities = map.selectAll(".place-label")
+	    .data(topojson.feature(eu, eu.objects.places).features)
+	  .enter().append("g")
+	  .on("mouseover", function(d){d3.select(this).selectAll("*").style("opacity", 0.9); })
+	  .on("mouseout", function(d){d3.select(this).selectAll("rect").style("opacity", 0); d3.select(this).selectAll("text").style("opacity", 0); });
+
+	cities.append("rect")
+	 	.attr("width", function(d){len = d.properties.name.length; return (6*len+(len/2)*5+15)})//; return text.length*5})
+	 	.attr("height", 20)
+	 	.attr("fill", "white")
+	 	.style("opacity", 0)
+	 	.attr("x", function(d) { return (projection(d.geometry.coordinates)[0]) })
+	 	.attr("y", function(d) { return (projection(d.geometry.coordinates)[1] - 10) })
+
+	cities.append("text")
+	    .attr("class", "place-label")
+	    .attr("opacity", 0)
+	    .attr("transform", function(d) { return "translate(" + projection(d.geometry.coordinates) + ")"; })
+	    .attr("dy", ".35em")
+	    .attr('x', 5)
+	    .attr("id", function(d){return d.properties.name})
+	    .text(function(d) { return d.properties.name; })
+
+	cities.append("circle")
+		.attr("cx", function(d) { return (projection(d.geometry.coordinates)[0]) })
+	 	.attr("cy", function(d) { return (projection(d.geometry.coordinates)[1]) })
+	 	.style("fill", "grey")
+	 	.attr("id", function(d){return d.properties.name})
+	 	.style("stroke", "#444")
+	 	.attr("r", 4)
+
 	});
 }
+
 
 function makeOthers(container){
 
@@ -90,10 +134,9 @@ function makeOthers(container){
 		.attr('y', 0)
 		.attr("rx", 15) //rx and ry give the buttons rounded corners
         .attr("ry", 15)
-		.attr('width', 350)
+		.attr('width', 390)
 		.attr('height', 800)
 
-	claraWork(others)
 	juliaWork(others)
 
 }
@@ -108,10 +151,13 @@ function juliaWork(others){
 		.attr("x", 20)
 		.attr("y", 30)
 
-	var startCities = ["Select a Starting City", "Atlanta", "Boston", "New York", "Orlando"];
+    var startCities = ["Atlanta", "Boston", "New York", "Orlando"];
+    startCities.sort(function(x, y){ return d3.ascending(x, y);})
+    startCities.unshift("Select a Starting City")
 
 	var select = d3.select('body')
   		.append('select')
+  		.attr("id", "startSelect")
   		.attr("class", "select")
   		.on('change', onChange);
 
@@ -121,107 +167,13 @@ function juliaWork(others){
 		.text(function (d) {return d; });
 
 	function onChange (){
-		selectValue = d3.select('select').property('value')
-		console.log(selectValue)
+		selectValue = d3.select('#startSelect').property('value')
+		return selectValue;
 	}
-
-	var destCities = ['Barcelona', 'Madrid', 'Dublin', 'London', 'Edinburgh', 'Berlin', 'Paris', 'Marseilles'];
-	//Sort List
-	destCities.sort(function(x, y){ return d3.ascending(x, y);})
-	//Get Length of List
-	var destLen = destCities.length;
-	//Subset half of list
-	var dest1 = destCities.slice(0,Math.ceil(destLen/2))
-	//Get other half
-	var dest2 = destCities.slice(Math.ceil(destLen/2), destLen)
-
-	var buttons = others.append('g')
-		.attr('id', 'checkboxes');
 
 	var defaultColor= "#ebebeb";
     var hoverColor= "darkgrey";
     var pressedColor= "grey";
-
-	var cityButtons = buttons.selectAll("g")
-		.data(dest1)
-		.enter().append('g')
-		.attr('id', function(d){return d})
-		.attr("stroke", '#252525')
-		.on("click",function(d,i) {
-				if (d3.select(this).select("rect").attr("fill") != pressedColor) {
-                    d3.select(this).select("rect").attr("fill", pressedColor);
-                    console.log(d)
-             	}
-				else {
-					d3.select(this).select("rect").attr("fill", defaultColor)
-					console.log("removing "+d)
-			}})
-        .on("mouseover", function() {
-                if (d3.select(this).select("rect").attr("fill") != pressedColor) {
-                    d3.select(this).select("rect").attr("fill", hoverColor);
-             	}})
-        .on("mouseout", function() {
-                if (d3.select(this).select("rect").attr("fill") != pressedColor) {
-                    d3.select(this).select("rect").attr("fill",defaultColor);
-                }})
-	
-	 cityButtons.append("rect")
-        .attr("width", 12)
-        .attr("height", 12)
-        .attr("x", 30)
-        .attr("y", function(d,i){return (i*30 + 120)})
-        .attr("rx", 3) //rx and ry give the buttons rounded corners
-        .attr("ry", 3)
-        .attr("fill",defaultColor)
-
-	cityButtons.append('text')
-		.attr("class", "text")
-		.attr('stroke', 'none')
-		.attr('y', function(d,i){return (i*30 + 131)})
-		.attr('x', 50)
-		.text(function(d){return d});
-
-	var buttons2 = others.append('g')
-		.attr('id', 'checkboxes');
-
-	var cityButtons2 = buttons2.selectAll("g")
-		.data(dest2)
-		.enter().append('g')
-		.attr('id', function(d){return d})
-		.attr("stroke", '#252525')
-		.on("click",function(d,i) {
-				if (d3.select(this).select("rect").attr("fill") != pressedColor) {
-                    d3.select(this).select("rect").attr("fill", pressedColor);
-                    console.log(d)
-             	}
-				else {
-					d3.select(this).select("rect").attr("fill", defaultColor)
-					console.log("removing "+d)
-			}})
-        .on("mouseover", function() {
-                if (d3.select(this).select("rect").attr("fill") != pressedColor) {
-                    d3.select(this).select("rect").attr("fill", hoverColor);
-             	}})
-        .on("mouseout", function() {
-                if (d3.select(this).select("rect").attr("fill") != pressedColor) {
-                    d3.select(this).select("rect").attr("fill",defaultColor);
-                }})
-
-    cityButtons2.append("rect")
-        .attr("width", 12)
-        .attr("height", 12)
-        .attr("x", 150)
-        .attr("y", function(d,i){return (i*30 + 120)})
-        .attr("rx", 3) //rx and ry give the buttons rounded corners
-        .attr("ry", 3)
-        .attr("fill",defaultColor)
-
-	cityButtons2.append('text')
-		.attr("class", "text")
-		.attr('stroke', 'none')
-		.attr('y', function(d,i){return (i*30 + 131)})
-		.attr('x', 170)
-		.text(function(d){return d});
 
 	destinationText = others.append("text");
 
@@ -230,19 +182,60 @@ function juliaWork(others){
 		.attr("x", 20)
 		.attr("y", 100)
 
-	connectionText = others.append("text");
+	helpDestinationText = others.append("text");
 
-	connectionText.text("How many connections?")
+    helpDestinationText.text("Hold down the Cmd or Ctrl key to select up to 5 cities.")
+		.attr("class", "helper")
+		.attr("x", 20)
+		.attr("y", 120)
+
+	dateText = others.append("text");
+	dateText.text("What range of dates could you travel?")
 		.attr("class", "question")
 		.attr("x", 20)
-		.attr("y", 500)
+		.attr("y", 260);
+
+	helpdateText = others.append("text");
+	helpdateText.text("Choose a flexible time frame in which you want to travel.")
+		.attr("class", "helper")
+		.attr("x",20)
+		.attr("y", 280);
 
 	minDayText = others.append("text");
-
-	minDayText.html("Days in each location?")
+	minDayText.html("Min days in each location?")
 		.attr("class", "question")
 		.attr("x", 20)
-		.attr("y", 260)
+		.attr("y", 375)
+
+	helpMinDayText = others.append("text");
+	helpMinDayText.text("What is the minimum number of days you want to stay in each city?")
+		.attr("class", "helper")
+		.attr("x", 20)
+		.attr("y", 395);
+
+	numDaysText = others.append("text");
+	numDaysText.html("Total days you want to travel?")
+       .attr("class", "question")
+       .attr("x", 20)
+       .attr("y", 450);
+
+    helpnumDaysText = others.append("text");
+    helpnumDaysText.text("What is the total number of days you want to spend traveling?")
+    	.attr("class", "helper")
+    	.attr("x", 20)
+    	.attr("y", 470);
+
+	budgetText = others.append("text");
+	budgetText.text("What is your budget? (USD)")
+		.attr("class", "question")
+		.attr("x", 20)
+		.attr("y", 640);
+
+	helpbudgetText = others.append("text");
+    helpbudgetText.text("We'll show you several travel options within your budget!")
+    	.attr("class", "helper")
+    	.attr("x", 20)
+    	.attr("y", 660);
 
 	buttonText = ["Find My Optimal Trips!"]
 	var optimize = others.append('g')
@@ -251,18 +244,54 @@ function juliaWork(others){
 		.enter().append('g')
 		.attr("stroke", '#252525')
 		.on("click",function(d,i) {
+				var outputList = [];
 				if (d3.select(this).select("rect").attr("fill") != pressedColor) {
                     d3.select(this).select("rect").attr("fill", pressedColor);
-                    d3.select(this).select("text").text("Trips Incoming!")
-                    d3.select(this).select("text").attr("x", 110)
-                    showboxes(others)
+                    d3.select(this).select("text").text("Trips Incoming!");
+                    d3.select(this).select("text").attr("x", 110);
+                    showboxes(others);
+                    outputList.push({key: "Origin", value: onChange ()});
+                    outputList.push({key: "Dests",
+                    	value: Array.prototype.slice
+             				.call(document.querySelectorAll('#multDropDown option:checked'),0)
+             				.map(function(v,i,a) {
+    						return v.value;})});
+                    outputList.push({key: "Start Date",
+                    	value: Array.prototype.slice
+             				.call(document.querySelectorAll('#field1'),0)
+             				.map(function(v,i,a) {
+    						return v.value;})[0]});
+                    outputList.push({key: "End Date",
+                    	value: Array.prototype.slice
+             				.call(document.querySelectorAll('#field2'),0)
+             				.map(function(v,i,a) {
+    						return v.value;})[0]});
+                    outputList.push({key: "Min Days",
+                    	value: Array.prototype.slice
+             				.call(document.querySelectorAll('#minDaysInput'),0)
+             				.map(function(v,i,a) {
+    						return v.value;})[0]});
+                    outputList.push({key: "Num Days",
+                    	value: Array.prototype.slice
+             				.call(document.querySelectorAll('#numDaysInput'),0)
+             				.map(function(v,i,a) {
+    						return v.value;})[0]});
+                    outputList.push({key: "Budget",
+                    	value: Array.prototype.slice
+             				.call(document.querySelectorAll('#budgetInput'),0)
+             				.map(function(v,i,a) {
+    						return v.value;})[0]});
+                    console.log(outputList);
              	}
+
 				else {
 					d3.select(this).select("rect").attr("fill", defaultColor)
 					console.log("removing "+d)
 					d3.select(this).select("text").text(buttonText)
 					d3.select(this).select("text").attr("x", 80)
+					d3.select("#book").style("opacity",0)
 					d3.selectAll("#resultsBox").remove()
+					d3.selectAll("#resultsBox2").remove()
 
 			}})
         .on("mouseover", function() {
@@ -272,7 +301,7 @@ function juliaWork(others){
         .on("mouseout", function() {
                 if (d3.select(this).select("rect").attr("fill") != pressedColor) {
                     d3.select(this).select("rect").attr("fill",defaultColor)}});
-	
+
 	optimize.append("rect")
 			.attr("width", 275)
 			.attr("height", 30)
@@ -281,7 +310,7 @@ function juliaWork(others){
 			.attr("rx", 3) //rx and ry give the buttons rounded corners
 			.attr("ry", 3)
 			.attr("fill", defaultColor);
-		
+
 	optimize.append('text')
 			.attr('class', 'text')
 			.attr("stroke", "none")
@@ -291,50 +320,177 @@ function juliaWork(others){
 
 }
 
-function claraWork(others){
-	
-
-	dateText = others.append("text");
-
-	dateText.text("What dates do you want to travel?")
-		.attr("class", "question")
-		.attr("x", 20)
-		.attr("y", 330);
-
-	budgetText = others.append("text");
-
-	budgetText.text("What is your budget range?")
-		.attr("class", "question")
-		.attr("x", 20)
-		.attr("y", 600)
-
-}
-
-var resultsData = [{'Trip1': '$800'}]
 
 function showboxes(others){
-	others.append('rect')
+
+	// load the data
+	d3.csv("./optimization/niceOutput.csv", function(data) {
+    console.log(data[0]);    
+    var flights = null;
+        flights = d3.nest()
+       .key(function(d) {return d['TripID']})
+       .key(function(d) {return d['Seq']})
+       .entries(data);
+
+
+    others.append('rect')
 		.attr('id', 'resultsBox')
 		.attr('fill', 'white')
 		.attr('stroke', 'grey')
-		.attr('x', 370)
+		.attr('x', 390)
 		.attr('y', 0)
 		.attr("rx", 15) //rx and ry give the buttons rounded corners
         .attr("ry", 15)
-		.attr('width', 230)
+		.attr('width', 329)
+		.attr('height', 400)
+
+	others.append('rect')
+		.attr('id', 'resultsBox2')
+		.attr('fill', 'white')
+		.attr('stroke', 'grey')
+		.attr('x', 390)
+		.attr('y', 400)
+		.attr("rx", 15) //rx and ry give the buttons rounded corners
+        .attr("ry", 15)
+		.attr('width', 329)
 		.attr('height', 400)
 
 	var results = others.append('g')
 		.attr('id', 'resultsBox').selectAll("g")
-		.data(resultsData)
+		.data(flights)
 		.enter().append('g')
-		.attr("stroke", '#252525')
 
 	results.append('text')
 		.attr("class", "text")
-		.attr('x', 380)
-		.attr('y', function(d,i){return i*20 + 30})
+		.attr('x', 530)
+		.attr('y', function(d,i){return i*130 + 70})
 		.attr('stroke', 'none')
-		.text(function(d){return d})
+		.text(function(d){
 
+			
+				d.Price = []
+				d.Origin = []
+				for( i = 0; i < d.values.length; i+= 1){
+					d.Price.push(d.values[i].values[0].Price)
+					d.Origin.push(d.values[i].values[0].Origin)
+				}
+
+		return d.values[0].values[0]['Total Price']
+	});
+	
+	var options1Cities = others.append('g')
+		.attr('id', resultsBox).selectAll('g')
+		.data(flights[0].Origin)
+		.enter().append('g')
+	cities = ""
+	options1Cities.append("text")
+		.attr("class", "text")
+		.attr("x", 400)
+		.attr("y", 100)
+		.attr("stroke", "none")
+		.text(function (d,i){
+				if (i > 0){
+					cities += " -> " + d
+				}
+				else {
+					cities += d
+				}
+				return cities
+		});
+
+	flightText = results.append('text');
+	flightText.text("Wander to...")
+		.attr("class", "resultHeader")
+		.attr("x", 400)
+		.attr("y", 40)
+	detailsText = results.append('text');
+	detailsText.text("Click on an option for details.")
+		.attr("class", "helper")
+		.attr("x", 400)
+		.attr("y", 55)
+	option1Text = results.append('text');
+	option1Text.text("Option 1 : Price")
+		.attr("class", "resulttext")
+		.attr("x", 400)
+		.attr("y", 70)
+		.on("mouseover", function() {
+            if (d3.select(this).attr("fill") != "grey") {
+                d3.select(this).attr("fill", "blue"); }})
+        .on("mouseout", function() {
+            if (d3.select(this).attr("fill") != "grey") {
+                d3.select(this).attr("fill","black")}})
+		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d, others)}
+                else {d3.select(this).attr("fill", "black"), console.log("remove")}});
+	option2Text = results.append('text');
+	option2Text.text("Option 2 : Price")
+		.attr("x", 400)
+		.attr("y", 200)
+		.on("mouseover", function() {
+            if (d3.select(this).attr("fill") != "grey") {
+                d3.select(this).attr("fill", "blue"); }})
+        .on("mouseout", function() {
+            if (d3.select(this).attr("fill") != "grey") {
+                d3.select(this).attr("fill","black")}})
+		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d, others)}
+                else {d3.select(this).attr("fill", "black"), console.log("remove")}});
+
+
+	});
+}
+
+
+
+
+function clickResult(d, others){
+	node_link(d, others)
+}
+
+function node_link(d, others){
+	color_scale = d3.scale.category10()
+
+	console.log(d)
+	sourceList = []
+	targetList = []
+
+// 	var force = d3.layout.force()
+//     	.size([width, height])
+//    		.nodes(nodes)
+//     	.links(linkList);
+
+	// var path = others.append("g").selectAll("path")
+ //    .data(linkList)
+ //  		.enter().append("path")
+ //    .style("stroke", function(d,i){color_scale[i]})
+ //    .attr();
+  
+	for (i=0; i<d.values.length; i+=1){
+		sourceList.push(d.values[i].values[0].Origin_Name)
+		targetList.push(d.values[i].values[0].Dest_Name)
+	}
+	linkList = []
+	for(i=0; i<d.values.length; i+=1){
+		linkList.push({source:sourceList[i],target:targetList[i]})
+	}
+
+	console.log(linkList)
+	// var path = others.append("g").selectAll("path")
+ //    .data(linkList)
+ //  		.enter().append("path")
+ //    .style("stroke", function(d,i){color_scale[i]});
+	//var link = ;
+	// var svg = d3.select("body").append("svg")
+	//     .attr("width", 900)
+	//     .attr("height", 800)
+	//   .append("g");
+
+	// var raceData = null;
+	// var teamData = null;
+
+	// teamData = d3.nest()
+	//     .key(function(d) { return d['driver'];})
+	//     .key(function(d){return d['team']})
+	//     .entries(dataset);
+
+	// teamData = teamData.sort(function (a,b) {return d3.ascending(a.key, b.key)})
+	// teamData = teamData.sort(function (a,b) {return d3.descending(a.values[0],b.values[0]); });
 }
