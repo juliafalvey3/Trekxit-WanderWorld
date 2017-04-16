@@ -47,21 +47,12 @@ function makeMap(container, map){
 
 	var path = d3.geo.path().projection(projection);
 
- 	// var tip = d3.tip()
-		// 	  .attr('class', 'd3-tip')
-		// 	  .html(function(d){return d.properties.name})
-
 	d3.json("eu.json", function(error, eu) {
 	  if (error) return console.error(error);
 
   	var subunits = topojson.feature(eu, eu.objects.subunits).features;
 
   	var places = topojson.feature(eu, eu.objects.places);
-
- //   	var tp = map.append("g")
- // 		.data(subunits);
-
-	// tp.call(tip);
 
 	  map.append("g")
 	      .attr("class", "counties")
@@ -119,13 +110,13 @@ function makeMap(container, map){
 	 	.style("stroke", "#444")
 	 	.attr("r", 4)
 
-	 Palma = map.append(".place-label")
+	var Palma = map.selectAll(".place-label")
 	 	.data("Palma")
-	 	.enter().append(g)
+	 	.enter().append('g')
 	 	.on("mouseover", function(d){d3.select(this).selectAll("*").style("opacity", 0.9); })
 		.on("mouseout", function(d){d3.select(this).selectAll("*").style("opacity", 0)});
 	 
-	 Palma.append("rect")
+ 	Palma.append("rect")
 		 	.attr("width", function(d){len = "Palma".length; return (6*len+(len/2)*5+15)})//; return text.length*5})
 		 	.attr("height", 20)
 		 	.attr("fill", "white")
@@ -351,7 +342,7 @@ function showboxes(others, map){
 
 	// load the data
 	d3.csv("./optimization/niceOutput.csv", function(data) {
-
+	
 
     var flights = null;
         flights = d3.nest()
