@@ -347,7 +347,6 @@ function makeOthers(container, map){
 
 }
 
-
 function showboxes(others, map){
 
 	// load the data
@@ -393,7 +392,7 @@ function showboxes(others, map){
 		.attr('y', function(d,i){return i*130 + 70})
 		.attr('stroke', 'none')
 		.text(function(d){
-	d.Price = []
+        d.Price = []
 				d.Origin = []
 				for( i = 0; i < d.values.length; i+= 1){
 					d.Price.push(d.values[i].values[0].Price)
