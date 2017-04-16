@@ -297,7 +297,6 @@ function makeOthers(container, map){
              				.call(document.querySelectorAll('#budgetInput'),0)
              				.map(function(v,i,a) {
     						return v.value;})[0]});
-                    console.log(outputList);
              	}
 
 				else {
@@ -348,7 +347,6 @@ function showboxes(others, map){
        .entries(data);
 
     numberofTrips = flights.length;
-    console.log(numberofTrips)
 
     others.append('rect')
 		.attr('id', 'resultsBox')
@@ -403,7 +401,6 @@ function showboxes(others, map){
 		
 		});
 
-
 	option1Text = results.append('text');
 	option1Text.text("Option 1 : ")
 		.attr("class", "text")
@@ -415,7 +412,7 @@ function showboxes(others, map){
         .on("mouseout", function() {
             if (d3.select(this).attr("fill") != "grey") {
                 d3.select(this).attr("fill","black")}})
-		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), node_link(d, map)}
+		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), node_link(flights[0], map)}
                 else {d3.select(this).attr("fill", "black"), d3.selectAll(".link").remove(), d3.selectAll(".node").remove()}});
     var options1Cities = others.append('g')
 		.attr('id', resultsBox).selectAll('g')
@@ -429,7 +426,7 @@ function showboxes(others, map){
 		.attr("stroke", "none")
 		.text(function (d,i){
 				if (i > 0){
-					cities += (" -> " + d)
+					cities1 += " -> " + d
 				}
 				else {
 					cities1 += d
@@ -449,7 +446,7 @@ function showboxes(others, map){
         .on("mouseout", function() {
             if (d3.select(this).attr("fill") != "grey") {
                 d3.select(this).attr("fill","black")}})
-		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), node_link(d, map)}
+		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), node_link(flights[1], map)}
                 else {d3.select(this).attr("fill", "black"), d3.selectAll(".link").remove(), d3.selectAll(".node").remove()}});
 		var options2Cities = others.append('g')
 			.attr('id', resultsBox).selectAll('g')
@@ -483,7 +480,7 @@ function showboxes(others, map){
         .on("mouseout", function() {
             if (d3.select(this).attr("fill") != "grey") {
                 d3.select(this).attr("fill","black")}})
-		  .on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), node_link(d, map)}
+		  .on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), node_link(flights[2], map)}
                 else {d3.select(this).attr("fill", "black"), d3.selectAll(".link").remove(), d3.selectAll(".node").remove()}});
 		var options3Cities = others.append('g')
 			.attr('id', resultsBox).selectAll('g')
@@ -512,13 +509,13 @@ function showboxes(others, map){
 			.attr("x", 402)
 			.attr("y", 230)
 			.on("mouseover", function() {
-	            if (d3.select(this).attr("fill") != "grey") {
-	                d3.select(this).attr("fill", "blue"); }})
-	        .on("mouseout", function() {
-	            if (d3.select(this).attr("fill") != "grey") {
-	                d3.select(this).attr("fill","black")}})
-			.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d)} 
-	                else {d3.select(this).attr("fill", "black"), console.log("remove")}});
+			            if (d3.select(this).attr("fill") != "grey") {
+			                d3.select(this).attr("fill", "blue"); }})
+			        .on("mouseout", function() {
+			            if (d3.select(this).attr("fill") != "grey") {
+			                d3.select(this).attr("fill","black")}})
+					.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), node_link(flights[3], map)}
+			                else {d3.select(this).attr("fill", "black"), d3.selectAll(".link").remove(), d3.selectAll(".node").remove()}});
 		var options4cities = others.append('g')
 			.attr('id', resultsBox).selectAll('g')
 			.data(flights[3].Origin)
@@ -546,14 +543,13 @@ function showboxes(others, map){
 			.attr("x", 402)
 			.attr("y", 280)
 			.on("mouseover", function() {
-	            if (d3.select(this).attr("fill") != "grey") {
-	                d3.select(this).attr("fill", "blue"); }})
-	        .on("mouseout", function() {
-	            if (d3.select(this).attr("fill") != "grey") {
-	                d3.select(this).attr("fill","black")}})
-			.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d)} 
-	                else {d3.select(this).attr("fill", "black"), console.log("remove")}});
-		var options5cities = others.append('g')
+			            if (d3.select(this).attr("fill") != "grey") {
+			                d3.select(this).attr("fill", "blue"); }})
+			        .on("mouseout", function() {
+			            if (d3.select(this).attr("fill") != "grey") {
+			                d3.select(this).attr("fill","black")}})
+					.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), node_link(flights[4], map)}
+			                else {d3.select(this).attr("fill", "black"), d3.selectAll(".link").remove(), d3.selectAll(".node").remove()}});		var options5cities = others.append('g')
 			.attr('id', resultsBox).selectAll('g')
 			.data(flights[4].Origin)
 			.enter().append('g')
@@ -574,23 +570,12 @@ function showboxes(others, map){
 			});
 		}
 
-	flightText = results.append('text');
-	flightText.text("Wander to...")
-		.attr("class", "resultHeader")
-		.attr("x", 400)
-		.attr("y", 40)
-	detailsText = results.append('text');
-	detailsText.text("Click on an option for details.")
-		.attr("class", "helper")
-		.attr("x", 400)
-		.attr("y", 55)
-
 	});
 }
 
 function node_link(d, map){
 
-	color_scale = ["#04476B", "MidnightBlue", "#133AAC", "#972808", "#112CD6", "#6c6960"] //BE3F3F
+	color_scale = ["Purple", "MidnightBlue", "Teal", "#6c6960", "#972808", "#6c6960"] //BE3F3F
 
 	var sourceList = [],
 		targetList = [],
@@ -613,7 +598,6 @@ function node_link(d, map){
 		linkList.push({source:sourceList[i].source, target:targetList[i], seq:orderList[i], land: landDateList[i], depart: departDateList[i], price: priceList[i]})
 	}
 
-	console.log(sourceList)
 
  	var linkTip = d3.tip()
 			  .attr('class', 'd3-tip')
