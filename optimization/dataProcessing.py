@@ -5,6 +5,52 @@ from gurobipy import *
 import datetime
 import time
 
+def createCityCodeMap(fulldf):
+    # just leave a plug in here... have something wrong with the dataset 
+    # so we'll just do it manually
+    cities=['ATL','MCO','LHR','CDG','AMS','FRA','IST','MAD','BCN','LGW','MUC','FCO', \
+    'SVO','ORY','SAW','CPH','DME','DUB','ZRH','PMI','MAN','OSL', \
+    'ARN','STN','DUS','VIE','LIS','BRU','TXL','ATH','MXP','AYT']
+    codeMap = {
+    'ATL': 'Atlanta',
+    'MCO': 'Orlando',
+    'LHR': 'London' , 
+    'CDG': 'Paris',
+    'AMS': 'Amsterdam',
+    'FRA': 'Frankfurt',
+    'IST': 'Istanbul',
+    'MAD': 'Madrid',
+    'BCN': 'Barcelona',
+    'LGW': 'London',
+    'MUC': 'Munich',
+    'FCO': 'Rome',
+    'SVO': 'Moscow',
+    'ORY': 'Paris',
+    'SAW': 'Istanbul',
+    'CPH': 'Copenhagen',
+    'DME': 'Moscow',
+    'DUB': 'Dublin',
+    'ZRH': 'Zurich',
+    'PMI': 'Palma',
+    'MAN': 'Manchester',
+    'OSL': 'Oslo',
+    'ARN': 'Stockholm',
+    'STN': 'London',
+    'DUS': 'Dusseldorf',
+    'VIE': 'Vienna',
+    'LIS': 'Lisbon',
+    'BRU': 'Brussels',
+    'TXL': 'Berlin',
+    'ATH': 'Athens',
+    'MXP': 'Milan',
+    'AYT': 'Antalya',
+    'LON': 'London' # trouble shooting from here
+    }
+
+    return codeMap
+
+
+
 def createDatesList(user_start, user_end, num_days):
     #num_days = 10 #this should be specified by the user
 
