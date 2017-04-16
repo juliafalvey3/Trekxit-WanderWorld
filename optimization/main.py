@@ -116,10 +116,11 @@ if __name__ == "__main__":
 			outputDict['Date2'].append(arriDate_String)
 			outputDict['Total_Price'].append(totalPrice) 
             
-	print outputDict
+	#print outputDict
 	outputDF = pd.DataFrame.from_dict(outputDict)
-	print outputDF
+	outputDF = outputDF[['TripID','Seq','Origin_ID','Dest_ID','Price','Date1','Date2','Total_Price','Origin_Name','Dest_Name']]
+	#print outputDF
     
-	outputDF.to_csv('niceOutput.csv') 
+	outputDF.to_csv('niceOutput.csv',index=False) 
 
 

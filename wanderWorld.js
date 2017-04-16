@@ -6,9 +6,9 @@ var mapW = 680,
 	mapX = 700,
 	mapY = 0;
 
-var projScale = 900,
+var projScale = 1000,
 	projX = 230,
-	projY = 1350;
+	projY = 1400;
 
 var otherW = width-mapW
 	otherH = 1000;
@@ -20,12 +20,6 @@ function init(){
 	var container = d3.select('#vis').append('svg')
 	    .attr('width', width)
 	    .attr('height', height);
-	makeOthers(container)
-	makeMap(container)
-
-}
-
-function makeMap(container){
 
 	var map = container.append('svg')
 	    .attr('width', mapW)
@@ -33,21 +27,25 @@ function makeMap(container){
 	    .attr('transform', 'translate('+mapX+','+mapY+')')
 	    .attr('fill', 'none');
 
-	var rect = container.append('circle')
-		.attr("r", 16)
-		.attr('cx', 1260)
-		.attr('cy', 610)
-		.attr('fill', '#3690c0')
+	makeOthers(container, map)
+	makeMap(container, map)
+
+}
+
+function makeMap(container, map){
+
+	var circ = map.append('circle')
+		.attr("r", 17)
+		.attr('cx', 594)
+		.attr('cy', 578)
+		.attr("opacity", 1)
+		.attr('fill', '#5BA7CF');
 
 	var projection = d3.geo.mercator()
 		.scale(projScale)
 		.translate([projX, projY]);
 
 	var path = d3.geo.path().projection(projection);
-
- 	// var tip = d3.tip()
-		// 	  .attr('class', 'd3-tip')
-		// 	  .html(function(d){return d.properties.name})
 
 	d3.json("eu.json", function(error, eu) {
 	  if (error) return console.error(error);
@@ -56,17 +54,13 @@ function makeMap(container){
 
   	var places = topojson.feature(eu, eu.objects.places);
 
- //   	var tp = map.append("g")
- // 		.data(subunits);
-
-	// tp.call(tip);
-
 	  map.append("g")
 	      .attr("class", "counties")
 	    .selectAll("path")
 	    .data(subunits)
 	    .enter().append("path")
-			.attr('fill', "#3690c0")
+			.attr('fill', "#5BA7CF")
+			.style("opacity", 1)
 	     .attr("d", path)
 	     .attr('id', function(d){return d.id});
 
@@ -115,11 +109,40 @@ function makeMap(container){
 	 	.attr("id", function(d){return d.properties.name})
 	 	.style("stroke", "#444")
 	 	.attr("r", 4)
+
+	// var Palma = map.select(".place-label")
+	//  	.data("Palma")
+	//  	.enter().append('g')
+	//  	.on("mouseover", function(d){d3.select(this).selectAll("*").style("opacity", 0.9); })
+	// 	.on("mouseout", function(d){d3.select(this).selectAll("text").style("opacity", 0), d3.select(this).selectAll("rect").style("opacity", 0)});
+	 
+ // 	Palma.append("rect")
+	// 	 	.attr("width", function(d){len = "Palma".length; return (6*len+(len/2)*5+15)})//; return text.length*5})
+	// 	 	.attr("height", 20)
+	// 	 	.attr("fill", "white")
+	// 	 	.style("opacity", 0)
+	// 	 	.attr("x", 290)
+	// 	 	.attr("y", 650);
+
+	//  Palma.append("text")
+	// 	    .attr("class", "place-label")
+	// 	    .attr("opacity", 0)
+	// 	    .attr("transform", "translate(304, 640)")
+	// 	    .attr("dy", ".35em")
+	// 	    .attr('x', 5)
+	// 	    .text("Palma");
+
+	//   Palma.append("circle")
+	//   	.attr("cx", 304)
+	//    	.attr("cy", 640)
+	//    	.attr("id", "Palma")
+	//    	.style("stroke", "#444")
+	//    	.attr("r", 4);
 	});
 }
 
 
-function makeOthers(container){
+function makeOthers(container, map){
 
 // #dropdowns  https://bl.ocks.org/mbostock/5872848
 	var others = container.append('svg')
@@ -135,12 +158,6 @@ function makeOthers(container){
         .attr("ry", 15)
 		.attr('width', 390)
 		.attr('height', 800)
-
-	juliaWork(others)
-
-}
-
-function juliaWork(others){
 
 	startText = others.append("text")
 				.attr('id', "start")
@@ -205,7 +222,6 @@ function juliaWork(others){
 		.attr("class", "question")
 		.attr("x", 20)
 		.attr("y", 375)
-	// list = 10000
 
 	helpMinDayText = others.append("text");
 	helpMinDayText.text("What is the minimum number of days you want to stay in each city?")
@@ -224,14 +240,6 @@ function juliaWork(others){
     	.attr("class", "helper")
     	.attr("x", 20)
     	.attr("y", 470);
-
-
-	// connectionText = others.append("text");
-	// connectionText.text("How many connections?")
-	// 	.attr("class", "question")
-	// 	.attr("x", 20)
-	// 	.attr("y", 525)
-
 
 	budgetText = others.append("text");
 	budgetText.text("What is your budget? (USD)")
@@ -257,7 +265,7 @@ function juliaWork(others){
                     d3.select(this).select("rect").attr("fill", pressedColor);
                     d3.select(this).select("text").text("Trips Incoming!");
                     d3.select(this).select("text").attr("x", 110);
-                    showboxes(others);
+                    showboxes(others, map);
                     outputList.push({key: "Origin", value: onChange ()});
                     outputList.push({key: "Dests",
                     	value: Array.prototype.slice
@@ -289,15 +297,7 @@ function juliaWork(others){
              				.call(document.querySelectorAll('#budgetInput'),0)
              				.map(function(v,i,a) {
     						return v.value;})[0]});
-                    console.log(outputList);
              	}
-
-             		// d3.select("#multDropDown")
-                     //    .selectAll("option")
-                     //    .filter(function (d, i) {
-                     //        if (this.selected) {return this.label};
-                     //    })
-
 
 				else {
 					d3.select(this).select("rect").attr("fill", defaultColor)
@@ -334,12 +334,12 @@ function juliaWork(others){
 
 }
 
-
-function showboxes(others){
+function showboxes(others, map){
 
 	// load the data
 	d3.csv("./optimization/niceOutput.csv", function(data) {
-    console.log(data[0]);    
+
+
     var flights = null;
         flights = d3.nest()
        .key(function(d) {return d['TripID']})
@@ -347,8 +347,6 @@ function showboxes(others){
        .entries(data);
 
     numberofTrips = flights.length;
-    console.log(numberofTrips)
-
 
     others.append('rect')
 		.attr('id', 'resultsBox')
@@ -360,8 +358,7 @@ function showboxes(others){
         .attr("ry", 15)
 		.attr('width', 329)
 		.attr('height', 320)
-
-
+    
 	var results = others.append('g')
 		.attr('id', 'resultsBox').selectAll("g")
 		.data(flights)
@@ -397,13 +394,12 @@ function showboxes(others){
 					d.Origin = []
 					for( j = 0; j < d.values.length; j+= 1){
 						d.Price.push(d.values[j].values[0].Price)
-						d.Origin.push(d.values[j].values[0].Origin)
+						d.Origin.push(d.values[j].values[0].Origin_ID)
 					}
 			
 			return "Price $" + d.values[0].values[0]['Total_Price']
 		
 		});
-
 
 	option1Text = results.append('text');
 	option1Text.text("Option 1 : ")
@@ -416,10 +412,9 @@ function showboxes(others){
         .on("mouseout", function() {
             if (d3.select(this).attr("fill") != "grey") {
                 d3.select(this).attr("fill","black")}})
-		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d)} 
-                else {d3.select(this).attr("fill", "black"), console.log("remove")}});
-
-	var options1Cities = others.append('g')
+		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), node_link(flights[0], map)}
+                else {d3.select(this).attr("fill", "black"), d3.selectAll(".link").remove(), d3.selectAll(".node").remove()}});
+    var options1Cities = others.append('g')
 		.attr('id', resultsBox).selectAll('g')
 		.data(flights[0].Origin)
 		.enter().append('g')
@@ -438,7 +433,6 @@ function showboxes(others){
 				}
 				return cities1
 		});
-<<<<<<< HEAD
 	}
 	if (numberofTrips > 1) {
 		option2Text = results.append('text');
@@ -447,13 +441,13 @@ function showboxes(others){
 			.attr("x", 402)
 			.attr("y", 130)
 			.on("mouseover", function() {
-	            if (d3.select(this).attr("fill") != "grey") {
-	                d3.select(this).attr("fill", "blue"); }})
-	        .on("mouseout", function() {
-	            if (d3.select(this).attr("fill") != "grey") {
-	                d3.select(this).attr("fill","black")}})
-			.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d)} 
-	                else {d3.select(this).attr("fill", "black"), console.log("remove")}});
+            if (d3.select(this).attr("fill") != "grey") {
+                d3.select(this).attr("fill", "blue"); }})
+        .on("mouseout", function() {
+            if (d3.select(this).attr("fill") != "grey") {
+                d3.select(this).attr("fill","black")}})
+		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), node_link(flights[1], map)}
+                else {d3.select(this).attr("fill", "black"), d3.selectAll(".link").remove(), d3.selectAll(".node").remove()}});
 		var options2Cities = others.append('g')
 			.attr('id', resultsBox).selectAll('g')
 			.data(flights[1].Origin)
@@ -481,13 +475,13 @@ function showboxes(others){
 			.attr("x", 402)
 			.attr("y", 180)
 			.on("mouseover", function() {
-	            if (d3.select(this).attr("fill") != "grey") {
-	                d3.select(this).attr("fill", "blue"); }})
-	        .on("mouseout", function() {
-	            if (d3.select(this).attr("fill") != "grey") {
-	                d3.select(this).attr("fill","black")}})
-			.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d)} 
-	                else {d3.select(this).attr("fill", "black"), console.log("remove")}});
+            if (d3.select(this).attr("fill") != "grey") {
+                d3.select(this).attr("fill", "blue"); }})
+        .on("mouseout", function() {
+            if (d3.select(this).attr("fill") != "grey") {
+                d3.select(this).attr("fill","black")}})
+		  .on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), node_link(flights[2], map)}
+                else {d3.select(this).attr("fill", "black"), d3.selectAll(".link").remove(), d3.selectAll(".node").remove()}});
 		var options3Cities = others.append('g')
 			.attr('id', resultsBox).selectAll('g')
 			.data(flights[2].Origin)
@@ -515,13 +509,13 @@ function showboxes(others){
 			.attr("x", 402)
 			.attr("y", 230)
 			.on("mouseover", function() {
-	            if (d3.select(this).attr("fill") != "grey") {
-	                d3.select(this).attr("fill", "blue"); }})
-	        .on("mouseout", function() {
-	            if (d3.select(this).attr("fill") != "grey") {
-	                d3.select(this).attr("fill","black")}})
-			.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d)} 
-	                else {d3.select(this).attr("fill", "black"), console.log("remove")}});
+			            if (d3.select(this).attr("fill") != "grey") {
+			                d3.select(this).attr("fill", "blue"); }})
+			        .on("mouseout", function() {
+			            if (d3.select(this).attr("fill") != "grey") {
+			                d3.select(this).attr("fill","black")}})
+					.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), node_link(flights[3], map)}
+			                else {d3.select(this).attr("fill", "black"), d3.selectAll(".link").remove(), d3.selectAll(".node").remove()}});
 		var options4cities = others.append('g')
 			.attr('id', resultsBox).selectAll('g')
 			.data(flights[3].Origin)
@@ -549,14 +543,13 @@ function showboxes(others){
 			.attr("x", 402)
 			.attr("y", 280)
 			.on("mouseover", function() {
-	            if (d3.select(this).attr("fill") != "grey") {
-	                d3.select(this).attr("fill", "blue"); }})
-	        .on("mouseout", function() {
-	            if (d3.select(this).attr("fill") != "grey") {
-	                d3.select(this).attr("fill","black")}})
-			.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d)} 
-	                else {d3.select(this).attr("fill", "black"), console.log("remove")}});
-		var options5cities = others.append('g')
+			            if (d3.select(this).attr("fill") != "grey") {
+			                d3.select(this).attr("fill", "blue"); }})
+			        .on("mouseout", function() {
+			            if (d3.select(this).attr("fill") != "grey") {
+			                d3.select(this).attr("fill","black")}})
+					.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), node_link(flights[4], map)}
+			                else {d3.select(this).attr("fill", "black"), d3.selectAll(".link").remove(), d3.selectAll(".node").remove()}});		var options5cities = others.append('g')
 			.attr('id', resultsBox).selectAll('g')
 			.data(flights[4].Origin)
 			.enter().append('g')
@@ -576,102 +569,81 @@ function showboxes(others){
 					return cities5
 			});
 		}
-=======
-
-	flightText = results.append('text');
-	flightText.text("Wander to...")
-		.attr("class", "resultHeader")
-		.attr("x", 400)
-		.attr("y", 40)
-	detailsText = results.append('text');
-	detailsText.text("Click on an option for details.")
-		.attr("class", "helper")
-		.attr("x", 400)
-		.attr("y", 55)
-	option1Text = results.append('text');
-	option1Text.text("Option 1 : Price")
-		.attr("class", "resulttext")
-		.attr("x", 400)
-		.attr("y", 70)
-		.on("mouseover", function() {
-            if (d3.select(this).attr("fill") != "grey") {
-                d3.select(this).attr("fill", "blue"); }})
-        .on("mouseout", function() {
-            if (d3.select(this).attr("fill") != "grey") {
-                d3.select(this).attr("fill","black")}})
-		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d, others)}
-                else {d3.select(this).attr("fill", "black"), console.log("remove")}});
-	option2Text = results.append('text');
-	option2Text.text("Option 2 : Price")
-		.attr("x", 400)
-		.attr("y", 200)
-		.on("mouseover", function() {
-            if (d3.select(this).attr("fill") != "grey") {
-                d3.select(this).attr("fill", "blue"); }})
-        .on("mouseout", function() {
-            if (d3.select(this).attr("fill") != "grey") {
-                d3.select(this).attr("fill","black")}})
-		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), clickResult(d, others)}
-                else {d3.select(this).attr("fill", "black"), console.log("remove")}});
-
->>>>>>> origin/Claraupdate
 
 	});
 }
 
+function node_link(d, map){
 
+	color_scale = ["Purple", "MidnightBlue", "Teal", "#6c6960", "#972808", "#6c6960"] //BE3F3F
 
+	var sourceList = [],
+		targetList = [],
+		orderList = [],
+		linkList = [],
+		landDateList = [],
+		departDateList = [],
+		priceList = [];
 
-function clickResult(d, others){
-	node_link(d, others)
-}
-
-function node_link(d, others){
-	color_scale = d3.scale.category10()
-
-	console.log(d)
-	sourceList = []
-	targetList = []
-
-// 	var force = d3.layout.force()
-//     	.size([width, height])
-//    		.nodes(nodes)
-//     	.links(linkList);
-
-	// var path = others.append("g").selectAll("path")
- //    .data(linkList)
- //  		.enter().append("path")
- //    .style("stroke", function(d,i){color_scale[i]})
- //    .attr();
-  
 	for (i=0; i<d.values.length; i+=1){
-		sourceList.push(d.values[i].values[0].Origin_Name)
+		sourceList.push({source: d.values[i].values[0].Origin_Name})
 		targetList.push(d.values[i].values[0].Dest_Name)
+		orderList.push(d.values[i].values[0].Seq)
+		landDateList.push(d.values[i].values[0].Date1)
+		departDateList.push(d.values[i].values[0].Date2)
+		priceList.push(d.values[i].values[0].Price)
 	}
-	linkList = []
+
 	for(i=0; i<d.values.length; i+=1){
-		linkList.push({source:sourceList[i],target:targetList[i]})
+		linkList.push({source:sourceList[i].source, target:targetList[i], seq:orderList[i], land: landDateList[i], depart: departDateList[i], price: priceList[i]})
 	}
 
-	console.log(linkList)
-	// var path = others.append("g").selectAll("path")
- //    .data(linkList)
- //  		.enter().append("path")
- //    .style("stroke", function(d,i){color_scale[i]});
-	//var link = ;
-	// var svg = d3.select("body").append("svg")
-	//     .attr("width", 900)
-	//     .attr("height", 800)
-	//   .append("g");
 
-	// var raceData = null;
-	// var teamData = null;
+ 	var linkTip = d3.tip()
+			  .attr('class', 'd3-tip')
+			  .html(function(d){return ("<i> Destination: </i> "  + d.target + " </br> <i> Flight Price: </i> $" + d.price + "</br> <i>Land Date: </i>" + d.land + " </br> <i>Depart Date:</i> " + d.depart)})
 
-	// teamData = d3.nest()
-	//     .key(function(d) { return d['driver'];})
-	//     .key(function(d){return d['team']})
-	//     .entries(dataset);
+ 	var nodeTip = d3.tip()
+			  .attr('class', 'd3-tip')
+			  .html(function(d){return ("<i> City: </i> "  + d.source + " </br> <i> Flight Price: </i> $" + d.price + "</br> <i>Land Date: </i>" + d.land + " </br> <i>Depart Date:</i> " + d.depart)})
 
-	// teamData = teamData.sort(function (a,b) {return d3.ascending(a.key, b.key)})
-	// teamData = teamData.sort(function (a,b) {return d3.descending(a.values[0],b.values[0]); });
+	var linkTP = map.append('g')
+		.data(linkList);
+
+	linkTP.call(linkTip)
+	linkTP.call(nodeTip)
+
+   	var link = map.selectAll('.link')
+   	    .data(linkList)
+   	    .enter().append('line')
+   	    .attr('class', 'link')
+   	    .attr("stroke", function(d) {return(color_scale[+d.seq])})
+   	    .attr("x1", function(d) {if (!(d.source == 'Atlanta' || d.source == 'Orlando' || d.source == 'Palma')) {var t = d3.transform(d3.select("#"+d.source).attr("transform")); return (t.translate[0]);}
+       							  else if (d.source == 'Palma'){return 280}
+       							  else {return 0}})
+		.attr("y1", function(d) {if (!(d.source == 'Atlanta' || d.source == 'Orlando' || d.source == 'Palma')) {var t = d3.transform(d3.select("#"+d.source).attr("transform")); return (t.translate[1]);}
+       							  else if (d.source == 'Palma'){return 648}
+   							      else {return 400}})
+  		.attr("x2", function(d) { if (!(d.target == 'Atlanta' || d.target == 'Orlando' || d.target == 'Palma')) {var t = d3.transform(d3.select("#"+d.target).attr("transform")); return (t.translate[0]);}
+       							  else if (d.target == 'Palma'){return 280}
+       							  else {return 20}})
+  		.attr("y2", function(d) {if (!(d.target == 'Atlanta' || d.target == 'Orlando' || d.target == 'Palma')) {var t = d3.transform(d3.select("#"+d.target).attr("transform")); return (t.translate[1]);}
+       							  else if (d.target == 'Palma'){return 648}
+       							  else {return 300}})
+  		.on("mouseover", linkTip.show)
+  		.on("mouseout", linkTip.hide);
+
+    var node = map.selectAll(".node")
+    	.data(linkList)
+      .enter().append("g")
+        .attr("class", "node");
+
+    node.append("circle")
+          .attr("r", 5)
+       	  .attr("cx", function(d){ if (!(d.source == 'Atlanta' || d.source == 'Orlando' || d.source == 'Palma')) {var t = d3.transform(d3.select("#"+d.source).attr("transform")); return (t.translate[0]);}
+       							  else if (d.source == 'Palma'){return 280}})
+       	  .attr("cy", function(d){ if (!(d.source == 'Atlanta' || d.source == 'Orlando' || d.source == 'Palma')) {var t = d3.transform(d3.select("#"+d.source).attr("transform")); return (t.translate[1]);}
+    							  else if (d.source == 'Palma'){return 648}})
+       	  .on("mouseover", nodeTip.show)
+       	  .on("mouseout", nodeTip.hide);
 }
