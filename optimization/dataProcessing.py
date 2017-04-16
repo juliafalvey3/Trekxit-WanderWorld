@@ -5,6 +5,52 @@ from gurobipy import *
 import datetime
 import time
 
+def createCityCodeMap(fulldf):
+    # just leave a plug in here... have something wrong with the dataset 
+    # so we'll just do it manually
+    cities=['ATL','MCO','LHR','CDG','AMS','FRA','IST','MAD','BCN','LGW','MUC','FCO', \
+    'SVO','ORY','SAW','CPH','DME','DUB','ZRH','PMI','MAN','OSL', \
+    'ARN','STN','DUS','VIE','LIS','BRU','TXL','ATH','MXP','AYT']
+    codeMap = {
+    'ATL': 'Atlanta',
+    'MCO': 'Orlando',
+    'LHR': 'London' , 
+    'CDG': 'Paris',
+    'AMS': 'Amsterdam',
+    'FRA': 'Frankfurt',
+    'IST': 'Istanbul',
+    'MAD': 'Madrid',
+    'BCN': 'Barcelona',
+    'LGW': 'London',
+    'MUC': 'Munich',
+    'FCO': 'Rome',
+    'SVO': 'Moscow',
+    'ORY': 'Paris',
+    'SAW': 'Istanbul',
+    'CPH': 'Copenhagen',
+    'DME': 'Moscow',
+    'DUB': 'Dublin',
+    'ZRH': 'Zurich',
+    'PMI': 'Palma',
+    'MAN': 'Manchester',
+    'OSL': 'Oslo',
+    'ARN': 'Stockholm',
+    'STN': 'London',
+    'DUS': 'Dusseldorf',
+    'VIE': 'Vienna',
+    'LIS': 'Lisbon',
+    'BRU': 'Brussels',
+    'TXL': 'Berlin',
+    'ATH': 'Athens',
+    'MXP': 'Milan',
+    'AYT': 'Antalya',
+    'LON': 'London' # trouble shooting from here
+    }
+
+    return codeMap
+
+
+
 def createDatesList(user_start, user_end, num_days):
     #num_days = 10 #this should be specified by the user
 
@@ -30,14 +76,31 @@ def createDatesList(user_start, user_end, num_days):
         date_list.pop(0)
     return dates_list
 
-def createRawDictionary(fulldf):
+def createRawDictionary(fulldf, listofCities):
     # create dictionary of dataframes
 
-    origins = fulldf['origin_id'].unique()
+    # origins = fulldf['origin_id'].unique()
+    cities = listofCities
+    origins = cities
+
+    cities = ['Atlanta', 'Orlando','Palma', 'London', 'Barcelona']
+    origins = cities
+
+    results_origin_filtered = fulldf[fulldf['origin_city_name'].isin(cities)]
+    results_dest_filtered = results_origin_filtered[results_origin_filtered['destination_city_name'].isin(cities)]
 
     originsDict = {}
     for i in origins:
-        originsDict[i] = fulldf[fulldf['origin_id'] == i]
+        originsDict[i] = results_dest_filtered[results_dest_filtered['origin_city_name'] == i]
+
+    #results_origin_filtered = fulldf[fulldf['origin_city_name'].isin(cities)]
+    #results_dest_filtered = results_origin_filtered[results_origin_filtered['destination_city_name'].isin(cities)]
+
+    #originsDict = {}
+    #for i in origins:
+    #    originsDict[i] = results_dest_filtered[results_dest_filtered['origin_city_name'] == i]
+
+    #print originDict
         
     # create dictionary for optimization model
     # format: {origin: destination1:{date1:price1, date2:price2},
@@ -49,10 +112,12 @@ def createRawDictionary(fulldf):
 
     for i in origins:
         for index, row in originsDict[i].iterrows():
-            X[i][row['destination_id']] = {}
+            X[i][row['destination_city_name']] = {}
         for index, row in originsDict[i].iterrows():
-            X[i][row['destination_id']][datetime.datetime.strptime(row['outbound_date'], "%Y-%m-%dT%H:%M:%S").date()]= \
+            X[i][row['destination_city_name']][datetime.datetime.strptime(row['outbound_date'], "%Y-%m-%dT%H:%M:%S").date()]= \
             (datetime.datetime.strptime(row['inbound_date'], "%Y-%m-%dT%H:%M:%S").date(), row['price'])
+
+    # print X
     return X
 
 def createDictforCities(rawDictionary, city_list):
@@ -156,8 +221,14 @@ def createDictsforDates(date_list, dictforCities, source):
 
     for i in nonsourceDict.keys():
         for j in nonsourceDict[i].keys():
-            del nonsourceDict[i][j][dt_start]
-            del nonsourceDict[i][j][dt_end]
+            try:
+                del nonsourceDict[i][j][dt_start]
+            except:
+                ''
+            try:
+                del nonsourceDict[i][j][dt_end]
+            except:
+                ''
             
     return sourceDict, nonsourceDict
 
