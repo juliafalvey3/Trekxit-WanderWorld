@@ -19,3 +19,4 @@ Date1,Date2,Dest_Name,Origin_Name,Price,Seq,Total_Price,TripID
 2017-05-09,2017-05-10,Palma,London,32.0,2,685.0,3
 2017-05-13,2017-05-14,Barcelona,Palma,17.0,3,685.0,3
 2017-05-16,2017-05-17,Atlanta,Barcelona,373.0,4,685.0,3
+

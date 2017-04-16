@@ -12,7 +12,6 @@ class WanderWorld:
     def __init__(self, fulldf): # initiate a model with all the data
         self.fulldf = fulldf
         self.version = 'V1'
-        self.cityCodeMap = createCityCodeMap(self.fulldf)
         
     
     def inputTimeFrame(self,user_start, user_end, city_list, num_days, min_days, origin):

@@ -28,14 +28,6 @@ def generateNewRoute(model):
     #for i in route_tuples:
         #print i
 
-def extractRealDate(flight):
-    departDate = flight[2]
-    arriDate = flight[3]
-    departDate_String = departDate.strftime("%Y-%m-%d")# %H:%M:%S")
-    arriDate_String = arriDate.strftime("%Y-%m-%d")
-    
-    return departDate_String, arriDate_String
-
 if __name__ == "__main__":
 	conn = sqlite3.connect("flights_final_4_13.db")
 	c = conn.cursor()
@@ -69,7 +61,6 @@ if __name__ == "__main__":
 	print Example.rawDictionary
 	Example.createInputDicts()
 	Example.buildAndSolveModel()
-	codeMap = Example.cityCodeMap
 
 	routes = []
 
@@ -87,6 +78,7 @@ if __name__ == "__main__":
 	final_results = sorted_routes[0:4] #or however many we want to return
 
 	# print 'length:',len(final_results)
+
 	# print final_results
 
 	outputDict = {}
@@ -124,5 +116,6 @@ if __name__ == "__main__":
 	#print outputDF
     
 	outputDF.to_csv('niceOutput.csv',index=False) 
+
 
 
