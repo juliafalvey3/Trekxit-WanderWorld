@@ -28,14 +28,6 @@ def generateNewRoute(model):
     #for i in route_tuples:
         #print i
 
-def extractRealDate(flight):
-    departDate = flight[2]
-    arriDate = flight[3]
-    departDate_String = departDate.strftime("%Y-%m-%d")# %H:%M:%S")
-    arriDate_String = arriDate.strftime("%Y-%m-%d")
-    
-    return departDate_String, arriDate_String
-
 if __name__ == "__main__":
 	conn = sqlite3.connect("flight_sample.db")
 	c = conn.cursor()
@@ -66,7 +58,6 @@ if __name__ == "__main__":
 	Example.inputTimeFrame(user_start, user_end, city_list, num_days, min_days, origin)
 	Example.createInputDicts()
 	Example.buildAndSolveModel()
-	codeMap = Example.cityCodeMap
 
 	routes = []
 
@@ -84,43 +75,11 @@ if __name__ == "__main__":
 	final_results = sorted_routes[0:4] #or however many we want to return
 
 	# print 'length:',len(final_results)
-	# print final_results
+	print final_results
 
-	outputDict = {}
-	outputDict['TripID'] = []
-	outputDict['Seq'] = []
-	outputDict['Origin_ID'] = []
-	outputDict['Origin_Name'] = []
-	outputDict['Dest_ID'] = []
-	outputDict['Dest_Name'] = []
-	outputDict['Price'] = []
-	outputDict['Date1'] = []
-	outputDict['Date2'] = []
-	outputDict['Total_Price'] = [] 
-    
-	for tripID, route in enumerate(final_results):
-		#print route
-		totalPrice = route[-1]
-		for seq, flight in enumerate(route): 
-			if(flight==totalPrice):
-				break
-			outputDict['TripID'].append(tripID)
-			outputDict['Seq'].append(seq)
-			outputDict['Origin_ID'].append(flight[0])
-			outputDict['Origin_Name'].append(codeMap[flight[0]])
-			outputDict['Dest_ID'].append(flight[1])
-			outputDict['Dest_Name'].append(codeMap[flight[1]])
-			outputDict['Price'].append(flight[4])
-			departDate_String, arriDate_String = extractRealDate(flight)
-			outputDict['Date1'].append(departDate_String)
-			outputDict['Date2'].append(arriDate_String)
-			outputDict['Total_Price'].append(totalPrice) 
-            
-	#print outputDict
-	outputDF = pd.DataFrame.from_dict(outputDict)
-	outputDF = outputDF[['TripID','Seq','Origin_ID','Dest_ID','Price','Date1','Date2','Total_Price','Origin_Name','Dest_Name']]
-	#print outputDF
-    
-	outputDF.to_csv('niceOutput.csv',index=False) 
+	import csv
+	with open('final_result.csv', 'wb') as myfile:
+		wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+		wr.writerow(final_results)
 
 
