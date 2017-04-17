@@ -264,6 +264,7 @@ function makeOthers(container, map){
 				if (d3.select(this).select("rect").attr("fill") != pressedColor) {
                     d3.select(this).select("rect").attr("fill", pressedColor);
                     d3.select(this).select("text").text("Trips Incoming!");
+                    d3.select("#book").style("opacity", 1);
                     d3.select(this).select("text").attr("x", 110);
                     showboxes(others, map);
                     outputList.push({key: "Origin", value: onChange ()});
