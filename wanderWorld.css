@@ -224,7 +224,7 @@ text.resultHeader {
 
 .select{
   position: absolute;
-  margin-top: -760px;
+  margin-top: -750px;
   margin-left: 20px;
   font-family: Palatino;
   font-size: 17px;
@@ -232,7 +232,7 @@ text.resultHeader {
 
 .datePick {
   position: absolute;
-  margin-top: -550px;
+  margin-top: -540px;
   margin-left: 20px;
   font-family: Palatino;
   font-size: 17px;
@@ -242,7 +242,7 @@ text.resultHeader {
 }
 #minDays {
   position: absolute;
-  margin-top: -420px;
+  margin-top: -395px;
   margin-left: 20px;
   font-family: Palatino;
   font-size: 17px;
@@ -252,7 +252,7 @@ text.resultHeader {
 }
 #numDays {
  position: absolute;
- margin-top: -345px;
+ margin-top: -310px;
  margin-left: 20px;
  font-family: Palatino;
  font-size: 17px;
@@ -273,7 +273,7 @@ text.resultHeader {
 
 #budget {
   position: absolute;
-  margin-top: -150px;
+  margin-top: -225px;
   margin-left: 20px;
   font-family: Palatino;
   font-size: 17px;
@@ -293,12 +293,12 @@ text.resultHeader {
 
 #multDropDown {
   position: absolute;
-  margin-top: -675px;
+  margin-top: -665px;
   margin-left: 20px;
   font-family: Palatino;
   font-size: 17px;
   width: 200px;
-  height: 100px;
+  height: 80px;
   padding: 10px;
   z-index: 1;
 }

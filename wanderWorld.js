@@ -134,7 +134,7 @@ function makeOthers(container){
 		.attr("rx", 15) //rx and ry give the buttons rounded corners
         .attr("ry", 15)
 		.attr('width', 390)
-		.attr('height', 800)
+		.attr('height', 690)
 
 	juliaWork(others)
 
@@ -148,9 +148,10 @@ function juliaWork(others){
 	startText.text("Where are you coming from?")
 		.attr("class", "question")
 		.attr("x", 20)
-		.attr("y", 30)
+		.attr("y", 40)
 
-    var startCities = ["Atlanta", "Boston", "New York", "Orlando"];
+    var startCities = ["Atlanta"]
+    //var startCities = ["Atlanta", "Boston", "New York", "Orlando"];
     startCities.sort(function(x, y){ return d3.ascending(x, y);})
     startCities.unshift("Select a Starting City")
 
@@ -176,7 +177,7 @@ function juliaWork(others){
 
 	destinationText = others.append("text");
 
-    var destinationTextY = 100
+    var destinationTextY = 110
 
 	destinationText.text("Where do you want to go?")
 		.attr("class", "question")
@@ -190,7 +191,7 @@ function juliaWork(others){
 		.attr("x", 20)
 		.attr("y", destinationTextY + 20)
 
-    var dateTextY = 260
+    var dateTextY = 255
 
 	dateText = others.append("text");
 	dateText.text("What range of dates could you travel?")
@@ -204,10 +205,10 @@ function juliaWork(others){
 		.attr("x",20)
 		.attr("y", dateTextY + 20);
 
-    var minDayTextY = 375
+    var minDayTextY = 390
 
 	minDayText = others.append("text");
-	minDayText.html("Min days in each location?")
+	minDayText.html("How many days in each location?")
 		.attr("class", "question")
 		.attr("x", 20)
 		.attr("y", minDayTextY)
@@ -219,7 +220,7 @@ function juliaWork(others){
 		.attr("x", 20)
 		.attr("y", minDayTextY + 20);
 
-    var numDaysTextY = 450
+    var numDaysTextY = 475
 
 	numDaysText = others.append("text");
 	numDaysText.html("Total days you want to travel?")
@@ -240,18 +241,19 @@ function juliaWork(others){
 	// 	.attr("x", 20)
 	// 	.attr("y", 525)
 
+    var budgetTextY = 560
 
 	budgetText = others.append("text");
 	budgetText.text("What is your budget? (USD)")
 		.attr("class", "question")
 		.attr("x", 20)
-		.attr("y", 640);
+		.attr("y", budgetTextY);
 
 	helpbudgetText = others.append("text");
     helpbudgetText.text("We'll show you several travel options within your budget!")
     	.attr("class", "helper")
     	.attr("x", 20)
-    	.attr("y", 660);
+    	.attr("y", budgetTextY + 20);
 
 	buttonText = ["Find My Optimal Trips!"]
 	var optimize = others.append('g')
@@ -327,7 +329,7 @@ function juliaWork(others){
 			.attr("width", 275)
 			.attr("height", 30)
 			.attr("x", 30)
-			.attr("y", 750)
+			.attr("y", 635)
 			.attr("rx", 3) //rx and ry give the buttons rounded corners
 			.attr("ry", 3)
 			.attr("fill", defaultColor);
@@ -335,7 +337,7 @@ function juliaWork(others){
 	optimize.append('text')
 			.attr('class', 'text')
 			.attr("stroke", "none")
-			.attr('y', 770)
+			.attr('y', 655)
 			.attr('x', 80)
 			.text(function(d){return d});
 
@@ -349,7 +351,7 @@ function showboxes(others){
 
 	// load the data
 	d3.csv("./optimization/niceOutput.csv", function(data) {
-    console.log(data[0]);    
+    console.log(data[0]);
     var flights = null;
         flights = d3.nest()
        .key(function(d) { return d['TripID']})
@@ -455,7 +457,7 @@ function node_link(d, others){
  //  		.enter().append("path")
  //    .style("stroke", function(d,i){color_scale[i]})
  //    .attr();
-  
+
 	for (i=0; i<d.values.length; i+=1){
 		sourceList.push(d.values[i].values[0].Origin_Name)
 		targetList.push(d.values[i].values[0].Dest_Name)
