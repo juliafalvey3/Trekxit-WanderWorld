@@ -364,3 +364,11 @@ background-color:#0066FF;
   z-index: 1;
   opacity: 0;
 }
+.d3-tip {
+  line-height: 1;
+  
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}

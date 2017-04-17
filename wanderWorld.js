@@ -141,6 +141,15 @@ function makeMap(container, map){
 	});
 }
 
+  var tip = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([230, 75])
+  .html(function(d) {
+    return generate_table(d);
+  })
+
+
+     
 
 function makeOthers(container, map){
 
@@ -166,6 +175,11 @@ function makeOthers(container, map){
 		.attr("class", "question")
 		.attr("x", 20)
 		.attr("y", 40)
+		// append the svg canvas to the page
+//Updated
+ others.call(tip);
+var tipLink = others.append("g")
+tipLink.call(tip);
 
     var startCities = ["Atlanta"]
     //var startCities = ["Atlanta", "Boston", "New York", "Orlando"];
@@ -186,7 +200,7 @@ function makeOthers(container, map){
 	function onChange (){
 		selectValue = d3.select('#startSelect').property('value')
 		return selectValue;
-	}
+			}
 
 	var defaultColor= "#ebebeb";
     var hoverColor= "darkgrey";
@@ -437,7 +451,7 @@ function showboxes(others, map){
 			.attr("class", "text")
 			.attr("x", 402)
 			.attr("y", 80)
-	}
+			}
 
 	if (numberofTrips > 0 ){
 		detailsText = results.append('text');
@@ -473,8 +487,9 @@ function showboxes(others, map){
         .on("mouseout", function() {
             if (d3.select(this).attr("fill") != "grey") {
                 d3.select(this).attr("fill","black")}})
-		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), node_link(flights[0], map)}
-                else {d3.select(this).attr("fill", "black"), d3.selectAll(".link").remove(), d3.selectAll(".node").remove()}});
+		.on("click", function(d) {if (d3.select(this).attr("fill") != "grey") {d3.select(this).attr("fill", "grey"), node_link(flights[0], map);return tip.show(d)}
+                else {d3.select(this).attr("fill", "black"), d3.selectAll(".link").remove(), d3.selectAll(".node").remove(); tip.hide}});
+		//.on("click", function(d){console.log(d,"d");return tip.show(d);});
     var options1Cities = others.append('g')
 		.attr('id', resultsBox).selectAll('g')
 		.data(flights[0].Origin)
@@ -707,4 +722,20 @@ function node_link(d, map){
     							  else if (d.source == 'Palma'){return 648}})
        	  .on("mouseover", nodeTip.show)
        	  .on("mouseout", nodeTip.hide);
+}
+
+//Updated
+  function  generate_table (d){
+  		console.log(d);
+      strhtml = "<strong>Route Price:" + d.values[0].values[0]['Total Price'].toString() + "</strong><br> <table class='GeneratedTable'> <thead><tr><th>Origin</th><th>Destination</th><th>Date</th><th>Price</th></tr></thead><tbody> ";
+     
+    for (i = 0 ; i <d.values.length;i++){
+            strhtml  += '<tr><td>' + d.values[i].values[0]['Origin'] +'</td><td>'+ d.values[i].values[0]['Dest'] + '</td><td>'+d.values[i].values[0]['Date1'] +'</td><td>'+ d.values[i].values[0]['Price'] +"</td></tr>";
+
+
+                  
+};
+strhtml  += "</tbody></table>";
+return strhtml;
+
 }
