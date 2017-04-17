@@ -235,7 +235,7 @@ text.pricetext {
 
 .select{
   position: absolute;
-  margin-top: -760px;
+  margin-top: -750px;
   margin-left: 20px;
   font-family: Palatino;
   font-size: 17px;
@@ -243,7 +243,7 @@ text.pricetext {
 
 .datePick {
   position: absolute;
-  margin-top: -550px;
+  margin-top: -540px;
   margin-left: 20px;
   font-family: Palatino;
   font-size: 17px;
@@ -253,7 +253,7 @@ text.pricetext {
 }
 #minDays {
   position: absolute;
-  margin-top: -420px;
+  margin-top: -395px;
   margin-left: 20px;
   font-family: Palatino;
   font-size: 17px;
@@ -263,7 +263,7 @@ text.pricetext {
 }
 #numDays {
  position: absolute;
- margin-top: -345px;
+ margin-top: -310px;
  margin-left: 20px;
  font-family: Palatino;
  font-size: 17px;
@@ -284,7 +284,7 @@ text.pricetext {
 
 #budget {
   position: absolute;
-  margin-top: -150px;
+  margin-top: -225px;
   margin-left: 20px;
   font-family: Palatino;
   font-size: 17px;
@@ -304,12 +304,12 @@ text.pricetext {
 
 #multDropDown {
   position: absolute;
-  margin-top: -690px;
+  margin-top: -665px;
   margin-left: 20px;
   font-family: Palatino;
   font-size: 17px;
   width: 200px;
-  height: 100px;
+  height: 80px;
   padding: 10px;
   z-index: 1;
 }
@@ -352,4 +352,15 @@ background-color:#0066FF;
   z-index: -1;
   opacity: 1;
   fill: black;
+}
+.book {
+  position: absolute;
+  margin-top: -510px;
+  margin-left: 595px;
+  font-family: Palatino;
+  font-size: 17px;
+  width: 200px;
+  height: 100px;
+  z-index: 1;
+  opacity: 0;
 }
