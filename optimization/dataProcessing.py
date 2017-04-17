@@ -76,14 +76,31 @@ def createDatesList(user_start, user_end, num_days):
         date_list.pop(0)
     return dates_list
 
-def createRawDictionary(fulldf):
+def createRawDictionary(fulldf, listofCities):
     # create dictionary of dataframes
 
-    origins = fulldf['origin_id'].unique()
+    # origins = fulldf['origin_id'].unique()
+    cities = listofCities
+    origins = cities
+
+    cities = ['Atlanta', 'Orlando','Palma', 'London', 'Barcelona']
+    origins = cities
+
+    results_origin_filtered = fulldf[fulldf['origin_city_name'].isin(cities)]
+    results_dest_filtered = results_origin_filtered[results_origin_filtered['destination_city_name'].isin(cities)]
 
     originsDict = {}
     for i in origins:
-        originsDict[i] = fulldf[fulldf['origin_id'] == i]
+        originsDict[i] = results_dest_filtered[results_dest_filtered['origin_city_name'] == i]
+
+    #results_origin_filtered = fulldf[fulldf['origin_city_name'].isin(cities)]
+    #results_dest_filtered = results_origin_filtered[results_origin_filtered['destination_city_name'].isin(cities)]
+
+    #originsDict = {}
+    #for i in origins:
+    #    originsDict[i] = results_dest_filtered[results_dest_filtered['origin_city_name'] == i]
+
+    #print originDict
         
     # create dictionary for optimization model
     # format: {origin: destination1:{date1:price1, date2:price2},
@@ -95,10 +112,12 @@ def createRawDictionary(fulldf):
 
     for i in origins:
         for index, row in originsDict[i].iterrows():
-            X[i][row['destination_id']] = {}
+            X[i][row['destination_city_name']] = {}
         for index, row in originsDict[i].iterrows():
-            X[i][row['destination_id']][datetime.datetime.strptime(row['outbound_date'], "%Y-%m-%dT%H:%M:%S").date()]= \
+            X[i][row['destination_city_name']][datetime.datetime.strptime(row['outbound_date'], "%Y-%m-%dT%H:%M:%S").date()]= \
             (datetime.datetime.strptime(row['inbound_date'], "%Y-%m-%dT%H:%M:%S").date(), row['price'])
+
+    # print X
     return X
 
 def createDictforCities(rawDictionary, city_list):
@@ -202,8 +221,14 @@ def createDictsforDates(date_list, dictforCities, source):
 
     for i in nonsourceDict.keys():
         for j in nonsourceDict[i].keys():
-            del nonsourceDict[i][j][dt_start]
-            del nonsourceDict[i][j][dt_end]
+            try:
+                del nonsourceDict[i][j][dt_start]
+            except:
+                ''
+            try:
+                del nonsourceDict[i][j][dt_end]
+            except:
+                ''
             
     return sourceDict, nonsourceDict
 
