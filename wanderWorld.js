@@ -115,7 +115,7 @@ function makeMap(container, map){
 	//  	.enter().append('g')
 	//  	.on("mouseover", function(d){d3.select(this).selectAll("*").style("opacity", 0.9); })
 	// 	.on("mouseout", function(d){d3.select(this).selectAll("text").style("opacity", 0), d3.select(this).selectAll("rect").style("opacity", 0)});
-	 
+
  // 	Palma.append("rect")
 	// 	 	.attr("width", function(d){len = "Palma".length; return (6*len+(len/2)*5+15)})//; return text.length*5})
 	// 	 	.attr("height", 20)
@@ -157,7 +157,7 @@ function makeOthers(container, map){
 		.attr("rx", 15) //rx and ry give the buttons rounded corners
         .attr("ry", 15)
 		.attr('width', 390)
-		.attr('height', 800)
+		.attr('height', 690)
 
 	startText = others.append("text")
 				.attr('id', "start")
@@ -165,9 +165,10 @@ function makeOthers(container, map){
 	startText.text("Where are you coming from?")
 		.attr("class", "question")
 		.attr("x", 20)
-		.attr("y", 30)
+		.attr("y", 40)
 
-    var startCities = ["Atlanta", "Boston", "New York", "Orlando"];
+    var startCities = ["Atlanta"]
+    //var startCities = ["Atlanta", "Boston", "New York", "Orlando"];
     startCities.sort(function(x, y){ return d3.ascending(x, y);})
     startCities.unshift("Select a Starting City")
 
@@ -193,67 +194,78 @@ function makeOthers(container, map){
 
 	destinationText = others.append("text");
 
+    var destinationTextY = 110
+
 	destinationText.text("Where do you want to go?")
 		.attr("class", "question")
 		.attr("x", 20)
-		.attr("y", 100)
+		.attr("y", destinationTextY)
 
 	helpDestinationText = others.append("text");
 
     helpDestinationText.text("Hold down the Cmd or Ctrl key to select up to 5 cities.")
 		.attr("class", "helper")
 		.attr("x", 20)
-		.attr("y", 120)
+		.attr("y", destinationTextY + 20)
+
+    var dateTextY = 255
 
 	dateText = others.append("text");
 	dateText.text("What range of dates could you travel?")
 		.attr("class", "question")
 		.attr("x", 20)
-		.attr("y", 260);
+		.attr("y", dateTextY);
 
 	helpdateText = others.append("text");
 	helpdateText.text("Choose a flexible time frame in which you want to travel.")
 		.attr("class", "helper")
 		.attr("x",20)
-		.attr("y", 280);
+		.attr("y", dateTextY + 20);
+
+    var minDayTextY = 390
 
 	minDayText = others.append("text");
-	minDayText.html("Min days in each location?")
+	minDayText.html("How many days in each location?")
 		.attr("class", "question")
 		.attr("x", 20)
-		.attr("y", 375)
+		.attr("y", minDayTextY)
+	// list = 10000
 
 	helpMinDayText = others.append("text");
 	helpMinDayText.text("What is the minimum number of days you want to stay in each city?")
 		.attr("class", "helper")
 		.attr("x", 20)
-		.attr("y", 395);
+		.attr("y", minDayTextY + 20);
+
+    var numDaysTextY = 475
 
 	numDaysText = others.append("text");
 	numDaysText.html("Total days you want to travel?")
        .attr("class", "question")
        .attr("x", 20)
-       .attr("y", 450);
+       .attr("y", numDaysTextY);
 
     helpnumDaysText = others.append("text");
     helpnumDaysText.text("What is the total number of days you want to spend traveling?")
     	.attr("class", "helper")
     	.attr("x", 20)
-    	.attr("y", 470);
+    	.attr("y", numDaysTextY + 20);
 
+    var budgetTextY = 560
 	budgetText = others.append("text");
 	budgetText.text("What is your budget? (USD)")
 		.attr("class", "question")
 		.attr("x", 20)
-		.attr("y", 640);
+		.attr("y", budgetTextY);
 
 	helpbudgetText = others.append("text");
     helpbudgetText.text("We'll show you several travel options within your budget!")
     	.attr("class", "helper")
     	.attr("x", 20)
-    	.attr("y", 660);
+    	.attr("y", budgetTextY + 20);
 
 	buttonText = ["Find My Optimal Trips!"]
+
 	var optimize = others.append('g')
 		.attr('id', 'go').selectAll("g")
 		.data(buttonText)
@@ -264,30 +276,30 @@ function makeOthers(container, map){
 				if (d3.select(this).select("rect").attr("fill") != pressedColor) {
                     d3.select(this).select("rect").attr("fill", pressedColor);
                     d3.select(this).select("text").text("Trips Incoming!");
+                    d3.select("#book").style("opacity", 1);
                     d3.select(this).select("text").attr("x", 110);
-                    showboxes(others, map);
                     outputList.push({key: "Origin", value: onChange ()});
                     outputList.push({key: "Dests",
                     	value: Array.prototype.slice
              				.call(document.querySelectorAll('#multDropDown option:checked'),0)
              				.map(function(v,i,a) {
     						return v.value;})});
-                    outputList.push({key: "Start Date",
+                    outputList.push({key: "StartDate",
                     	value: Array.prototype.slice
              				.call(document.querySelectorAll('#field1'),0)
              				.map(function(v,i,a) {
     						return v.value;})[0]});
-                    outputList.push({key: "End Date",
+                    outputList.push({key: "EndDate",
                     	value: Array.prototype.slice
              				.call(document.querySelectorAll('#field2'),0)
              				.map(function(v,i,a) {
     						return v.value;})[0]});
-                    outputList.push({key: "Min Days",
+                    outputList.push({key: "MinDays",
                     	value: Array.prototype.slice
              				.call(document.querySelectorAll('#minDaysInput'),0)
              				.map(function(v,i,a) {
     						return v.value;})[0]});
-                    outputList.push({key: "Num Days",
+                    outputList.push({key: "NumDays",
                     	value: Array.prototype.slice
              				.call(document.querySelectorAll('#numDaysInput'),0)
              				.map(function(v,i,a) {
@@ -297,8 +309,9 @@ function makeOthers(container, map){
              				.call(document.querySelectorAll('#budgetInput'),0)
              				.map(function(v,i,a) {
     						return v.value;})[0]});
+                    console.log(outputList)
+                    validateForm(outputList)
              	}
-
 				else {
 					d3.select(this).select("rect").attr("fill", defaultColor)
 					console.log("removing "+d)
@@ -320,7 +333,7 @@ function makeOthers(container, map){
 			.attr("width", 275)
 			.attr("height", 30)
 			.attr("x", 30)
-			.attr("y", 750)
+			.attr("y", 635)
 			.attr("rx", 3) //rx and ry give the buttons rounded corners
 			.attr("ry", 3)
 			.attr("fill", defaultColor);
@@ -328,17 +341,65 @@ function makeOthers(container, map){
 	optimize.append('text')
 			.attr('class', 'text')
 			.attr("stroke", "none")
-			.attr('y', 770)
+			.attr('y', 655)
 			.attr('x', 80)
 			.text(function(d){return d});
 
+    // VALIDATE INPUT
+    function validateForm(outputList) {
+        //everything must be filled out
+        if (outputList[0].value == "Select a Starting City")
+            {alert("Select an origin city."); return false;}
+        if (outputList[1].value.length == 0)
+            {alert("Select at least one destination city."); return false;}
+        if (outputList[2].value == "")
+            {alert("Select a start date for your flexible time frame."); return false;}
+        if (outputList[3].value == "")
+            {alert("Select an end date for your flexible time frame."); return false;}
+        if (outputList[4].value == "")
+            {alert("Minimum number of days must be filled out."); return false;}
+        if (outputList[5].value == "")
+            {alert("Total number of days must be filled out."); return false;}
+        if (outputList[6].value == "")
+            {alert("Budget must be filled out."); return false;}
+        //num days must be >= min days * num cities
+        if (outputList[5].value < outputList[4].value*outputList[1].value.length)
+            {alert("Increase your total number of days or reduce your minimum stay per city."); return false;}
+        //min days, num days, and budget must be valid formats
+        if (!(/^\$*(\d*\.?\d+|\d{1,3}(,\d{3})*(\.\d+)?)$/.test(outputList[6].value)))
+            {alert("Budget is not a valid input."); return false;}
+        //timeframe should be > total days
+        var daysBetween = days_between(parseDate(outputList[2].value), parseDate(outputList[3].value));
+        if (daysBetween < outputList[5].value)
+            {alert("Increase your flexible time frame or decrease total number of days."); return false;}
+        else{return showboxes(others, map);}
+        }
+
+    function days_between(date1, date2) {
+        // The number of milliseconds in one day
+        var ONE_DAY = 1000 * 60 * 60 * 24
+        // Convert both dates to milliseconds
+        var date1_ms = date1.getTime()
+        var date2_ms = date2.getTime()
+        // Calculate the difference in milliseconds
+        var difference_ms = Math.abs(date1_ms - date2_ms)
+        // Convert back to days and return
+        return Math.round(difference_ms/ONE_DAY)
+        }
+        // function from http://stackoverflow.com/questions/2627473/how-to-calculate-the-number-of-days-between-two-dates-using-javascript
+
+    function parseDate(input) {
+        var parts = input.match(/(\d+)/g);
+        // new Date(year, month [, date [, hours[, minutes[, seconds[, ms]]]]])
+        return new Date(parts[0], parts[1]-1, parts[2]); // months are 0-based
+        // function from http://stackoverflow.com/questions/2627650/why-javascript-gettime-is-not-a-function
+    }
 }
 
 function showboxes(others, map){
 
 	// load the data
 	d3.csv("./optimization/niceOutput.csv", function(data) {
-
 
     var flights = null;
         flights = d3.nest()
@@ -358,12 +419,12 @@ function showboxes(others, map){
         .attr("ry", 15)
 		.attr('width', 329)
 		.attr('height', 320)
-    
+
 	var results = others.append('g')
 		.attr('id', 'resultsBox').selectAll("g")
 		.data(flights)
 		.enter().append('g')
-	
+
 	flightText = results.append('text')
 	flightText.text("Wander to...")
 		.attr("class", "resultHeader")
@@ -376,9 +437,9 @@ function showboxes(others, map){
 			.attr("class", "text")
 			.attr("x", 402)
 			.attr("y", 80)
-	}	
+	}
 
-	if (numberofTrips > 0 ){ 
+	if (numberofTrips > 0 ){
 		detailsText = results.append('text');
 		detailsText.text("Click on an option for details.")
 			.attr("class", "helper")
@@ -396,9 +457,9 @@ function showboxes(others, map){
 						d.Price.push(d.values[j].values[0].Price)
 						d.Origin.push(d.values[j].values[0].Origin_ID)
 					}
-			
+
 			return "Price $" + d.values[0].values[0]['Total_Price']
-		
+
 		});
 
 	option1Text = results.append('text');
