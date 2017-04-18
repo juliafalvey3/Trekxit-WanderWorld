@@ -308,7 +308,6 @@ function makeOthers(container, map){
              				.call(document.querySelectorAll('#budgetInput'),0)
              				.map(function(v,i,a) {
     						return v.value;})[0]});
-                    console.log(outputList)
                     validateForm(outputList)
              	}
 				else {
@@ -318,6 +317,7 @@ function makeOthers(container, map){
 					d3.select(this).select("text").attr("x", 80)
 					d3.select("#book").style("opacity",0)
 					d3.selectAll("#resultsBox").remove()
+					d3.selectAll(".citiesText").remove()
 
 			}})
         .on("mouseover", function() {
@@ -371,7 +371,7 @@ function makeOthers(container, map){
         var daysBetween = days_between(parseDate(outputList[2].value), parseDate(outputList[3].value));
         if (daysBetween < outputList[5].value)
             {alert("Increase your flexible time frame or decrease total number of days."); return false;}
-        else{return showboxes(others, map);}
+        else{ d3.select("#book").style("opacity", 1); return showboxes(others, map);}
         }
 
     function days_between(date1, date2) {
@@ -481,6 +481,7 @@ function showboxes(others, map){
 	cities1 = ""
 	options1Cities.append("text")
 		.attr("class", "text")
+		.attr("class", "citiesText")
 		.attr("x", 405)
 		.attr("y", 100)
 		.attr("stroke", "none")
@@ -517,6 +518,7 @@ function showboxes(others, map){
 			.attr("class", "text")
 			.attr("x", 405)
 			.attr("y", 150)
+			.attr("class", "citiesText")
 			.attr("stroke", "none")
 			.text(function (d,i){
 					if (i > 0){
@@ -551,6 +553,7 @@ function showboxes(others, map){
 			.attr("class", "text")
 			.attr("x", 405)
 			.attr("y", 200)
+			.attr("class", "citiesText")
 			.attr("stroke", "none")
 			.text(function (d,i){
 					if (i > 0){
@@ -584,6 +587,7 @@ function showboxes(others, map){
 		options4cities.append("text")
 			.attr("class", "text")
 			.attr("x", 405)
+			.attr("class", "citiesText")
 			.attr("y", 250)
 			.attr("stroke", "none")
 			.text(function (d,i){
@@ -617,6 +621,7 @@ function showboxes(others, map){
 		options5cities.append("text")
 			.attr("class", "text")
 			.attr("x", 405)
+			.attr("class", "citiesText")
 			.attr("y", 300)
 			.attr("stroke", "none")
 			.text(function (d,i){

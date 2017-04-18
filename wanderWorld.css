@@ -353,3 +353,14 @@ background-color:#0066FF;
   opacity: 1;
   fill: black;
 }
+.book {
+  position: absolute;
+  margin-top: -510px;
+  margin-left: 595px;
+  font-family: Palatino;
+  font-size: 17px;
+  width: 120px;
+  height: 20px;
+  z-index: 1;
+  opacity: 0;
+}
