@@ -1,8 +1,9 @@
 var height = 800;
-
 var mapH = 1000,
 	mapX = 730,
-	mapY = 0;
+
+    
+    mapY = 0;
 
 var projScale = 1000,
 	projX = 230,
@@ -179,7 +180,7 @@ function makeOthers(others, map){
 
 	helpDestinationText = others.append("text");
 
-    helpDestinationText.text("Hold down the Cmd or Ctrl key to select up to 5 cities.")
+    helpDestinationText.text("Hold down the Cmd (Mac) or Ctrl (Windows) key to select up to 5 cities.")
 		.attr("class", "helper")
 		.attr("x", 20)
 		.attr("y", destinationTextY + 20)
@@ -187,13 +188,13 @@ function makeOthers(others, map){
     var dateTextY = 255
 
 	dateText = others.append("text");
-	dateText.text("What range of dates could you travel?")
+	dateText.text("Choose a flexible range of dates.")
 		.attr("class", "question")
 		.attr("x", 20)
 		.attr("y", dateTextY);
 
 	helpdateText = others.append("text");
-	helpdateText.text("Choose a flexible time frame in which you want to travel.")
+	helpdateText.text("Are you free all summer? Winter break? When COULD you travel?")
 		.attr("class", "helper")
 		.attr("x",20)
 		.attr("y", dateTextY + 20);
@@ -201,14 +202,14 @@ function makeOthers(others, map){
     var minDayTextY = 390
 
 	minDayText = others.append("text");
-	minDayText.html("How many days in each location?")
+	minDayText.html("Minimum number of days in each city?")
 		.attr("class", "question")
 		.attr("x", 20)
 		.attr("y", minDayTextY)
 	// list = 10000
 
 	helpMinDayText = others.append("text");
-	helpMinDayText.text("What is the minimum number of days you want to stay in each city?")
+	helpMinDayText.text("About how many days do you want to stay in each location?")
 		.attr("class", "helper")
 		.attr("x", 20)
 		.attr("y", minDayTextY + 20);
@@ -216,13 +217,13 @@ function makeOthers(others, map){
     var numDaysTextY = 475
 
 	numDaysText = others.append("text");
-	numDaysText.html("Total days you want to travel?")
+	numDaysText.html("How long do you want your trip to be?")
        .attr("class", "question")
        .attr("x", 20)
        .attr("y", numDaysTextY);
 
     helpnumDaysText = others.append("text");
-    helpnumDaysText.text("What is the total number of days you want to spend traveling?")
+    helpnumDaysText.text("What is the total number of days you want to spend in Europe?")
     	.attr("class", "helper")
     	.attr("x", 20)
     	.attr("y", numDaysTextY + 20);
