@@ -40,6 +40,7 @@ div.textBox h2 {
     vertical-align: middle;
     text-anchor: middle;
 }
+/*WanderWorld*/
 
 div.textBox p {
   font-family: Palatino;
@@ -50,24 +51,29 @@ div.textBox p {
     text-align: center;
     vertical-align: top;
 }
+/*Explore Together*/
 
 
 div.otherText {
   font-family: Palatino;
   border: 1px solid black;
-  margin-left: 600px;
-  width: 1000px;
-  height: 300px;
+  margin-left: 0px;
+  font-size: 20px;
+  text-align: center;
+  /*vertical-align: middle;*/
+  /*width: 1000px;*/
+  /*height: 300px;*/
 }
+/*paragraph*/
 
 div.otherText p {
     font-family: Palatino;
-    font-weight: bold;
     color: #000000;
-    font-size: 20px;
+    font-size: 22px;
     text-align: center;
     vertical-align: top;
 }
+/*paragraph*/
 
 .header
 {
@@ -87,15 +93,14 @@ div.otherText p {
 
 #sections {
   position: relative;
-  width: 250px;
-/*  position: absolute ;
-
-  width: 650px;*/
+  width: 1400px;
+  /*position: absolute;*/
   top: 0px;
 }
 
 .step {
   margin-bottom: 100px;
+  /*margin-top: 50px;*/
 }
 
 #chart {
@@ -128,9 +133,9 @@ text.resultHeader {
   font-family:Palatino;
   font-size:44px;
   font-weight:bold;
-  fill:#3690c0;
+  fill: #c59353;
   stroke: grey;
-  stroke-opacity: 0.5;
+  stroke-opacity: 0.2;
 }
 text.pricetext {
   font-family:Palatino;
@@ -141,7 +146,7 @@ text.pricetext {
   fill: none;
 }
 
-.d3-tip {
+.d3-tipGraph {
   line-height: 1;
   padding: 6px;
   background: #ebebeb;
@@ -247,7 +252,7 @@ text.pricetext {
   margin-left: 20px;
   font-family: Palatino;
   font-size: 17px;
-  width: 200px;
+  width: 300px;
   padding: 10px;
   z-index: 1;
 }
@@ -295,9 +300,10 @@ text.pricetext {
 
 
 .subunit-label {
-  fill: #444;
+  fill: #c59353;
   fill-opacity: .5;
-  font-size: 10px;
+  font-size: 11px;
+  color: #c59353;
   text-anchor: middle;
   alignment-baseline: central;
 }
@@ -319,23 +325,25 @@ text.pricetext {
 }
 
 table.GeneratedTable {
-width:100%;
-background-color:#FFFFFF;
-border-collapse:collapse;border-width:1px;
-border-color:#336600;
-border-style:groove;
-color:#330000;
+  width:100%;
+  background-color: white;
+  border-collapse:collapse;
+  border-width:1px;
+  border-color:#c59353;
+  border-style:groove;
+  color: black;
+  font-family: Palatino;
 }
 
 table.GeneratedTable td, table.GeneratedTable th {
 border-width:1px;
-border-color:#336600;
+border-color:#c59353;
 border-style:groove;
-padding:3px;
+padding:2px;
 }
 
 table.GeneratedTable thead {
-background-color:#0066FF;
+background-color: #c59353;
 }
 
 .node {
@@ -359,8 +367,33 @@ background-color:#0066FF;
   margin-left: 595px;
   font-family: Palatino;
   font-size: 17px;
-  width: 200px;
-  height: 100px;
+  width: 120px;
+  height: 20px;
   z-index: 1;
   opacity: 0;
+}
+
+
+.d3-tip {
+  width: 310px;
+  line-height: 1;
+  padding: 6px;
+  background: white;
+  color: black;
+  border-width: 1px;
+  border-color: grey;
+  border-radius: 8px;
+  border-style: solid;
+  position: [400,115];
+}
+
+.svg-classed{
+  width: 100%;
+  vertical-align: top;
+  overflow: hidden;
+  z-index:-1;
+}
+
+#results-box{
+ z-index: 1 
 }

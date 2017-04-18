@@ -35,58 +35,55 @@ en: {
 	<p class="text"> Explore Together</p>
 </div>
 <div id = "sections" class='step, otherText'>
-  <p>R2D3 Group Project</p>
-	<p>Spencer Collins, Julia Falvey, Clara Quigley, Rebecca Smith, Gabriella Runnels, Zhilin Ye</p>
-	<p>Polo Chau's 6242 Data and Visual Analytics Class</p>
-	<p>Spring 2017</p>
+	<p>Welcome to WanderWorld!</p>
+  <p>WanderWorld is perfect for budget-conscious travelers who have flexible schedules. Whether you're a group of college friends on winter break or a lone traveler looking for an exciting way to spend your summer, WanderWorld can help you find the lowest-cost trip between multiple cities. You don't need to worry about the specific dates or the order of the cities--WanderWorld takes care of all of that for you. No other website has the ability to optimize a multi-city trip, and doing so by hand could take hours. (We should know--WanderWorld was an idea born out of our attempt to plan a two-week vacation in Europe following our graduation from Georgia Tech!)</p>
+	<!-- <p>Polo Chau's 6242 Data and Visual Analytics Class</p>
+	<p>Spring 2017</p> -->
 </div>
 <a class="arrow" href="#vis" title="arrow" id="arrow"></a>
 
-<div>
+<div id = "vis">
 
-    <div id = "vis">
+  	<script> init() </script>
+    <form>
+      <select id="multDropDown" multiple>
+        <!-- <option id = "Amsterdam" value="Amsterdam">Amsterdam, Netherlands</option>
+        <option id = "Athens" value="Athens">Athens, Greece</option> -->
+        <option id = "Barcelona" value="Barcelona">Barcelona, Spain</option>
+        <!-- <option id = "Berlin" value="Berlin">Berlin, Germany</option>
+        <option id = "Brussels value="Brussels">Brussels, Belgium</option>
+        <option id = "Copenhagen" value="Copenhagen">Copenhagen, Denmark</option>
+        <option id = "Dublin" value="Dublin">Dublin, Ireland</option>
+        <option id = "Frankfurt" value="Frankfurt">Frankfurt, Germany</option>
+        <option id = "Lisbon" value="Lisbon">Lisbon, Portugal</option> -->
+        <option id = "London" value="London">London, U.K.</option>
+        <!-- <option id = "Madrid" value="Madrid">Madrid, Spain</option> -->
+        <!-- <option id = "Milan" value="Milan">Milan, Italy</option>
+        <option id = "Munich" value="Munich">Munich, Germany</option>
+        <option id = "Oslo" value="Oslo">Oslo, Norway</option> -->
+        <option id = "Palma" value="Palma">Palma de Mallorca, Spain</option>
+        <option id = "Paris" value="Paris">Paris, France</option>
+        <!-- <option id = "Rome" value="Rome">Rome, Italy</option>
+        <option id = "Stockholm" value="Stockholm">Stockholm, Sweden</option> -->
+        <option id = "Vienna" value="Vienna">Vienna, Austria</option>
+        <!-- <option id = "Zurich" value="Zurich">Zurich, Switzerland</option> -->
+      </select>
+    </form>
+    <form name="myform" id="minDays" required>
+          <input id = "minDaysInput" type="text" placeholder="e.g. 3">
+    </form>
+    <form name="numform" id="numDays" required>
+         <input id = "numDaysInput" type="text" placeholder="e.g. 10">
+    </form>
+    <form class = "datePick">
+      <p> From: <input type="date" name="field1" id = "field1">  </br> </br>     To:  <input type="date" name ="field2" id ="field2"> </p>
+    </form>
+    <form name="budgetform" id="budget"> <!-- onSubmit="return handleClick()"  -->
+          <input id = "budgetInput" type="text" placeholder="e.g. $1000 ">
+    </form>
 
-    	<script> init() </script>
-      <form>
-        <select id="multDropDown" multiple>
-          <!-- <option id = "Amsterdam" value="Amsterdam">Amsterdam, Netherlands</option>
-          <option id = "Athens" value="Athens">Athens, Greece</option> -->
-          <option id = "Barcelona" value="Barcelona">Barcelona, Spain</option>
-          <!-- <option id = "Berlin" value="Berlin">Berlin, Germany</option>
-          <option id = "Brussels value="Brussels">Brussels, Belgium</option>
-          <option id = "Copenhagen" value="Copenhagen">Copenhagen, Denmark</option>
-          <option id = "Dublin" value="Dublin">Dublin, Ireland</option>
-          <option id = "Frankfurt" value="Frankfurt">Frankfurt, Germany</option>
-          <option id = "Lisbon" value="Lisbon">Lisbon, Portugal</option> -->
-          <option id = "London" value="London">London, U.K.</option>
-          <!-- <option id = "Madrid" value="Madrid">Madrid, Spain</option> -->
-          <!-- <option id = "Milan" value="Milan">Milan, Italy</option>
-          <option id = "Munich" value="Munich">Munich, Germany</option>
-          <option id = "Oslo" value="Oslo">Oslo, Norway</option> -->
-          <option id = "Palma" value="Mallorca">Palma de Mallorca, Spain</option>
-          <option id = "Paris" value="Paris">Paris, France</option>
-          <!-- <option id = "Rome" value="Rome">Rome, Italy</option>
-          <option id = "Stockholm" value="Stockholm">Stockholm, Sweden</option> -->
-          <option id = "Vienna" value="Vienna">Vienna, Austria</option>
-          <!-- <option id = "Zurich" value="Zurich">Zurich, Switzerland</option> -->
-        </select>
-      </form>
-      <form name="myform" id="minDays" required>
-            <input id = "minDaysInput" type="text" placeholder="e.g. 3">
-      </form>
-      <form name="numform" id="numDays" required>
-           <input id = "numDaysInput" type="text" placeholder="e.g. 10">
-      </form>
-      <form class = "datePick">
-        <p> From: <input type="date" name="field1" id = "field1">  </br> </br>     To:  <input type="date" name ="field2" id ="field2"> </p>
-      </form>
-      <form name="budgetform" id="budget"> <!-- onSubmit="return handleClick()"  -->
-            <input id = "budgetInput" type="text" placeholder="e.g. $1000 ">
-      </form>
-
-    </div>
-    <a class="book" href="https://www.skyscanner.net/" title="book" id="book">Book your trip!</a>
-</div>
+  </div>
+  <a class="book" href="https://www.skyscanner.net/" title="book" id="book">Book your trip!</a>
 
 <a class="up-arrow" href="" title="up-arrow" id="up-arrow"></a>
 </body>
