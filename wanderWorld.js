@@ -2,7 +2,7 @@ var height = 800;
 var mapH = 1000,
 	mapX = 730,
 
-    
+
     mapY = 0;
 
 var projScale = 1000,
@@ -130,10 +130,10 @@ function makeOthers(others, map){
 		.attr('fill', 'white')
 		.attr('stroke', 'grey')
 		.attr('x', 0)
-		.attr('y', 0)
+		.attr('y', 1)
 		.attr("rx", 15) //rx and ry give the buttons rounded corners
         .attr("ry", 15)
-		.attr('width', 390)
+		.attr('width', 400)
 		.attr('height', 690)
 
 	startText = others.append("text")
@@ -180,7 +180,7 @@ function makeOthers(others, map){
 
 	helpDestinationText = others.append("text");
 
-    helpDestinationText.text("Hold down the Cmd (Mac) or Ctrl (Windows) key to select up to 5 cities.")
+    helpDestinationText.text("Hold down Cmd (Mac) or Ctrl (Windows) key to select up to 5 cities.")
 		.attr("class", "helper")
 		.attr("x", 20)
 		.attr("y", destinationTextY + 20)
@@ -391,7 +391,7 @@ function showboxes(others, map){
 		.attr('fill', 'white')
 		.attr('stroke', 'grey')
 		.attr('x', 390)
-		.attr('y', 0)
+		.attr('y', 1)
 		.attr("rx", 15) //rx and ry give the buttons rounded corners
         .attr("ry", 15)
 		.attr('width', 329)
@@ -401,7 +401,7 @@ function showboxes(others, map){
 		.attr('id', 'resultsBox').selectAll("g")
 		.data(flights)
 		.enter().append('g')
-		.style("z-index", 1)	
+		.style("z-index", 1)
 
 	flightText = results.append('text')
 	flightText.text("Wander to...")
@@ -441,7 +441,7 @@ function showboxes(others, map){
 		});}
 
 	for (i = 0; i<numberofTrips; i+=1){
-	
+
 	optionText = results.append('text');
 	optionText.text("Option " + (i+1) + ": ")
 		.attr("class", "text")
@@ -454,14 +454,14 @@ function showboxes(others, map){
         .on("mouseout", function() {
             if (d3.select(this).attr("fill") != textFill) {
                 d3.select(this).attr("fill","black")}})
-		.on("click", function() {if (d3.select(this).attr("fill") != textFill) {d3.select(this).attr("fill", textFill); 
+		.on("click", function() {if (d3.select(this).attr("fill") != textFill) {d3.select(this).attr("fill", textFill);
 
-			if(d3.select(this).text()=="Option 1: "){node_link(flights[0].values, map, others)} 
+			if(d3.select(this).text()=="Option 1: "){node_link(flights[0].values, map, others)}
 			else if (d3.select(this).text()=="Option 2: "){node_link(flights[1].values, map, others)}
 			else if (d3.select(this).text()=="Option 3: "){node_link(flights[2].values, map, others)}
 			else if (d3.select(this).text()=="Option 4: "){node_link(flights[3].values, map, others)}
-			else if (d3.select(this).text()=="Option 5: "){node_link(flights[4].values, map, others)}	
-			else {}; 
+			else if (d3.select(this).text()=="Option 5: "){node_link(flights[4].values, map, others)}
+			else {};
 		 	}
             else {d3.select(this).attr("fill", "black"), d3.selectAll(".link").remove(), d3.selectAll(".node").remove(), d3.selectAll(".flightTP").remove() }});
     var optionsCities = others.append('g')
@@ -539,9 +539,9 @@ function node_link(d, map, others){
 			  // .attr("x", 400)
 			  // .attr("y", 115) //{for (i = linkList.length; i>0; i-=1) {console.log(i); return ([i*100,115])}})
 			  .html(function(d){strhtml = "<strong>Route Price: $" + totalPrice + "</strong><br> <table class='GeneratedTable'> <thead><tr><th>Origin</th><th>Destination</th><th>Date</th><th>Price</th></tr></thead><tbody> ";
-				     
+
 				    for (i = 0 ; i <linkList.length;i++){
-				            strhtml  += '<tr><td>' + linkList[i].source +'</td><td>'+ linkList[i].target + '</td><td>'+ linkList[i].land +'</td><td> $'+ linkList[i].price +"</td></tr>";              
+				            strhtml  += '<tr><td>' + linkList[i].source +'</td><td>'+ linkList[i].target + '</td><td>'+ linkList[i].land +'</td><td> $'+ linkList[i].price +"</td></tr>";
 						};
 
 					strhtml  += "</tbody></table>";
@@ -560,8 +560,8 @@ function node_link(d, map, others){
 		.attr("class", "table flightTP")
 
 	flightDeets.append("rect")
-		.attr('x', 390)
-		.attr('y', 320)
+		.attr('x', 405)
+		.attr('y', 325)
 		.attr("rx", 15) //rx and ry give the buttons rounded corners
         .attr("ry", 15)
 		.attr('width', 320)
