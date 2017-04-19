@@ -37,7 +37,9 @@ def extractRealDate(flight):
     
     return departDate_String, arriDate_String
 
-def main(origin, city_list, user_start, user_end, min_days, num_days):
+#def main(origin, city_list, user_start, user_end, min_days, num_days):
+#def main():
+def main(city_list):
 	# print origin, city_list, user_start, user_end, min_days, num_days
 	conn = sqlite3.connect("flights_final_4_13.db")
 	c = conn.cursor()
@@ -56,6 +58,14 @@ def main(origin, city_list, user_start, user_end, min_days, num_days):
 	#results= pd.DataFrame.from_records(data = query.fetchall(), columns = cols)
 
 
+	user_start = '2017-05-01T00:00:00'
+	user_end = '2017-05-31T00:00:00'
+
+
+	# city_list = ['Atlanta', 'Orlando','Palma', 'London', 'Barcelona', 'Vienna']
+	num_days = 21
+	min_days = 2
+	origin = 'Atlanta'
 	
 	#print city_list
 
@@ -65,7 +75,7 @@ def main(origin, city_list, user_start, user_end, min_days, num_days):
 	# print Example.rawDictionary
 	Example.createInputDicts()
 	Example.buildAndSolveModel()
-	codeMap = Example.cityCodeMap
+	# codeMap = Example.cityCodeMap
 
 	routes = []
 
@@ -81,9 +91,9 @@ def main(origin, city_list, user_start, user_end, min_days, num_days):
     	#sort and slice at very end:
 	sorted_routes = sorted(routes, key=lambda tup: tup[-1]) #sorts on total price
 	# print sorted_routes
-	print sorted_routes
+	# print sorted_routes
 	final_results = sorted_routes[0:4] #or however many we want to return
-	print final_results
+	# print final_results
 
 	# print 'length:',len(final_results)
 	# print final_results
@@ -111,11 +121,11 @@ def main(origin, city_list, user_start, user_end, min_days, num_days):
 	user_end = user_end[0:10]
 
 	QueryID += user_start
-	QueryID += ','
+	QueryID += ', '
 	QueryID += user_end
-	QueryID += ','
+	QueryID += ', '
 	QueryID += str(min_days)
-	QueryID += ','
+	QueryID += ', '
 	QueryID += str(num_days)
 
 	
@@ -144,19 +154,23 @@ def main(origin, city_list, user_start, user_end, min_days, num_days):
 	# outputDF = pd.DataFrame.from_dict(outputDict)
 	#print outputDF
     
-	# outputDF.to_csv('niceOutput.csv',index=False) 
+	#outputDF.to_csv('seemstobeniceOutput.csv',index=False) 
+	# print outputDF
 	return outputDict
 
 #if __name__ == "__main__":
 	#''
+
+if __name__ == "__mainsomething__":
+	main()
 
 	
 
 if __name__ == "__main__":
 	#user_start = '2017-05-01T00:00:00'
 	#user_end = '2017-05-31T00:00:00'
-	begin = '2017-05-01T00:00:00'
-	end = '2017-05-31T00:00:00'
+	#begin = '2017-05-01T00:00:00'
+	#end = '2017-05-31T00:00:00'
 	# origins = results['origin_id'].unique()
 	# city_list = ['Atlanta', 'Orlando','Palma', 'London', 'Barcelona', 'Vienna']
 	# num_days = 20
@@ -164,8 +178,6 @@ if __name__ == "__main__":
 	origin = 'Atlanta'
 
 	fulllist = ['Amsterdam', 'Barcelona', 'Berlin', 'Copenhagen', 'Dublin', 'London', 'Palma', 'Paris', 'Rome', 'Vienna']
-
-	city_combinations = itertools.combinations(fulllist, 5)
 
 	real_outputDict = {}
 	real_outputDict['TripID'] = []
@@ -184,55 +196,44 @@ if __name__ == "__main__":
 
 	# size = 10*9*8*7/4/3/2/1*10*4*15
 
+	city_combinations = [seq for i in range(2,6) for seq in itertools.combinations(fulllist, i)]
+	# print city_combinations
+	# city_combinations = itertools.combinations(fulllist, 3)
+
 
 	for city_tuple in city_combinations:
 		city_list = [origin]+list(city_tuple)
 
-		# for min_days in range(1,4):
-		for min_days in range(2,3):
-			# for num_days in range((min_days+1)*6, 30):
-			for num_days in range(21,22):
-				startdate = datetime.datetime.strptime(begin, "%Y-%m-%dT%H:%M:%S").date()
-				#for i in range(1, 31 - num_days + 1):
-				for i in range(1,2):
-					delta = datetime.timedelta(days=num_days)					
-					user_start = startdate
-					user_end = startdate + delta
-					increment = datetime.timedelta(days=1)
-					startdate = startdate+increment
-
-					user_start = user_start.strftime("%Y-%m-%dT%H:%M:%S")
-					user_end = user_end.strftime("%Y-%m-%dT%H:%M:%S")
-					
-
-					#user_start = user_start[0:10]
-					#user_end = user_end[0:10]
-					#print user_start, user_end
-
-					# print user_start, user_end, min_days, num_days
+		# print city_list
 
 
 
-					try:
-						outputDict = main(origin, city_list, user_start, user_end, min_days, num_days)
-						# print outputDict
-					except:
-						continue
-					real_outputDict['QueryID'].append(outputDict['QueryID'])
-					real_outputDict['TripID'].append(outputDict['TripID'])
-					real_outputDict['Seq'].append(outputDict['Seq'])
-					real_outputDict['Origin_Name'].append(outputDict['Origin_Name'])
-					
-					real_outputDict['Dest_Name'].append(outputDict['Dest_Name'])
-					
-					real_outputDict['Price'].append(outputDict['Price'])
-					# departDate_String, arriDate_String = extractRealDate(flight)
-					real_outputDict['Date1'].append(outputDict['Date1'])
-					real_outputDict['Date2'].append(outputDict['Date2'])
-					real_outputDict['Total_Price'].append(outputDict['Total_Price'])
+		try:
+			print 'success'
+			outputDict = main(city_list)
+			for queryID in outputDict['QueryID']:
+				real_outputDict['QueryID'].append(queryID)
+			for tripID in outputDict['TripID']:
+				real_outputDict['TripID'].append(tripID)
+			for seq in outputDict['Seq']:
+				real_outputDict['Seq'].append(seq)
+			for origin_name in outputDict['Origin_Name']:
+				real_outputDict['Origin_Name'].append(origin_name)
+			for dest_name in outputDict['Dest_Name']:
+				real_outputDict['Dest_Name'].append(dest_name)
+			for price in outputDict['Price']:
+				real_outputDict['Price'].append(price)
+			for date1 in outputDict['Date1']:
+				real_outputDict['Date1'].append(date1)
+			for date2 in outputDict['Date2']:
+				real_outputDict['Date2'].append(date2)
+			for total_price in outputDict['Total_Price']:
+				real_outputDict['Total_Price'].append(total_price)
+		except:
+			''
 
-					print index, ', Finished!!'
-					index += 1
+		print index, ', Finished!!'
+		index += 1
 
 
 
