@@ -1,22 +1,17 @@
 var height = 800;
 var mapH = 1000,
 	mapX = 730,
-
-
     mapY = 0;
 
 var projScale = 1000,
 	projX = 230,
-	projY = 1400;
-
-var otherW = width-mapW
+	projY = 1400
 	otherH = 1000;
 
 var mapFill ="#00254c"
 var textFill = "#202092"
 var cityFill = "#c59353"
 
-var half = width/2;
 
 function init(){
 	d3.select('#vis').selectAll('*').remove();
@@ -405,7 +400,7 @@ function showboxes(others, map, outputList){
 	wanderKeys += outputList[(outputList.length-2)].value
 	
 	// load the data
-	d3.csv("./optimization/flightData.csv", function(data) {
+	d3.csv("./flightData.csv", function(data) {
 
 	final_flights = data.filter(function(d){return wanderKeys == d['QueryID']})
 
@@ -578,7 +573,7 @@ function node_link(d, map, others){
 	var url = "https://www.skyscanner.net/transport/d/"
 	  	for (i = 0; i <linkList.length; i++)
 	  		{
-	  			inDate = outFormat( new Date(parseformat.parse(linkList[i].land)))
+	  			inDate = outFormat(new Date(parseformat.parse(linkList[i].land)))
 
 	  			var start = linkList[0].origin_id;
 	  			if (i == 0){
