@@ -390,7 +390,7 @@ function makeOthers(others, map){
 function showboxes(others, map){
 
 	// load the data
-	d3.csv("./optimization/niceOutput.csv", function(data) {
+	d3.csv("./optimization/extremelyniceOutput.csv", function(data) {
 
 
     var flights = null;
