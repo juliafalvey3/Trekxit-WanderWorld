@@ -82,7 +82,7 @@ function makeMap(container, map){
 	       .attr("transform", function(d) { return "translate(" + (path.centroid(d)[0]-15) + "," + (path.centroid(d)[1])  + ")"; })
 	       .text(function(d) { if(d.properties.name == 'Spain' || d.properties.name=='France' || d.properties.name=='Germany' || d.properties.name=='Italy' || d.id=='ENG' || d.id=='AUT' || d.properties.name=='Poland' ) {return d.properties.name}; })
 	       .style("font-size", "10px")
-	 
+
 	 cities = map.selectAll(".place-label")
 	    .data(topojson.feature(eu, eu.objects.places).features)
 	    .attr("id", "cities")
@@ -398,7 +398,7 @@ function showboxes(others, map, outputList){
 	}
 
 	wanderKeys += outputList[(outputList.length-2)].value
-	
+
 	// load the data
 	d3.csv("./flightData.csv", function(data) {
 
@@ -467,7 +467,7 @@ function showboxes(others, map, outputList){
 				.attr("id", 'optionG')
 				.on("mouseover", function() {
 		            if (d3.select(this).selectAll("rect").attr("fill") != cityFill) {
-		                d3.select(this).selectAll("rect").attr("fill", "grey"); } 
+		                d3.select(this).selectAll("rect").attr("fill", "grey"); }
 		                d3.select(this).style("cursor", "default")})
 		        .on("mouseout", function() {
 		            if (d3.select(this).selectAll("rect").attr("fill") != cityFill) {
@@ -507,7 +507,7 @@ function showboxes(others, map, outputList){
 				.attr("x", resultHelpX)
 				.attr("y", (85+50*i));
 
-				
+
 		    var optionsCities = others.append('g')
 				.attr('id', resultsBox).selectAll('g')
 				.data(flights[i].Origin)
