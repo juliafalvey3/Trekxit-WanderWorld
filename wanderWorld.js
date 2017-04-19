@@ -12,7 +12,7 @@ var projScale = 1000,
 var otherW = width-mapW
 	otherH = 1000;
 
-var mapFill = "#00254c"
+var mapFill ="#00254c"
 var textFill = "#202092"
 var cityFill = "#c59353"
 
@@ -86,8 +86,9 @@ function makeMap(container, map){
 	       .attr("class", function(d) { return "subunit-label " + d.id; })
 	       .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
 	       .attr("dy", ".35em")
-	       .text(function(d) { if(d.properties.name == 'Spain' || d.properties.name=='France' || d.properties.name=='Germany' || d.properties.name=='Poland'|| d.properties.name=='Italy') {return d.properties.name}; });
-
+	       .text(function(d) { if(d.properties.name == 'Spain' || d.properties.name=='France' || d.properties.name=='Germany' || d.properties.name=='Poland'|| d.properties.name=='Italy') {return d.properties.name}; })
+	       .attr("stroke", "#c59353");
+	
 	 cities = map.selectAll(".place-label")
 	    .data(topojson.feature(eu, eu.objects.places).features)
 	  .enter().append("g")
@@ -251,9 +252,6 @@ function makeOthers(others, map){
 		.on("click",function(d,i) {
 				var outputList = [];
 				if (d3.select(this).select("rect").attr("fill") != pressedColor) {
-                    d3.select(this).select("rect").attr("fill", pressedColor);
-                    d3.select(this).select("text").text("Trips Incoming!");
-                    d3.select(this).select("text").attr("x", 110);
                     outputList.push({key: "Origin", value: onChange ()});
                     outputList.push({key: "Dests",
                     	value: Array.prototype.slice
@@ -286,6 +284,11 @@ function makeOthers(others, map){
              				.map(function(v,i,a) {
     						return v.value;})[0]});
                     validateForm(outputList)
+                    if (!(validateForm(outputList)==false)){
+                    	d3.select(this).select("rect").attr("fill", pressedColor);
+                    	d3.select(this).select("text").text("Trips Incoming!");
+                    	d3.select(this).select("text").attr("x", 110);
+                    }
              	}
 				else {
 					d3.select(this).select("rect").attr("fill", defaultColor)
@@ -293,13 +296,17 @@ function makeOthers(others, map){
 					d3.select(this).select("text").text(buttonText)
 					d3.select(this).select("text").attr("x", 80)
 					d3.select("#book").style("opacity",0)
+					d3.selectAll(".link").style("opacity",0)
+					d3.selectAll(".node").style("opacity",0)
+					d3.selectAll(".flightTP").style("opacity",0)
 					d3.selectAll("#resultsBox").remove()
 					d3.selectAll(".citiesText").remove()
 
 			}})
         .on("mouseover", function() {
                 if (d3.select(this).select("rect").attr("fill") != pressedColor) {
-                    d3.select(this).select("rect").attr("fill", hoverColor);
+                    d3.select(this).select("rect").attr("fill", hoverColor)
+                    d3.select(this).style("cursor", "default");
              	}})
         .on("mouseout", function() {
                 if (d3.select(this).select("rect").attr("fill") != pressedColor) {
@@ -356,7 +363,7 @@ function makeOthers(others, map){
         var daysBetween = days_between(parseDate(outputList[2].value), parseDate(outputList[3].value));
         if (daysBetween < outputList[5].value)
             {alert("Increase your flexible time frame or decrease total number of days."); return false;}
-        else{ d3.select("#book").style("opacity", 1); return showboxes(others, map);}
+        else{ d3.select("#book").style("opacity", 1); return (showboxes(others, map));}
         }
 
     function days_between(date1, date2) {
@@ -394,11 +401,17 @@ function showboxes(others, map){
 
     numberofTrips = flights.length;
 
+    var resultBoxX = 405,
+    	resultHeadX = 410,
+    	resultHelpX = 420,
+    	resultPriceX = 498;
+
+
     others.append('rect')
 		.attr('id', 'resultsBox')
 		.attr('fill', 'white')
 		.attr('stroke', 'grey')
-		.attr('x', 390)
+		.attr('x', resultBoxX)
 		.attr('y', 1)
 		.attr("rx", 15) //rx and ry give the buttons rounded corners
         .attr("ry", 15)
@@ -414,28 +427,28 @@ function showboxes(others, map){
 	flightText = results.append('text')
 	flightText.text("Wander to...")
 		.attr("class", "resultHeader")
-		.attr("x", 400)
+		.attr("x", resultHeadX)
 		.attr("y", 40)
 
 	if (numberofTrips < 1) {
 		errorText = results.append('text')
 		errorText.text("Sorry, no options for those choices!")
 			.attr("class", "text")
-			.attr("x", 402)
+			.attr("x", resultHelpX)
 			.attr("y", 80)
 	}
 
 	if (numberofTrips > 0 ){
 		detailsText = results.append('text');
-		detailsText.text("Click on an option for details.")
+		detailsText.text("Click on a trip for more details.")
 			.attr("class", "helper")
-			.attr("x", 402)
+			.attr("x", resultHelpX)
 			.attr("y", 60)
 
-		results.append('text')
+	  	results.append('text')
 			.attr("class", "pricetext")
-			.attr('x', 478)
-			.attr('y', function(d,i){return i*50 + 80})
+			.attr('x', resultPriceX)
+			.attr('y', function(d,i){return i*50 + 85})
 			.text(function(d, i ){
 					d.Price = []
 					d.Origin = []
@@ -443,63 +456,89 @@ function showboxes(others, map){
 						d.Price.push(d.values[j].values[0].Price)
 						d.Origin.push(d.values[j].values[0].Origin_ID)
 					}
-
-			return "Price $" + d.values[0].values[0].Total_Price
-
-		});}
+		})
+		;}
 
 	for (i = 0; i<numberofTrips; i+=1){
 
-	optionText = results.append('text');
-	optionText.text("Option " + (i+1) + ": ")
+	optionText = results.append('g').append('g')
+		.attr("id", 'optionG')
+		.on("mouseover", function() {
+            if (d3.select(this).selectAll("rect").attr("fill") != cityFill) {
+                d3.select(this).selectAll("rect").attr("fill", "grey"); } 
+                d3.select(this).style("cursor", "default")})
+        .on("mouseout", function() {
+            if (d3.select(this).selectAll("rect").attr("fill") != cityFill) {
+                d3.select(this).selectAll("rect").attr("fill","#ebebeb")}
+           		d3.select(this).style("cursor", "default")})
+		.on("click", function() {
+			if (d3.selectAll("#optionG").selectAll("rect").attr("fill"==cityFill)){if (d3.select(this).selectAll("rect").attr("fill") != cityFill) {
+					d3.selectAll("#optionG").selectAll("rect").attr("fill", "#ebebeb")
+					d3.selectAll(".link").remove()
+					d3.selectAll(".node").remove()
+					d3.select(this).selectAll("rect").attr("fill", cityFill), d3.select(this).selectAll("text").attr("fill", "black") ;
+					if(d3.select(this).selectAll("text").text().includes("Trip 1: Price $")){node_link(flights[0].values, map, others)}
+					else if (d3.select(this).text().includes("Trip 2: ")){node_link(flights[1].values, map, others)}
+					else if (d3.select(this).text().includes("Trip 3: ")){node_link(flights[2].values, map, others)}
+					else if (d3.select(this).text().includes("Trip 4: ")){node_link(flights[3].values, map, others)}
+					else if (d3.select(this).text().includes("Trip 5: ")){node_link(flights[4].values, map, others)}
+					else {};
+			 	}
+			 	else if (d3.select(this).selectAll("rect").attr("fill") == cityFill){d3.select(this).selectAll("rect").attr("fill", "#ebebeb"), d3.select(this).selectAll("text").attr("fill", "black"), d3.selectAll(".link").remove(), d3.selectAll(".node").remove(), d3.selectAll(".flightTP").remove() }
+			 }});
+
+	optionText.append("rect")
+		.attr("x", (resultHelpX-2))
+		.attr("y", (67+50*i))
+		.attr("fill", "#ebebeb")
+		.attr("stroke", "grey")
+		.attr("rx", 4) //rx and ry give the buttons rounded corners
+        .attr("ry", 4)
+		.attr("width", 140)
+		.attr("height", 25)
+		.attr("id", "optionButton");
+
+	optionText.append("text")
+		.text("Trip " + (i+1) + ": Price $" + flights[i].values[0].values[0].Total_Price)
 		.attr("class", "text")
 		.attr("class", "option")
-		.attr("x", 402)
-		.attr("y", (80+50*i))
-		.on("mouseover", function() {
-            if (d3.select(this).attr("fill") != textFill) {
-                d3.select(this).attr("fill", cityFill); }})
-        .on("mouseout", function() {
-            if (d3.select(this).attr("fill") != textFill) {
-                d3.select(this).attr("fill","black")}})
-		.on("click", function() {if (d3.select(this).attr("fill") != textFill) {d3.select(this).attr("fill", textFill);
+		.attr("x", resultHelpX)
+		.attr("y", (85+50*i));
 
-			if(d3.select(this).text()=="Option 1: "){node_link(flights[0].values, map, others)}
-			else if (d3.select(this).text()=="Option 2: "){node_link(flights[1].values, map, others)}
-			else if (d3.select(this).text()=="Option 3: "){node_link(flights[2].values, map, others)}
-			else if (d3.select(this).text()=="Option 4: "){node_link(flights[3].values, map, others)}
-			else if (d3.select(this).text()=="Option 5: "){node_link(flights[4].values, map, others)}
-			else {};
-		 	}
-            else {d3.select(this).attr("fill", "black"), d3.selectAll(".link").remove(), d3.selectAll(".node").remove(), d3.selectAll(".flightTP").remove() }});
+		
     var optionsCities = others.append('g')
 		.attr('id', resultsBox).selectAll('g')
 		.data(flights[i].Origin)
 		.enter().append('g')
 	cities = ""
 	optionsCities.append("text")
-		.attr("class", "text")
 		.attr("class", "citiesText")
-		.attr("x", 405)
-		.attr("y", (100 + 50*i))
+		.attr("id", "citiesText")
+		.attr("x", (resultHelpX+5))
+		.attr("y", (110 + 50*i))
 		.attr("stroke", "none")
 		.text(function (d,j){
-				if (j > 0){
-					cities += " > " + d
-				}
-				else {
+				var start = flights[i].Origin[0];
+				if (j == 0){
 					cities += d
 				}
-				return cities
+				else if (j > 0 && j<(flights[i].Origin.length-1)){
+					cities += " → " + d
+				}
+				else{ cities += " → " + d + " → " + start; return cities}
 		});
 }
 })};
 
 function node_link(d, map, others){
 
-	color_scale = ["#fed976", "#feb24c", "Darkgoldenrod", "#fd8d3c", "Goldenrod", "#fee391", "#fee391", "#fee391" ]
 
+	//color_scale = ["#fed976", "#feb24c", "Darkgoldenrod", "#fd8d3c", "Goldenrod", "#fee391", "#fee391", "#fee391" ]
+
+	var interp = d3.interpolateHsl("#c59353", "PaleGoldenRod")
 	var sourceList = [],
+		sourceIDList = [],
+		targetIDList = [],
 		targetList = [],
 		orderList = [],
 		linkList = [],
@@ -510,17 +549,40 @@ function node_link(d, map, others){
 
 	for (i=0; i<d.length; i+=1){
 		sourceList.push({source: d[i].values[0].Origin_Name})
+		sourceIDList.push(d[i].values[0].Origin_ID)
+		targetIDList.push(d[i].values[0].Dest_ID)
 		targetList.push(d[i].values[0].Dest_Name)
 		orderList.push(d[i].values[0].Seq)
 		landDateList.push(d[i].values[0].Date1)
 		departDateList.push(d[i].values[0].Date2)
 		priceList.push(d[i].values[0].Price)
+
 	}
 
 
 	for(i=0; i<d.length; i+=1){
-		linkList.push({source:sourceList[i].source, target:targetList[i], seq:orderList[i], land: landDateList[i], depart: departDateList[i], price: priceList[i]})
+		linkList.push({source:sourceList[i].source, target:targetList[i], seq:orderList[i], land: landDateList[i], depart: departDateList[i], price: priceList[i], origin_id: sourceIDList[i], dest_id: targetIDList[i]})
 	}
+
+	var parseformat = d3.time.format("%m/%d/%y");
+	var outFormat = d3.time.format("%Y-%m-%d");
+	var url = "https://www.skyscanner.net/transport/d/"
+	  	for (i = 0; i <linkList.length; i++)
+	  		{
+	  			inDate = outFormat( new Date(parseformat.parse(linkList[i].land)))
+
+	  			var start = linkList[0].origin_id;
+	  			if (i == 0){
+	  				url += linkList[i].origin_id + "/" + inDate + "/" + linkList[i].dest_id + "/"
+	  			}
+	  			else if (i > 0 && i<(linkList[i].length-1)){
+					url += linkList[i].origin_id + "/" + + inDate + "/" + linkList[i].dest_id + "/"
+				}
+				else {url += linkList[i].origin_id + "/" + inDate + "/" + linkList[i].dest_id + "/"}
+	  		}
+	  console.log(url)
+	  document.getElementById("book").href= url;
+	  document.getElementById("book").onclick="window.open(this.href, this.href); return false"
 
 	var linkLength = (linkList.length-1)
 
@@ -543,7 +605,7 @@ function node_link(d, map, others){
 
 	var flightTip = d3.tip()
 			  .attr('class', 'd3-tip flightTP')
-			  .offset([400,115])
+			  .offset([140,5])
 			  // .attr("x", 400)
 			  // .attr("y", 115) //{for (i = linkList.length; i>0; i-=1) {console.log(i); return ([i*100,115])}})
 			  .html(function(d){strhtml = "<strong>Route Price: $" + totalPrice + "</strong><br> <table class='GeneratedTable'> <thead><tr><th>Origin</th><th>Destination</th><th>Date</th><th>Price</th></tr></thead><tbody> ";
@@ -566,6 +628,7 @@ function node_link(d, map, others){
 		.data(linkList)
 		.enter().append("g")
 		.attr("class", "table flightTP")
+		.attr("id", "goesHere")
 
 	flightDeets.append("rect")
 		.attr('x', 405)
@@ -576,26 +639,26 @@ function node_link(d, map, others){
 		.attr('height', 320)
 		.attr("stroke", "none")
 		.attr("fill", "#ebebeb")
-		.call(flightTip.show);
+		.call(flightTip.show(d, document.getElementById("goesHere")));
 
 
    	var link = map.selectAll('.link')
    	    .data(linkList)
    	    .enter().append('line')
    	    .attr('class', 'link')
-   	    .attr("stroke", function(d) {return(color_scale[+d.seq])})
+   	    .attr("stroke", function(d,i){return interp(i/(linkList.length)).toString()})
    	    .attr("x1", function(d) {if (!(d.source == 'Atlanta' || d.source == 'Orlando' || d.source == 'Palma')) {var t = d3.transform(d3.select("#"+d.source).attr("transform")); return (t.translate[0]);}
        							  else if (d.source == 'Palma'){return 280}
-       							  else {return 20}})
+       							  else {return -10}})
 		.attr("y1", function(d) {if (!(d.source == 'Atlanta' || d.source == 'Orlando' || d.source == 'Palma')) {var t = d3.transform(d3.select("#"+d.source).attr("transform")); return (t.translate[1]);}
        							  else if (d.source == 'Palma'){return 648}
-   							      else {return 300}})
+   							      else {return 400}})
   		.attr("x2", function(d) { if (!(d.target == 'Atlanta' || d.target == 'Orlando' || d.target == 'Palma')) {var t = d3.transform(d3.select("#"+d.target).attr("transform")); return (t.translate[0]);}
        							  else if (d.target == 'Palma'){return 280}
-       							  else {return 20}})
+       							  else {return -10}})
   		.attr("y2", function(d) {if (!(d.target == 'Atlanta' || d.target == 'Orlando' || d.target == 'Palma')) {var t = d3.transform(d3.select("#"+d.target).attr("transform")); return (t.translate[1]);}
        							  else if (d.target == 'Palma'){return 648}
-       							  else {return 300}})
+       							  else {return 400}})
   		.on("mouseover", linkTip.show)
   		.on("mouseout", linkTip.hide);
 
@@ -608,10 +671,10 @@ function node_link(d, map, others){
           .attr("r", 5)
        	  .attr("cx", function(d){ if (!(d.source == 'Atlanta' || d.source == 'Orlando' || d.source == 'Palma')) {var t = d3.transform(d3.select("#"+d.source).attr("transform")); return (t.translate[0]);}
        							  else if (d.source == 'Palma'){return 280}
-       							  else {return 20}})
+       							  else {return -20}})//return 20}})
        	  .attr("cy", function(d){ if (!(d.source == 'Atlanta' || d.source == 'Orlando' || d.source == 'Palma')) {var t = d3.transform(d3.select("#"+d.source).attr("transform")); return (t.translate[1]);}
     							  else if (d.source == 'Palma'){return 648}
-    							  else {return 300}})
+    							  else {return -20}})//return 300}})
        	  .on("mouseover", nodeTip.show)
        	  .on("mouseout", nodeTip.hide);
 
