@@ -39,6 +39,7 @@ class WanderWorld:
         self.modelList = []
         for date_list, sourceAvaiLegs, avaiLegs in self.legs:
             m = BuildModel(self.version, date_list, self.listofCities, self.origin, sourceAvaiLegs, avaiLegs, self.minDays)
+
             m.solveModel()
             self.modelList.append(m)
         
