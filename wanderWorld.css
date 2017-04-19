@@ -280,11 +280,9 @@ text.pricetext {
 
 .subunit-label {
   fill: #c59353;
-  fill-opacity: .5;
-  font-size: 11px;
-  color: #c59353;
-  text-anchor: middle;
-  alignment-baseline: central;
+  font-size: 12px;
+  text-anchor: center;
+  alignment-baseline: hanging;
 }
 
 #multDropDown {
@@ -374,7 +372,7 @@ background-color: #c59353;
 }
 
 #results-box{
- z-index: 1
+ 
 }
 
 #optionButton{
@@ -382,4 +380,8 @@ background-color: #c59353;
     border-color: grey;
     border-radius: 2px;
     border-style: solid;
+}
+.citiesText{
+  white-space: pre-wrap;
+  font-size: 12px;
 }
