@@ -280,11 +280,45 @@ function makeOthers(others, map){
              				.call(document.querySelectorAll('#budgetInput'),0)
              				.map(function(v,i,a) {
     						return v.value;})[0]});
-                    if (!(validateForm(outputList)==false)){
-                    	d3.select(this).select("rect").attr("fill", pressedColor);
-                    	d3.select(this).select("text").text("Trips Incoming!");
-                    	d3.select(this).select("text").attr("x", 110);
-                    }
+                    d3.csv("./flightData.csv", function(data) {
+						wanderKeys = "";
+
+				    	var out = null;
+
+						wanderKeys+= outputList[0].value + ", "
+
+						for (i=0; i<outputList[1].value.length; i++){
+						 	wanderKeys += outputList[1].value[i] + ", "
+
+						}
+
+						for (i=2; i<outputList.length-2; i++){
+						 	wanderKeys += outputList[i].value + ", "
+						}
+
+						wanderKeys += outputList[(outputList.length-2)].value
+						
+						budget = parseInt(outputList[6].value)
+
+						var out;
+						final_flights = data.filter(function(d){return wanderKeys == d['QueryID']})
+						final_flights = final_flights.filter(function(d){ var tP = parseInt(d['Total_Price']); return tP <= budget}); 
+					    var flights = null;
+					        flights = d3.nest()
+					       .key(function(d) {return d['TripID']})
+					       .key(function(d) {return d['Seq']})
+					       .entries(final_flights);
+					    numberofTrips = +flights.length;
+					    if ((numberofTrips == 0)){
+					    	alert("Oops! We don't have any trips for those inputs. Try again."); return false;
+						}
+
+						else {if (!(validateForm(outputList)==false)){
+                    	d3.select('#go').select("rect").attr("fill", pressedColor);
+                    	d3.select('#go').select("text").text("Trips Incoming!");
+                    	d3.select('#go').select("text").attr("x", 110);
+                    	}}
+					})
              	}
 				else {
 					d3.select(this).select("rect").attr("fill", defaultColor)
@@ -355,6 +389,7 @@ function makeOthers(others, map){
         if (!(/^\$*(\d*\.?\d+|\d{1,3}(,\d{3})*(\.\d+)?)$/.test(outputList[6].value)))
             {alert("Budget is not a valid input."); return false;}
         //timeframe should be > total days
+
         var daysBetween = days_between(parseDate(outputList[2].value), parseDate(outputList[3].value));
         if (daysBetween < outputList[5].value)
             {alert("Increase your flexible time frame or decrease total number of days."); return false;}
@@ -380,6 +415,7 @@ function makeOthers(others, map){
         return new Date(parts[0], parts[1]-1, parts[2]); // months are 0-based
         // function from http://stackoverflow.com/questions/2627650/why-javascript-gettime-is-not-a-function
     }
+
 }
 
 function showboxes(others, map, outputList){
@@ -399,10 +435,15 @@ function showboxes(others, map, outputList){
 
 	wanderKeys += outputList[(outputList.length-2)].value
 	
+	budget = parseInt(outputList[6].value)
+
+
 	// load the data
 	d3.csv("./flightData.csv", function(data) {
 
 	final_flights = data.filter(function(d){return wanderKeys == d['QueryID']})
+
+	final_flights = final_flights.filter(function(d){ var tP = parseInt(d['Total_Price']); return tP <= budget}); 
 
     var flights = null;
         flights = d3.nest()
@@ -429,19 +470,20 @@ function showboxes(others, map, outputList){
 		.attr('width', 329)
 		.attr('height', 320)
 
-	var results = others.append('g')
+
+	if (numberofTrips >= 1){
+
+		var results = others.append('g')
 		.attr('id', 'resultsBox').selectAll("g")
 		.data(flights)
 		.enter().append('g')
 		.style("z-index", 1)
 
-	flightText = results.append('text')
-	flightText.text("Wander to...")
-		.attr("class", "resultHeader")
-		.attr("x", resultHeadX)
-		.attr("y", 40)
-
-	if (numberofTrips > 0){
+		flightText = results.append('text')
+		flightText.text("Wander to...")
+			.attr("class", "resultHeader")
+			.attr("x", resultHeadX)
+			.attr("y", 40)
 		detailsText = results.append('text');
 		detailsText.text("Click on a trip for more details.")
 			.attr("class", "helper")
@@ -682,5 +724,4 @@ function node_link(d, map, others){
        	  .on("mouseout", nodeTip.hide);
 
 }
-
 
