@@ -11,7 +11,6 @@ from dataProcessing import *
 class WanderWorld:
     def __init__(self, fulldf): # initiate a model with all the data
         self.fulldf = fulldf
-        self.rawDictionary = createRawDictionary(self.fulldf)
         self.version = 'V1'
         self.cityCodeMap = createCityCodeMap(self.fulldf)
         
@@ -24,6 +23,7 @@ class WanderWorld:
         self.numofDays = num_days
         self.minDays = min_days
         self.origin = origin
+        self.rawDictionary = createRawDictionary(self.fulldf, self.listofCities)
         self.dates_list = createDatesList(self.user_start, self.user_end, self.numofDays)
         
     def createInputDicts(self):
@@ -39,6 +39,7 @@ class WanderWorld:
         self.modelList = []
         for date_list, sourceAvaiLegs, avaiLegs in self.legs:
             m = BuildModel(self.version, date_list, self.listofCities, self.origin, sourceAvaiLegs, avaiLegs, self.minDays)
+
             m.solveModel()
             self.modelList.append(m)
         
