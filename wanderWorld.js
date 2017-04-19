@@ -330,12 +330,20 @@ function makeOthers(others, map){
             {alert("Select at least one destination city."); return false;}
         if (outputList[2].value == "")
             {alert("Select a start date for your flexible time frame."); return false;}
+        if (outputList[2].value != "2017-05-01")
+            {alert("Sorry! For the purpose of this prototype, we need you to choose May 1, 2017 as the start date of your flexible time frame."); return false;}
         if (outputList[3].value == "")
             {alert("Select an end date for your flexible time frame."); return false;}
+        if (outputList[3].value != "2017-05-31")
+            {alert("Sorry! For the purpose of this prototype, we need you to choose May 31, 2017 as the end date of your flexible time frame."); return false;}
         if (outputList[4].value == "")
             {alert("Minimum number of days must be filled out."); return false;}
+        if (outputList[4].value != "2")
+            {alert("Sorry! For the purpose of this prototype, we need you to choose 2 as your minimum number of days."); return false;}
         if (outputList[5].value == "")
             {alert("Total number of days must be filled out."); return false;}
+        if (outputList[5].value != "21")
+            {alert("Sorry! For the purpose of this prototype, we need you to choose 21 total days."); return false;}
         if (outputList[6].value == "")
             {alert("Budget must be filled out."); return false;}
         //num days must be >= min days * num cities
