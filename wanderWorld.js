@@ -12,7 +12,7 @@ var projScale = 1000,
 var otherW = width-mapW
 	otherH = 1000;
 
-var mapFill = "#00254c"
+var mapFill ="#00254c"
 var textFill = "#202092"
 var cityFill = "#c59353"
 
@@ -86,8 +86,9 @@ function makeMap(container, map){
 	       .attr("class", function(d) { return "subunit-label " + d.id; })
 	       .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
 	       .attr("dy", ".35em")
-	       .text(function(d) { if(d.properties.name == 'Spain' || d.properties.name=='France' || d.properties.name=='Germany' || d.properties.name=='Poland'|| d.properties.name=='Italy') {return d.properties.name}; });
-
+	       .text(function(d) { if(d.properties.name == 'Spain' || d.properties.name=='France' || d.properties.name=='Germany' || d.properties.name=='Poland'|| d.properties.name=='Italy') {return d.properties.name}; })
+	       .attr("stroke", "#c59353");
+	
 	 cities = map.selectAll(".place-label")
 	    .data(topojson.feature(eu, eu.objects.places).features)
 	  .enter().append("g")
