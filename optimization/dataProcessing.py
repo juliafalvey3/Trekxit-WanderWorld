@@ -83,7 +83,7 @@ def createRawDictionary(fulldf, listofCities):
     cities = listofCities
     origins = cities
 
-    cities = ['Atlanta', 'Orlando','Palma', 'London', 'Barcelona']
+    #cities = ['Atlanta', 'Orlando','Palma', 'London', 'Barcelona']
     origins = cities
 
     results_origin_filtered = fulldf[fulldf['origin_city_name'].isin(cities)]
@@ -194,7 +194,7 @@ def createDictsforDates(date_list, dictforCities, source):
     #this should come from the iteration:
     #for day in dates_list: dt_start = day[0], dt_end = day[-1]
 
-    print date_list[0]
+    # print date_list[0]
     Scopy = S.copy()
     T = {}
 
