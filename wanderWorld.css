@@ -56,10 +56,10 @@ div.textBox p {
 
 div.otherText {
   font-family: Palatino;
-  border: 1px solid black;
-  margin-left: 0px;
+  border: 1px solid #ebebeb;
   font-size: 20px;
   text-align: center;
+  margin-bottom: 100px;
   /*vertical-align: middle;*/
   /*width: 1000px;*/
   /*height: 300px;*/
@@ -89,25 +89,6 @@ div.otherText p {
   stroke: #777;
   stroke-dasharray: 2,2;
   stroke-linejoin: round;
-}
-
-#sections {
-  position: relative;
-  width: 1400px;
-  /*position: absolute;*/
-  top: 0px;
-}
-
-.step {
-  margin-bottom: 100px;
-  /*margin-top: 50px;*/
-}
-
-#chart {
-  position: fixed;
-  height: 600px;
-  width: 600px;
-  background-color: #ddd;
 }
 
 text {
@@ -266,7 +247,6 @@ text.pricetext {
   font-size: 17px;
   width: 200px;
   padding: 10px;
-  z-index: 1;
 }
 #numDays {
  position: absolute;
@@ -276,7 +256,6 @@ text.pricetext {
  font-size: 17px;
  width: 200px;
  padding: 10px;
- z-index: 1;
 }
 #direct-controls {
   position: absolute;
@@ -403,9 +382,4 @@ background-color: #c59353;
     border-color: grey;
     border-radius: 2px;
     border-style: solid;
-}
-
-#citiesText
-{
-  
 }
