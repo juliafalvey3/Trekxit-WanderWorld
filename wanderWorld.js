@@ -285,7 +285,6 @@ function makeOthers(others, map){
              				.call(document.querySelectorAll('#budgetInput'),0)
              				.map(function(v,i,a) {
     						return v.value;})[0]});
-                    validateForm(outputList)
                     if (!(validateForm(outputList)==false)){
                     	d3.select(this).select("rect").attr("fill", pressedColor);
                     	d3.select(this).select("text").text("Trips Incoming!");
