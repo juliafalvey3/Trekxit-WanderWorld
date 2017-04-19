@@ -297,7 +297,6 @@ text.pricetext {
   font-size: 17px;
   width: 200px;
   padding: 10px;
-  z-index: 1;
 }
 
 .subunit-label {
@@ -322,7 +321,7 @@ text.pricetext {
 }
 
 .selected{
-  fill("grey")
+  fill: grey
 }
 
 table.GeneratedTable {
@@ -397,4 +396,16 @@ background-color: #c59353;
 
 #results-box{
  z-index: 1
+}
+
+#optionButton{
+    border-width: 3px;
+    border-color: grey;
+    border-radius: 2px;
+    border-style: solid;
+}
+
+#citiesText
+{
+  
 }
