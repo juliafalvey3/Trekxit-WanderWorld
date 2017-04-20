@@ -310,7 +310,7 @@ function makeOthers(others, map){
 					       .entries(final_flights);
 					    numberofTrips = +flights.length;
 					    if ((numberofTrips == 0)){
-					    	alert("Oops! We don't have any trips for those inputs. Try again."); return false;
+					    	alert("Oops! We don't have any trips within that budget. Try again."); return false;
 						}
 
 						else {if (!(validateForm(outputList)==false)){
@@ -637,7 +637,7 @@ function node_link(d, map, others){
  	var nodeTip = d3.tip()
 			  .attr('class', 'd3-tipGraph')
 			  .html(function(d,i){
-			  		if(linkList[(i - 1)] != undefined) {return ("<i> City: </i> "  + linkList[i-1].target + " </br> <i> Flight Price To City: </i> $" + linkList[i-1].price + "</br> <i>Land Date: </i>" + linkList[i-1].depart + " </br> <i>Depart Date:</i> " + d.depart)}
+			  		if(linkList[(i - 1)] != undefined) {return ("<i> City: </i> "  + linkList[i-1].target + " </br> <i> Flight Price To City: </i> $" + linkList[i-1].price + "</br> <i>Land Date: </i>" + linkList[i-1].depart + " </br> <i>Depart Date:</i> " + d.land)}
 			  		else {return ("<i> City: </i> "  + linkList[linkLength].target + " </br> <i> Flight Price To City: </i> $" + linkList[linkLength].price + "</br> <i>Land Date: </i>" + linkList[linkLength].land + " </br> <i>Depart Date:</i> " + linkList[linkLength].depart)}
 			  	})
 
