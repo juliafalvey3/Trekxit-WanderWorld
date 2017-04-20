@@ -59,9 +59,10 @@ div.otherText {
   border: 1px solid #ebebeb;
   font-size: 20px;
   text-align: center;
-  margin-bottom: 100px;
+  margin-bottom: 75px;
+  margin-left: 125px;
   /*vertical-align: middle;*/
-  /*width: 1000px;*/
+  width: 1200px;
   /*height: 300px;*/
 }
 /*paragraph*/
@@ -372,7 +373,7 @@ background-color: #c59353;
 }
 
 #results-box{
- 
+
 }
 
 #optionButton{
