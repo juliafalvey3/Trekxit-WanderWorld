@@ -56,13 +56,12 @@ div.textBox p {
 
 div.otherText {
   font-family: Palatino;
-  border: 1px solid #ebebeb;
-  font-size: 20px;
-  text-align: center;
-  margin-bottom: 75px;
+  border: 0.1px solid #ebebeb;
+/*  margin-bottom: -25px;*/
   margin-left: 125px;
   /*vertical-align: middle;*/
   width: 1200px;
+  height: 30%;
   /*height: 300px;*/
 }
 /*paragraph*/
@@ -75,6 +74,14 @@ div.otherText p {
     vertical-align: top;
 }
 /*paragraph*/
+
+div.otherText h2 {
+    font-family: Palatino;
+    color: #000000;
+    font-size: 28px;
+    text-align: center;
+    vertical-align: top;
+}
 
 .header
 {
