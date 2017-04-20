@@ -16,18 +16,18 @@ var cityFill = "#c59353"
 function init(){
 	d3.select('#vis').selectAll('*').remove();
 	var container = d3.select('#vis').append('svg')
-		.attr("class", "svg-classed")
-	    .attr("width", this.width)
+	    .attr("width", "100%")
 	    .attr('height', height);
 
+
 	var map = container.append('svg')
-	    .attr('width', (0.5*this.width))
+	    .attr('width', "50%")
 	    .attr('height', mapH)
 	    .attr('transform', 'translate('+mapX+','+mapY+')')
 	    .attr('fill', 'none');
 
 	var others = container.append('svg')
-		.attr('width', (0.55*this.width))
+		.attr('width', "55%")
 	    .attr('height', otherH)
 	    .attr("id", "others");
 
@@ -280,46 +280,8 @@ function makeOthers(others, map){
              				.call(document.querySelectorAll('#budgetInput'),0)
              				.map(function(v,i,a) {
     						return v.value;})[0]});
-                    d3.csv("./flightData.csv", function(data) {
-						wanderKeys = "";
+                   validateForm(outputList)}
 
-				    	var out = null;
-
-						wanderKeys+= outputList[0].value + ", "
-
-						for (i=0; i<outputList[1].value.length; i++){
-						 	wanderKeys += outputList[1].value[i] + ", "
-
-						}
-
-						for (i=2; i<outputList.length-2; i++){
-						 	wanderKeys += outputList[i].value + ", "
-						}
-
-						wanderKeys += outputList[(outputList.length-2)].value
-						
-						budget = parseInt(outputList[6].value)
-
-						var out;
-						final_flights = data.filter(function(d){return wanderKeys == d['QueryID']})
-						final_flights = final_flights.filter(function(d){ var tP = parseInt(d['Total_Price']); return tP <= budget}); 
-					    var flights = null;
-					        flights = d3.nest()
-					       .key(function(d) {return d['TripID']})
-					       .key(function(d) {return d['Seq']})
-					       .entries(final_flights);
-					    numberofTrips = +flights.length;
-					    if ((numberofTrips == 0)){
-					    	alert("Oops! We don't have any trips within that budget. Try again."); return false;
-						}
-
-						else {if (!(validateForm(outputList)==false)){
-                    	d3.select('#go').select("rect").attr("fill", pressedColor);
-                    	d3.select('#go').select("text").text("Trips Incoming!");
-                    	d3.select('#go').select("text").attr("x", 110);
-                    	}}
-					})
-             	}
 				else {
 					d3.select(this).select("rect").attr("fill", defaultColor)
 					d3.select(this).select("text").text(buttonText)
@@ -330,6 +292,7 @@ function makeOthers(others, map){
 					d3.selectAll(".flightTP").style("opacity",0)
 					d3.selectAll("#resultsBox").remove()
 					d3.selectAll(".citiesText").remove()
+					d3.selectAll(".graphTP").remove()
 
 			}})
         .on("mouseover", function() {
@@ -359,42 +322,79 @@ function makeOthers(others, map){
 
     // VALIDATE INPUT
     function validateForm(outputList) {
-        //everything must be filled out
-        if (outputList[0].value == "Select a Starting City")
-            {alert("Select an origin city."); return false;}
-        if (outputList[1].value.length < 2)
-            {alert("Select at least two destination cities."); return false;}
-        if (outputList[2].value == "")
-            {alert("Select a start date for your flexible time frame."); return false;}
-        if (outputList[2].value != "2017-05-01")
-            {alert("Sorry! For the purpose of this prototype, we need you to choose May 1, 2017 as the start date of your flexible time frame."); return false;}
-        if (outputList[3].value == "")
-            {alert("Select an end date for your flexible time frame."); return false;}
-        if (outputList[3].value != "2017-05-31")
-            {alert("Sorry! For the purpose of this prototype, we need you to choose May 31, 2017 as the end date of your flexible time frame."); return false;}
-        if (outputList[4].value == "")
-            {alert("Minimum number of days must be filled out."); return false;}
-        if (outputList[4].value != "2")
-            {alert("Sorry! For the purpose of this prototype, we need you to choose 2 as your minimum number of days."); return false;}
-        if (outputList[5].value == "")
-            {alert("Total number of days must be filled out."); return false;}
-        if (outputList[5].value != "21")
-            {alert("Sorry! For the purpose of this prototype, we need you to choose 21 total days."); return false;}
-        if (outputList[6].value == "")
-            {alert("Budget must be filled out."); return false;}
-        //num days must be >= min days * num cities
-        if (outputList[5].value < outputList[4].value*outputList[1].value.length)
-            {alert("Increase your total number of days or reduce your minimum stay per city."); return false;}
-        //min days, num days, and budget must be valid formats
-        if (!(/^\$*(\d*\.?\d+|\d{1,3}(,\d{3})*(\.\d+)?)$/.test(outputList[6].value)))
-            {alert("Budget is not a valid input."); return false;}
-        //timeframe should be > total days
 
-        var daysBetween = days_between(parseDate(outputList[2].value), parseDate(outputList[3].value));
-        if (daysBetween < outputList[5].value)
-            {alert("Increase your flexible time frame or decrease total number of days."); return false;}
-        else{ d3.select("#book").style("opacity", 1); return (showboxes(others, map, outputList));}
-        }
+    	 d3.csv("./flightData.csv", function(data) {
+
+			wanderKeys = "";
+
+	    	var out = null;
+
+			wanderKeys+= outputList[0].value + ", "
+
+			for (i=0; i<outputList[1].value.length; i++){
+			 	wanderKeys += outputList[1].value[i] + ", "
+
+			}
+
+			for (i=2; i<outputList.length-2; i++){
+			 	wanderKeys += outputList[i].value + ", "
+			}
+
+			wanderKeys += outputList[(outputList.length-2)].value
+			
+			budget = parseInt(outputList[6].value)
+
+			var out;
+			final_flights = data.filter(function(d){return wanderKeys == d['QueryID']})
+			final_flights = final_flights.filter(function(d){ var tP = parseInt(d['Total_Price']); return tP <= budget}); 
+		    var flights = null;
+		        flights = d3.nest()
+		       .key(function(d) {return d['TripID']})
+		       .key(function(d) {return d['Seq']})
+		       .entries(final_flights);
+		    numberofTrips = +flights.length;
+		    var daysBetween = days_between(parseDate(outputList[2].value), parseDate(outputList[3].value));
+			    	 	 //everything must be filled out
+	        if (outputList[0].value == "Select a Starting City")
+	            {alert("Select an origin city."); return false;}
+	       	else  if (outputList[1].value.length < 2)
+	            {alert("Select at least two destination cities."); return false;}
+	        else  if (outputList[2].value == "")
+	            {alert("Select a start date for your flexible time frame."); return false;}
+	        else  if (outputList[2].value != "2017-05-01")
+	            {alert("Sorry! For the purpose of this prototype, we need you to choose May 1, 2017 as the start date of your flexible time frame."); return false;}
+	        else  if (outputList[3].value == "")
+	            {alert("Select an end date for your flexible time frame."); return false;}
+	        else  if (outputList[3].value != "2017-05-31")
+	            {alert("Sorry! For the purpose of this prototype, we need you to choose May 31, 2017 as the end date of your flexible time frame."); return false;}
+	        else  if (outputList[4].value == "")
+	            {alert("Minimum number of days must be filled out."); return false;}
+	        else  if (outputList[4].value != "2")
+	            {alert("Sorry! For the purpose of this prototype, we need you to choose 2 as your minimum number of days."); return false;}
+	        else  if (outputList[5].value == "")
+	            {alert("Total number of days must be filled out."); return false;}
+	        else  if (outputList[5].value != "21")
+	            {alert("Sorry! For the purpose of this prototype, we need you to choose 21 total days."); return false;}
+	       else   if (outputList[6].value == "")
+	            {alert("Budget must be filled out."); return false;}
+	        //num days must be >= min days * num cities
+	        else  if (outputList[5].value < outputList[4].value*outputList[1].value.length)
+	            {alert("Increase your total number of days or reduce your minimum stay per city."); return false;}
+	        //min days, num days, and budget must be valid formats
+	        else  if (!(/^\$*(\d*\.?\d+|\d{1,3}(,\d{3})*(\.\d+)?)$/.test(outputList[6].value)))
+	            {alert("Budget is not a valid input."); return false;}
+	        //timeframe should be > total day
+	        else  if (daysBetween < outputList[5].value)
+	            {alert("Increase your flexible time frame or decrease total number of days."); return false;}
+	        else if ((numberofTrips == 0)){
+		    	alert("Oops! We don't have any trips within that budget. Try again."); return false;
+			}
+
+	        else{	d3.select('#go').select("rect").attr("fill", pressedColor);
+	            	d3.select('#go').select("text").text("Trips Incoming!");
+	            	d3.select('#go').select("text").attr("x", 110);
+					d3.select("#book").style("opacity", 1); return (showboxes(others, map, outputList));}
+        })}
 
     function days_between(date1, date2) {
         // The number of milliseconds in one day
@@ -444,6 +444,7 @@ function showboxes(others, map, outputList){
 
 	final_flights = final_flights.filter(function(d){ var tP = parseInt(d['Total_Price']); return tP <= budget}); 
 
+	console.log(final_flights)
     var flights = null;
         flights = d3.nest()
        .key(function(d) {return d['TripID']})
@@ -577,7 +578,6 @@ function showboxes(others, map, outputList){
 
 function node_link(d, map, others){
 
-
 	//color_scale = ["#fed976", "#feb24c", "Darkgoldenrod", "#fd8d3c", "Goldenrod", "#fee391", "#fee391", "#fee391" ]
 
 	var interp = d3.interpolateHsl("#c59353", "PaleGoldenRod")
@@ -642,8 +642,10 @@ function node_link(d, map, others){
 			  	})
 
 	var linkTP = map.append('g')
-		.data(linkList);
+		.data(linkList)
+		.attr("class", "graphTP");
 
+	console.log(linkList)
 	linkTP.call(linkTip)
 	linkTP.call(nodeTip)
 
