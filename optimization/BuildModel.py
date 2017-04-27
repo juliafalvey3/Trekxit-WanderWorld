@@ -152,6 +152,8 @@ class BuildModel:
 
         model.setObjective(obj, GRB.MINIMIZE)
 
+        model.setParam( 'OutputFlag', False )
+
         model.update()
 
         model.optimize()

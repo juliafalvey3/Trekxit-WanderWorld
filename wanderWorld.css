@@ -56,12 +56,12 @@ div.textBox p {
 
 div.otherText {
   font-family: Palatino;
-  border: 1px solid black;
-  margin-left: 0px;
-  font-size: 20px;
-  text-align: center;
+  border: 0.1px solid #ebebeb;
+/*  margin-bottom: -25px;*/
+  margin-left: 125px;
   /*vertical-align: middle;*/
-  /*width: 1000px;*/
+  width: 1200px;
+  height: 30%;
   /*height: 300px;*/
 }
 /*paragraph*/
@@ -74,6 +74,14 @@ div.otherText p {
     vertical-align: top;
 }
 /*paragraph*/
+
+div.otherText h2 {
+    font-family: Palatino;
+    color: #000000;
+    font-size: 28px;
+    text-align: center;
+    vertical-align: top;
+}
 
 .header
 {
@@ -89,25 +97,6 @@ div.otherText p {
   stroke: #777;
   stroke-dasharray: 2,2;
   stroke-linejoin: round;
-}
-
-#sections {
-  position: relative;
-  width: 1400px;
-  /*position: absolute;*/
-  top: 0px;
-}
-
-.step {
-  margin-bottom: 100px;
-  /*margin-top: 50px;*/
-}
-
-#chart {
-  position: fixed;
-  height: 600px;
-  width: 600px;
-  background-color: #ddd;
 }
 
 text {
@@ -175,6 +164,7 @@ text.pricetext {
   text-indent: 100%;
   white-space:nowrap;
 }
+
 .up-arrow {
   position: relative;
   margin-left:700px;
@@ -227,6 +217,7 @@ text.pricetext {
   stroke-opacity: 0.5;
   stroke-width: 1.25px;
 }
+
 .place,
 .place-label {
   fill: #444;
@@ -264,7 +255,6 @@ text.pricetext {
   font-size: 17px;
   width: 200px;
   padding: 10px;
-  z-index: 1;
 }
 #numDays {
  position: absolute;
@@ -274,7 +264,6 @@ text.pricetext {
  font-size: 17px;
  width: 200px;
  padding: 10px;
- z-index: 1;
 }
 #direct-controls {
   position: absolute;
@@ -297,14 +286,11 @@ text.pricetext {
   padding: 10px;
 }
 
-
 .subunit-label {
   fill: #c59353;
-  fill-opacity: .5;
-  font-size: 11px;
-  color: #c59353;
-  text-anchor: middle;
-  alignment-baseline: central;
+  font-size: 12px;
+  text-anchor: center;
+  alignment-baseline: hanging;
 }
 
 #multDropDown {
@@ -313,14 +299,14 @@ text.pricetext {
   margin-left: 20px;
   font-family: Palatino;
   font-size: 17px;
-  width: 200px;
+  width: 300px;
   height: 80px;
   padding: 10px;
   z-index: 1;
 }
 
 .selected{
-  fill("grey")
+  fill: grey
 }
 
 table.GeneratedTable {
@@ -394,5 +380,16 @@ background-color: #c59353;
 }
 
 #results-box{
- z-index: 1 
+
+}
+
+#optionButton{
+    border-width: 3px;
+    border-color: grey;
+    border-radius: 2px;
+    border-style: solid;
+}
+.citiesText{
+  white-space: pre-wrap;
+  font-size: 12px;
 }
